@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\EasyLearning\\BackEnd\\EasyLearning.WebAPI\\EasyLearning.WebAPI\\EasyLearning.WebAPI.csproj": {}
+    "C:\\Source\\EasyLearning\\BackEnd\\EasyLearning.WebAPI\\EasyLearning.WebAPI\\EasyLearning.WebAPI.csproj": {}
   },
   "projects": {
-    "D:\\EasyLearning\\BackEnd\\EasyLearning.WebAPI\\EasyLearning.WebAPI\\EasyLearning.WebAPI.csproj": {
+    "C:\\Source\\EasyLearning\\BackEnd\\EasyLearning.WebAPI\\EasyLearning.WebAPI\\EasyLearning.WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\EasyLearning\\BackEnd\\EasyLearning.WebAPI\\EasyLearning.WebAPI\\EasyLearning.WebAPI.csproj",
+        "projectUniqueName": "C:\\Source\\EasyLearning\\BackEnd\\EasyLearning.WebAPI\\EasyLearning.WebAPI\\EasyLearning.WebAPI.csproj",
         "projectName": "EasyLearning.WebAPI",
-        "projectPath": "D:\\EasyLearning\\BackEnd\\EasyLearning.WebAPI\\EasyLearning.WebAPI\\EasyLearning.WebAPI.csproj",
-        "packagesPath": "C:\\Users\\trant\\.nuget\\packages\\",
-        "outputPath": "D:\\EasyLearning\\BackEnd\\EasyLearning.WebAPI\\EasyLearning.WebAPI\\obj\\",
+        "projectPath": "C:\\Source\\EasyLearning\\BackEnd\\EasyLearning.WebAPI\\EasyLearning.WebAPI\\EasyLearning.WebAPI.csproj",
+        "packagesPath": "C:\\Users\\trong\\.nuget\\packages\\",
+        "outputPath": "C:\\Source\\EasyLearning\\BackEnd\\EasyLearning.WebAPI\\EasyLearning.WebAPI\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\DevExpress 22.2\\Components\\Offline Packages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\trant\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 22.2.config",
+          "C:\\Users\\trong\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\DevExpress 22.2\\Components\\System\\Components\\Packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,6 +34,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -61,6 +61,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.28, 6.0.28]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[6.0.28, 6.0.28]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.28, 6.0.28]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.28, 6.0.28]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -69,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
