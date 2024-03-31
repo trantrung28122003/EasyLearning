@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "ETEA00ElVzUeLoPyHVJnvvpy00SsBcXIduaHZY9U3pg=",
+  "Source": "EasyLearning.WebAPI",
+  "BasePath": "_content/EasyLearning.WebAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
