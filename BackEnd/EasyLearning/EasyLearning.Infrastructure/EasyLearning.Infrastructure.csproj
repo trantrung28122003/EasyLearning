@@ -7,8 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Entites\" />
-    <Folder Include="Data\Validator\" />
+    <Compile Remove="Data\Validator\**" />
+    <EmbeddedResource Remove="Data\Validator\**" />
+    <None Remove="Data\Validator\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Vadilator\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.29" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.29" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.29" />
   </ItemGroup>
 
 </Project>

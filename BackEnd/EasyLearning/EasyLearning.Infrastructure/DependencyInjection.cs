@@ -1,6 +1,7 @@
 ﻿namespace EasyLearning.Application
 {
-    internal class DependencyInjection
+    public class DependencyInjection
     {
+        
     }
 }

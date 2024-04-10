@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presenters", "Presenters", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyLearning.WebAPI", "EasyLearning.WebAPI\EasyLearning.WebAPI.csproj", "{BF4056DF-A87D-4878-B9A5-244494916674}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyLearning.WebApp", "EasyLearning.WebApp\EasyLearning.WebApp.csproj", "{9537591B-0A4E-47AB-B611-88DEC3CB8A4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{BF4056DF-A87D-4878-B9A5-244494916674}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF4056DF-A87D-4878-B9A5-244494916674}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF4056DF-A87D-4878-B9A5-244494916674}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9537591B-0A4E-47AB-B611-88DEC3CB8A4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9537591B-0A4E-47AB-B611-88DEC3CB8A4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9537591B-0A4E-47AB-B611-88DEC3CB8A4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9537591B-0A4E-47AB-B611-88DEC3CB8A4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,6 +55,7 @@ Global
 		{08496265-4C05-4352-9FE5-1A1BD3A0E258} = {9A5209D5-6973-495F-A117-4CC6897EBC4D}
 		{1A1871CA-2DF7-4E34-9435-6BB22B95133C} = {9A5209D5-6973-495F-A117-4CC6897EBC4D}
 		{BF4056DF-A87D-4878-B9A5-244494916674} = {1A1871CA-2DF7-4E34-9435-6BB22B95133C}
+		{9537591B-0A4E-47AB-B611-88DEC3CB8A4F} = {1A1871CA-2DF7-4E34-9435-6BB22B95133C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00312254-7151-4D89-B282-3A84534525B6}
