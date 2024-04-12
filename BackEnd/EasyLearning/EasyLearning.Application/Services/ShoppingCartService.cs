@@ -3,42 +3,27 @@ using EasyLearning.Infrastructure.Data.Repostiory;
 
 namespace EasyLearning.Application.Services
 {
-    public class ShoppingCartService
+    public interface IShoppingCartService
+    {
+        Task<List<ShoppingCart>> GetAllShoppingCarts();
+        Task<ShoppingCart> GetShoppingCartById(string id);
+        Task CreateShoppingCart(ShoppingCart shoppingCart);
+        Task UpdateShoppingCart(ShoppingCart shoppingCart);
+        Task DeleteShoppingCart(ShoppingCart shoppingCart);
+        Task SoftDeleteShoppingCart(string id);
+    }
+    public class ShoppingCartService : IShoppingCartService
     {
         private readonly ShoppingCartRepository _shoppingCartRepository;
         public ShoppingCartService(ShoppingCartRepository shoppingCartRepository)
         {
             _shoppingCartRepository = shoppingCartRepository;
         }
-
-        public async Task<List<ShoppingCart>> GetShoppingCart()
-        {
-            return await _shoppingCartRepository.GetAll();
-        }
-
-        public async Task<List<ShoppingCart>> GetShoppingCartByCondition(string id)
-        {
-            return await _shoppingCartRepository.GetByCondition(s => s.Id == id);
-        }
-
-        public async Task CreateShoppingCart(ShoppingCart shoppingCart)
-        {
-            await _shoppingCartRepository.Create(shoppingCart);
-        }
-
-        public async Task UpdateShoppingCart(ShoppingCart shoppingCart)
-        {
-            await _shoppingCartRepository.Update(shoppingCart);
-        }
-
-        public async Task DeleteShoppingCart(ShoppingCart shoppingCart)
-        {
-            await _shoppingCartRepository.Delete(shoppingCart);
-        }
-
-        public async Task SoftDeleteShoppingCart(string id)
-        {
-            await _shoppingCartRepository.SoftDelete(id);
-        }
+        public async Task<List<ShoppingCart>> GetAllShoppingCarts() => await _shoppingCartRepository.GetAll();
+        public async Task<ShoppingCart>GetShoppingCartById(string id) => await _shoppingCartRepository.GetById(id);
+        public async Task CreateShoppingCart(ShoppingCart shoppingCart) => await _shoppingCartRepository.Create(shoppingCart);
+        public async Task UpdateShoppingCart(ShoppingCart shoppingCart) => await _shoppingCartRepository.Update(shoppingCart);
+        public async Task DeleteShoppingCart(ShoppingCart shoppingCart) => await _shoppingCartRepository.Delete(shoppingCart);
+        public async Task SoftDeleteShoppingCart(string id) => await _shoppingCartRepository.SoftDelete(id);
     }
 }

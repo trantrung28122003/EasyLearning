@@ -8,7 +8,16 @@ using System.Threading.Tasks;
 
 namespace EasyLearning.Application.Services
 {
-    public class ShoppingCartItemService
+    public interface IShoppingCartItemService
+    {
+        Task<List<ShoppingCartItem>> GetAllShoppingCartItems();
+        Task<ShoppingCartItem> GetShoppingCartItemById(string id);
+        Task CreateShoppingCartItem(ShoppingCartItem shoppingCartItem);
+        Task UpdateShoppingCartItem(ShoppingCartItem shoppingCartItem);
+        Task DeleteShoppingCartItem(ShoppingCartItem shoppingCartItem);
+        Task SoftDeleteShoppingCartItem(string id);
+    }
+    public class ShoppingCartItemService : IShoppingCartItemService
     {
         private readonly ShoppingCartItemRepository _shoppingCartItemRepository;
         public ShoppingCartItemService(ShoppingCartItemRepository shoppingCartItemRepository)
@@ -16,34 +25,11 @@ namespace EasyLearning.Application.Services
             _shoppingCartItemRepository = shoppingCartItemRepository;
         }
 
-        public async Task<List<ShoppingCartItem>> GetShoppingCartItem()
-        {
-            return await _shoppingCartItemRepository.GetAll();
-        }
-
-        public async Task<List<ShoppingCartItem>> GetShoppingCartItemById(string id)
-        {
-            return await _shoppingCartItemRepository.GetByCondition(s => s.Id == id);
-        }
-
-        public async Task CreateShoppingCartItem(ShoppingCartItem shoppingCartItem)
-        {
-            await _shoppingCartItemRepository.Create(shoppingCartItem);
-        }
-
-        public async Task UpdateShoppingCartItem(ShoppingCartItem shoppingCartItem)
-        {
-            await _shoppingCartItemRepository.Update(shoppingCartItem);
-        }
-
-        public async Task DeleteShoppingCartItem(ShoppingCartItem shoppingCartItem)
-        {
-            await _shoppingCartItemRepository.Delete(shoppingCartItem);
-        }
-
-        public async Task SoftDeleteShoppingCartItem(string id)
-        {
-            await _shoppingCartItemRepository.SoftDelete(id);
-        }
+        public async Task<List<ShoppingCartItem>> GetAllShoppingCartItems() => await _shoppingCartItemRepository.GetAll();
+        public async Task<ShoppingCartItem> GetShoppingCartItemById(string id) => await _shoppingCartItemRepository.GetById(id);
+        public async Task CreateShoppingCartItem(ShoppingCartItem shoppingCartItem) => await _shoppingCartItemRepository.Create(shoppingCartItem);
+        public async Task UpdateShoppingCartItem(ShoppingCartItem shoppingCartItem) => await _shoppingCartItemRepository.Update(shoppingCartItem);
+        public async Task DeleteShoppingCartItem(ShoppingCartItem shoppingCartItem) => await _shoppingCartItemRepository.Delete(shoppingCartItem);
+        public async Task SoftDeleteShoppingCartItem(string id) => await _shoppingCartItemRepository.SoftDelete(id);
     }
 }
