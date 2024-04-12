@@ -11,6 +11,8 @@ namespace EasyLearning.Infrastructure
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<CourseRepository, CourseRepository>();
+            services.AddScoped<CategoryRepository, CategoryRepository>();
+            services.AddScoped<CourseDetailRepository, CourseDetailRepository>();
             services.AddDbContext<EasyLearningDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetSection("Database:ConectionString").Value);
