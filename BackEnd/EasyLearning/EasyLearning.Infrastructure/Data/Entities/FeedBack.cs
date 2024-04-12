@@ -1,20 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using EasyLearning.Infrastructure.Data.Abstraction;
+using EasyLearning.Infrastructure.Data.Entities;
 
-namespace EasyLearing.Models
+namespace EasyLearing.Infrastructure.Data.Entities
 {
-    public class FeedBack
+    public class Feedback : GenericEntity
     {
-        [Key]
-        [Column("Feedback_Id")]
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid FeedbackId { get; set; }
-
-
         [Column("Feedback_User_Id")]
-        [Required]
-        public Guid FeedbackUserId { get; set; }
+        public string? FeedbackUserId { get; set; }
 
         [Column("Feeback_Content")]
         public string? FeedbackContent { get; set; }
@@ -22,13 +16,9 @@ namespace EasyLearing.Models
         [Column("Feeback_Rating")]
         public int FeedbackRating { get; set; }
 
-        [Column("Feeback_SubmissionTime")]
-        public DateTime SubmissionTime { get; set; }
-
         [Column("Feedback_Courese_Id")]
-        public Guid CoursesId { get; set; }
+        public string? CoursesId { get; set; }
         [ForeignKey("CoursesId")]
-        public Course Courses { get; set; }
-
+        public Course? Courses { get; set; }
     }
 }

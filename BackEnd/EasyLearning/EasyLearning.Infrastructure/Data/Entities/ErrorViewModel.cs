@@ -1,4 +1,4 @@
-namespace EasyLearing.Models
+namespace EasyLearing.Infrastructure.Data.Entities
 {
     public class ErrorViewModel
     {

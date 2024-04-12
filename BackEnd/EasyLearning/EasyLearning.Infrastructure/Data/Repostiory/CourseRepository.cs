@@ -1,5 +1,6 @@
-﻿using EasyLearing.Models;
+﻿
 using EasyLearning.Infrastructure.Data.Abstraction;
+using EasyLearning.Infrastructure.Data.Entities;
 
 namespace EasyLearning.Infrastructure.Data.Repostiory
 {

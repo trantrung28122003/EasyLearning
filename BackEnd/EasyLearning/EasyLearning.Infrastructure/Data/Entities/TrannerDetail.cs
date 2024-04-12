@@ -1,25 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EasyLearning.Infrastructure.Data.Abstraction;
+using EasyLearning.Infrastructure.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
-namespace EasyLearing.Models
+namespace EasyLearing.Infrastructure.Data.Entities
 {
-    public class TrannerDetail
+    public class TrannerDetail : GenericEntity
     {
-        [Key]
-        [Required]
-        [Column("Tranner_Detail_Id")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid TrannerDetailId { get; set; }
-
         [Column("Courses_Id")]
-        public Guid CoursesId { get; set; }
+        public string? CoursesId { get; set; }
         [ForeignKey("CoursesId")]
-        public Course Courses { get; set; }
+        public Course? Courses { get; set; }
 
         [Column("User_Id")]
-        public Guid UserId { get; set; }
+        public string? UserId { get; set; }
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }

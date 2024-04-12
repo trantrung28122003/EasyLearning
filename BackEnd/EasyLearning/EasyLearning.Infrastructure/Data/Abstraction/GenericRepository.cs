@@ -7,7 +7,8 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
     {
         Task<List<TEntity>> GetAll();
 
-        Task<List<TEntity>> GetByCondition<TResult>(Expression<Func<TEntity, bool>> selector);
+        Task<List<TEntity>> GetByCondition(Expression<Func<TEntity, bool>> selector);
+        Task<TEntity?> GetById(string id);
 
         Task Create(TEntity entity);
 
@@ -29,7 +30,7 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
 
         public async Task<List<TEntity>> GetAll() => await _dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
 
-        public async Task<List<TEntity>> GetByCondition<TResult>(Expression<Func<TEntity, bool>> selector)
+        public async Task<List<TEntity>> GetByCondition(Expression<Func<TEntity, bool>> selector)
             => await _dbContext.Set<TEntity>().AsNoTracking().Where(selector).ToListAsync();
 
         public async Task Create(TEntity entity)
@@ -38,6 +39,11 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task Update(TEntity entity)
+        {
+            _dbContext.Set<TEntity>().Update(entity);
+            await _dbContext.SaveChangesAsync();
+        }
         public async Task Delete(TEntity entity)
         {
             _dbContext.Set<TEntity>().Remove(entity);
@@ -53,10 +59,7 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Update(TEntity entity)
-        {
-            _dbContext.Set<TEntity>().Update(entity);
-            await _dbContext.SaveChangesAsync();
-        }
+        public async Task<TEntity?> GetById(string id) => await _dbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
+
     }
 }

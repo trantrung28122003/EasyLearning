@@ -1,6 +1,14 @@
-﻿namespace EasyLearning.Application
+﻿using EasyLearning.Application.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace EasyLearning.Application
 {
-    internal class DependencyInjection
+    public static class DependencyInjection
     {
+        public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<ICourseService, CourseService>();
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using EasyLearing.Models;
+﻿using EasyLearning.Infrastructure.Data.Entities;
 using FluentValidation;
 
 namespace EasyLearning.Infrastructure.Data.Vadilator

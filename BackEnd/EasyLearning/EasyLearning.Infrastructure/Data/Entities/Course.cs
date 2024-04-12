@@ -1,4 +1,5 @@
-﻿using EasyLearning.Infrastructure.Data.Abstraction;
+﻿using EasyLearing.Infrastructure.Data.Entities;
+using EasyLearning.Infrastructure.Data.Abstraction;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,9 +7,7 @@ namespace EasyLearning.Infrastructure.Data.Entities
 {
     public class Course : GenericEntity
     {
-
         [Column("Courses_Name")]
-        [Required]
         public string? CoursesName { get; set; }
 
         [Column("Courses_Description")]
@@ -27,27 +26,25 @@ namespace EasyLearning.Infrastructure.Data.Entities
         public string? ImageUrl { get; set; }
 
         [Column("Courses_StartDate")]
-        [Required]
         public DateTime StartDate { get; set; }
 
         [Column("Courses_StartEnd")]
-        [Required]
+       
         public DateTime StartEnd { get; set; }
 
         [Column("Courese_RegistrationDeadline")]
-        [Required]
         public DateTime RegistrationDeadline { get; set; }
 
         [Column("Courses_MaxAttendees")]
-        public DateTime MaxAttdendees { get; set; }
+        public int MaxAttdendees { get; set; }
         
 
-        public ICollection<CoursesDetail>? CoursesDetails {  get; set; } 
+        public ICollection<CourseDetail>? CoursesDetails {  get; set; } 
         public ICollection<TrannerDetail>? TrannerDetails { get; set; }
         public ICollection<TranningPart>? TranningParts { get; set; }
         public ICollection<ShoppingCartItem>? ShoppingCartItems { get; set; }
         public ICollection<OrderDetail>? OrderDetails { get; set; }
-        public ICollection<FeedBack>? FeedBacks { get; set; }
-
+        public ICollection<Feedback>? FeedBacks { get; set; }
+        public ICollection<AddOn>? AddOns { get; set; }  
     }
 }

@@ -1,24 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EasyLearning.Infrastructure.Data.Abstraction;
+using EasyLearning.Infrastructure.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EasyLearing.Models
+namespace EasyLearing.Infrastructure.Data.Entities
 {
-    public class OrderDetail
+    public class OrderDetail : GenericEntity
     {
-        [Key]
-        [Required]
-        [Column("Order_Detail_Id")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid OrderDetailId {  get; set; }
-
         [Column("Order_Id")]
-        public Guid OrderId { get; set; }
+        public string? OrderId { get; set; }
         [ForeignKey("OrderID")]
-        public Order Order { get; set; }
+        public Order? Order { get; set; }
 
         [Column("Courses_Id")]
-        public Guid CoursesId { get; set; }
+        public string? CoursesId { get; set; }
         [ForeignKey("CoursesId")]
-        public Course Courses { get; set; }
+        public Course? Courses { get; set; }
     }
 }

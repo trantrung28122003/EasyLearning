@@ -1,24 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EasyLearning.Infrastructure.Data.Abstraction;
+using EasyLearning.Infrastructure.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EasyLearing.Models
+namespace EasyLearing.Infrastructure.Data.Entities
 {
-    public class ShoppingCartItem
+    public class ShoppingCartItem: GenericEntity
     {
-        [Key]
-        [Column("Shopping_Cart_Item_Id")]
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid ShoppingCartItemId {  get; set; }
+        [Column("Shopping_Cart_Item_Quantity")]
+        public int Quantity { get; set; }
 
-        [Column("Shopping_Cart_Item_Shopping_Cart_Id")]
-        public Guid ShoppingCartId { get; set; }
+
+        [Column("Shopping_Cart_Id")]
+        public string? ShoppingCartId { get; set; }
         [ForeignKey("ShoppingCartId")]
-        public ShoppingCart ShoppingCart { get; set; }
+        public ShoppingCart? ShoppingCart { get; set; }
 
-        [Column("Shopping_Cart_Item_Courese_Id")] 
-        public Guid CoursesId { get; set; }
+        [Column("Courese_Id")]
+        public string? CoursesId { get; set; }
         [ForeignKey("CoursesId")]
-        public Course Courses { get; set; }
+        public Course? Courses { get; set; }
     }
 }
