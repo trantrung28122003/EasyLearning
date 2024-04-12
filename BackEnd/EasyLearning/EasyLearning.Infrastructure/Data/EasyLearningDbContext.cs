@@ -2,8 +2,6 @@
 using EasyLearning.Infrastructure.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System.Reflection.Emit;
 
 namespace EasyLearning.Infrastructure.Data
 {
@@ -16,8 +14,6 @@ namespace EasyLearning.Infrastructure.Data
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<TranningPart> TranningParts { get; set; }
-        /*public DbSet<User> Users { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }*/
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
