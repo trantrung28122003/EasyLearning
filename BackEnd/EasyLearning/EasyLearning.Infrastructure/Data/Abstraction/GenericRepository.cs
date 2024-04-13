@@ -49,7 +49,7 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
                     await transaction.CommitAsync();
                     
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     await transaction.RollbackAsync();
                 }
@@ -67,7 +67,7 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
                     await _dbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     await transaction.RollbackAsync();
                 }
@@ -83,7 +83,7 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
                     await _dbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     await transaction.RollbackAsync();
                 }
@@ -106,7 +106,7 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
                     await _dbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     await transaction.RollbackAsync();
                 }
