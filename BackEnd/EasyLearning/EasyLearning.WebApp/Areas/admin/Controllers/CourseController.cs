@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
+    [Area("admin")]
     public class CourseController : Controller
     {
         private readonly ICourseService _courseService;

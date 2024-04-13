@@ -1,11 +1,10 @@
-﻿using AutoMapper;
-using EasyLearing.Infrastructure.Data.Entities;
+﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
-using EasyLearning.Infrastructure.Data.Repostiory;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
+    [Area("admin")]
     public class CategoryController : Controller
     {
         private readonly ICourseService _courseService;

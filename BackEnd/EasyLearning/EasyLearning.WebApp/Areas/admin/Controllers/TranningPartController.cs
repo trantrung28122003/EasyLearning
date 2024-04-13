@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
+    [Area("admin")]
     public class TranningPartController : Controller
     {
         private readonly ITranningPartService _tranningPartService;

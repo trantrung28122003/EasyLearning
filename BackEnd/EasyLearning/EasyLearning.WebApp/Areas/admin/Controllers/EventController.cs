@@ -8,6 +8,7 @@ using System.Security.AccessControl;
 
 namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
+    [Area("admin")]
     public class EventController : Controller
     {
         private readonly ICourseService _courseService;

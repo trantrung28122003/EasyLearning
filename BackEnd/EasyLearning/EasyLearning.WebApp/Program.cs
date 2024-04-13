@@ -35,16 +35,16 @@ if (!app.Environment.IsDevelopment())
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseRouting();
 app.MapControllerRoute(
-    name: "Admin",
-    pattern: "{area:exists}/{controller=ProductManager}/{action=Index}/{id?}");
+    name: "admin",
+    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 
-app.UseRouting();
+
 
 app.Run();
