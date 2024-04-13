@@ -7,7 +7,10 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
     {
         Task<List<TEntity>> GetAll();
 
+        Task<List<TEntity>> GetAllActive();  
+
         Task<List<TEntity>> GetByCondition(Expression<Func<TEntity, bool>> selector);
+
         Task<TEntity?> GetById(string id);
 
         Task Create(TEntity entity);
@@ -35,31 +38,83 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
 
         public async Task Create(TEntity entity)
         {
-            await _dbContext.Set<TEntity>().AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
+            entity.DateCreate = DateTime.Now;
+           
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    await _dbContext.Set<TEntity>().AddAsync(entity);
+                    await _dbContext.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    
+                }
+                catch (Exception e)
+                {
+                    await transaction.RollbackAsync();
+                }
+            }
         }
 
         public async Task Update(TEntity entity)
         {
-            _dbContext.Set<TEntity>().Update(entity);
-            await _dbContext.SaveChangesAsync();
+            entity.DateChange = DateTime.Now;
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    _dbContext.Set<TEntity>().Update(entity);
+                    await _dbContext.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+                catch (Exception e)
+                {
+                    await transaction.RollbackAsync();
+                }
+            }
         }
         public async Task Delete(TEntity entity)
         {
-            _dbContext.Set<TEntity>().Remove(entity);
-            await _dbContext.SaveChangesAsync();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    _dbContext.Set<TEntity>().Remove(entity);
+                    await _dbContext.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+                catch (Exception e)
+                {
+                    await transaction.RollbackAsync();
+                }
+            }
         }
         public async Task SoftDelete(string id)
         {
-            GenericEntity? item = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
-            if (item != null)
+            TEntity? item = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
+            
+            using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                item.IsDeleted = true;
+                try
+                {
+                    if (item != null)
+                    {
+                        item.IsDeleted = true;
+                        item.DateChange = DateTime.Now;
+                        _dbContext.Set<TEntity>().Update(item);
+                    }   
+                    await _dbContext.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+                catch (Exception e)
+                {
+                    await transaction.RollbackAsync();
+                }
             }
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<TEntity?> GetById(string id) => await _dbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
 
+        public async Task<List<TEntity>> GetAllActive() => await _dbContext.Set<TEntity>().Where(x=>x.IsDeleted).AsNoTracking().ToListAsync();
     }
 }

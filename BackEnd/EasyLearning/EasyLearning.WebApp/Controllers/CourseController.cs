@@ -41,30 +41,8 @@ namespace EasyLearning.WebApp.Controllers
             };
             return View(categoryViewModel);
         }
+
         [HttpPost]
-        public async Task<IActionResult> Create(CourseCreateViewModel courseViewModel , CategoryViewModel categoryViewModel)
-        {
-            if(!ModelState.IsValid)
-            {
-                await _courseService.CreateCourse(_mapper.Map<Course>(courseViewModel));
-                foreach(var categoryId in categoryViewModel.SelectedCategories)
-                {
-                    var courseDetail = new CourseDetail
-                    {
-                        CourseId = course.Id,
-                        CategoryId = categoryId,
-
-                    };
-                    await _courseDetailService.CreateCourseDetail(courseDetail);
-                }
-                return RedirectToAction("Index");
-            }
-            var categories = await _categoryService.GetAllCategories();
-            ViewBag.Categories = categories;
-            return View(categoryViewModel);
-
-        }
-
         public async Task<IActionResult> Create(CourseCreateViewModel courseViewModel, string[] selectedCategories)
         {
             if (!ModelState.IsValid)
