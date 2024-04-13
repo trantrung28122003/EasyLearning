@@ -97,8 +97,7 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateCreate)
-            </td>
+                
             <td>
                 @Html.DisplayFor(modelItem => item.DateChange)
             </td>
@@ -112,7 +111,8 @@
                 @Html.ActionLink("Edit", "Update", new { id=item.Id }) |
                 @Html.ActionLink("Details", "Detail", new { id=item.Id}) |
                 @Html.ActionLink("Delete", "Delete", new { id=item.Id })|
-                <a asp-action="Index" asp-controller="TranningPart" asp-route-courseId="@item.Id">Create TranningPart</a>
+                @Html.ActionLink("index TranningPart", "Index", "TranningPart", new { courseId = item.Id }, null)
+                @Html.ActionLink("AddEvent", "Index", "Event", new { courseId = item.Id }, null)
             </td>
         </tr>
 }

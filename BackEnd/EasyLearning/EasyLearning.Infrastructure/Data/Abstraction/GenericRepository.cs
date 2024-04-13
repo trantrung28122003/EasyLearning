@@ -10,7 +10,6 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
         Task<List<TEntity>> GetAllActive();  
 
         Task<List<TEntity>> GetByCondition(Expression<Func<TEntity, bool>> selector);
-
         Task<TEntity?> GetById(string id);
 
         Task Create(TEntity entity);
@@ -35,6 +34,7 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
 
         public async Task<List<TEntity>> GetByCondition(Expression<Func<TEntity, bool>> selector)
             => await _dbContext.Set<TEntity>().AsNoTracking().Where(selector).ToListAsync();
+
 
         public async Task Create(TEntity entity)
         {

@@ -10,8 +10,10 @@ namespace EasyLearning.Application.Services
 {
     public interface ITrannerDetailService
     {
-        Task<List<TrannerDetail>> GetAllTrannerDetails();
+       
         Task<TrannerDetail> GetTrannerDetailById(string id);
+        Task<List<TrannerDetail>> GetAllTrannerDetails();
+      
         Task CreateTrannerDetail(TrannerDetail trannerDetail);
         Task UpdateTrannerDetail(TrannerDetail trannerDetail);
         Task DeleteTrannerDetail(TrannerDetail trannerDetail);

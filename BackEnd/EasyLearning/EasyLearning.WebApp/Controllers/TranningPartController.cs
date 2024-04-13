@@ -15,14 +15,19 @@ namespace EasyLearning.WebApp.Controllers
 
         public async Task<IActionResult> Index(string courseId)
         {
-            var tranningParts = await _tranningPartService.GetTranningPartById(courseId);
+            if (courseId == null)
+            {
+                return NotFound();
+            }
+            var tranningParts = await _tranningPartService.GetTranningPartByCourse(courseId);
             ViewBag.CourseId = courseId;
             return View(tranningParts);
         }
+
         public async Task<IActionResult> Create(string courseId)
         {
-            ViewBag.CourseId = courseId;
-            return View();
+             ViewBag.CourseId = courseId;
+             return View();
         }
 
         [HttpPost]
@@ -31,12 +36,90 @@ namespace EasyLearning.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                tranningPart.DateCreate = DateTime.Now;
+                tranningPart.ChangedBy = "User";
+           
                 await _tranningPartService.CreateTranningPart(tranningPart);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "TranningPart", new { courseId = tranningPart.CoursesId });
             }
             return View(tranningPart);
         }
-       
 
+        public async Task<IActionResult> Edit(string id)
+        {
+            var tranningPart = await _tranningPartService.GetTranningPartById(id);
+            if (tranningPart == null)
+            {
+                return NotFound();
+            }
+
+            return View(tranningPart);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(TranningPart tranningPart, string id)
+        {
+            if (id != tranningPart.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    tranningPart.DateChange = DateTime.Now;
+                    tranningPart.ChangedBy = "User";
+                    await _tranningPartService.UpdateTranningPart(tranningPart);
+                }
+                catch (Exception)
+                {
+                    
+                }
+                return RedirectToAction("Index", "TranningPart", new { courseId = tranningPart.CoursesId });
+            }
+            return View(tranningPart);
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            var tranningPart = await _tranningPartService.GetTranningPartById(id);
+            if (tranningPart == null)
+            {
+                return NotFound();
+            }
+            return View(tranningPart);
+        }
+
+        public async Task<IActionResult> Delete(string id)
+        {
+            var tranningParts = await _tranningPartService.GetTranningPartById(id);
+            if (tranningParts == null)
+            {
+                return NotFound();
+            }
+            return View(tranningParts);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var tranningPart = await _tranningPartService.GetTranningPartById(id);
+            if (tranningPart == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                await _tranningPartService.DeleteTranningPart(tranningPart);
+                return RedirectToAction("Index", "TranningPart", new { courseId = tranningPart.CoursesId });
+            }
+            catch (Exception)
+            {
+                // Handle exception
+                return RedirectToAction("Index", "TranningPart", new { courseId = tranningPart.CoursesId });
+            }
+        }
     }
 }
