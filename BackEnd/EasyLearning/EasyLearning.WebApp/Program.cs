@@ -30,29 +30,21 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
+
+app.UseAuthorization();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.MapControllerRoute(
+    name: "Admin",
+    pattern: "{area:exists}/{controller=ProductManager}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+
 app.UseRouting();
-
-app.UseAuthorization();
-
-app.UseEndpoints(
-    endpoints =>
-    {
-        endpoints.MapAreaControllerRoute(
-            name: "admin",
-            areaName: "admin",
-            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-        );
-
-        // other areas configurations go here 
-
-        endpoints.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}"
-        );
-    }
-);
 
 app.Run();
