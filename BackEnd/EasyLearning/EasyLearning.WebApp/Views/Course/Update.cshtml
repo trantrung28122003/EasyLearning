@@ -1,17 +1,16 @@
-﻿@model EasyLearning.Infrastructure.Data.Entities.Course 
+﻿@model EasyLearning.Infrastructure.Data.Entities.Course
 
-@* @model EasyLearning.WebApp.Models.CourseCreateViewModel *@
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Update";
 }
 
-<h1>Create</h1>
+<h1>Update</h1>
 
 <h4>Course</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <form asp-action="Update">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CoursesName" class="control-label"></label>
@@ -63,21 +62,31 @@
                 <input asp-for="MaxAttdendees" class="form-control" />
                 <span asp-validation-for="MaxAttdendees" class="text-danger"></span>
             </div>
+           
+            <div class="form-group">
+                <label asp-for="DateCreate" class="control-label"></label>
+                <input asp-for="DateCreate" class="form-control" />
+                <span asp-validation-for="DateCreate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateChange" class="control-label"></label>
+                <input asp-for="DateChange" class="form-control" />
+                <span asp-validation-for="DateChange" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label>Categories:</label>
                 @foreach (var category in ViewBag.Categories)
                 {
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="selectedCategories" value="@category.Value" />
+                            <input type="checkbox" name="selectedCategories" value="@category.Value" checked="@category.Selected" />
                             @category.Text
                         </label>
                     </div>
                 }
             </div>
-     
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div>
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

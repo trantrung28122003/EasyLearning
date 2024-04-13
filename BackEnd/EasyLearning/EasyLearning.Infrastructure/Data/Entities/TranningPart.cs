@@ -21,7 +21,7 @@ namespace EasyLearing.Infrastructure.Data.Entities
 
         [Column("Tranning_Part_Event_Id")]
         public string? EventId { get; set; }
-        [ForeignKey("TranningPartEventId")]
+        [ForeignKey("EventId")]
         public CourseEvent? CourseEvent { get; set; }
 
         [Column("Tranning_Part_Courese_Id")]

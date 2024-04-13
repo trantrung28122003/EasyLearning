@@ -8,7 +8,7 @@ namespace EasyLearning.WebApp.Helper
     {
         public AutoMapperProfile()
         {
-            CreateMap<CourseCreateViewModel, Course>();
+         
         }
     }
 }

@@ -11,6 +11,8 @@ namespace EasyLearning.Application
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICourseDetailService, CourseDetailService>();
+            services.AddScoped<ICourseEventService, CourseEventService>();
+            services.AddScoped<ITranningPartService, TranningPartService>();
         }
     }
 }

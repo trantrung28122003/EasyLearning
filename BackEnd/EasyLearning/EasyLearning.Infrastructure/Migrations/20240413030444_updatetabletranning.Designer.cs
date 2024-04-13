@@ -4,6 +4,7 @@ using EasyLearning.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyLearning.Infrastructure.Migrations
 {
     [DbContext(typeof(EasyLearningDbContext))]
-    partial class EasyLearningDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240413030444_updatetabletranning")]
+    partial class updatetabletranning
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,13 +71,9 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Property<DateTime?>("DateCreate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateEnd")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("Course_Event_Date_End");
-
                     b.Property<DateTime>("DateStart")
                         .HasColumnType("datetime2")
-                        .HasColumnName("Course_Event_Date_Start");
+                        .HasColumnName("Course_Event_Date");
 
                     b.Property<string>("EventName")
                         .HasColumnType("nvarchar(max)")

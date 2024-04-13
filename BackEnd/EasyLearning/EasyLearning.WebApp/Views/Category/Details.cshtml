@@ -1,0 +1,60 @@
+﻿@model EasyLearing.Infrastructure.Data.Entities.Category
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detail</h1>
+
+<div>
+    <h4>Category</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CategoryName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SortOrder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SortOrder)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateCreate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateCreate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateChange)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateChange)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ChangedBy)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ChangedBy)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

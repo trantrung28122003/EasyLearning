@@ -10,7 +10,7 @@ namespace EasyLearning.Infrastructure.Data.Entities
         [Column("Courses_Id")]
         public string? CourseId { get; set; }
         [ForeignKey("CourseId")]
-        public Course? course { get; set; }
+        public Course? Course { get; set; }
 
         [Column("Category_Id")]
         public string? CategoryId { get; set; }

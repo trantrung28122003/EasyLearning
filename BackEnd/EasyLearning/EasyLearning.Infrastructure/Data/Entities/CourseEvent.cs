@@ -20,8 +20,11 @@ namespace EasyLearing.Infrastructure.Data.Entities
         [Column("Course_Event_Location")]
         public string? Location { get; set; }
 
-        [Column("Course_Event_Date")]
+        [Column("Course_Event_Date_Start")]
         public DateTime DateStart { get; set; }
+
+        [Column("Course_Event_Date_End")]
+        public DateTime DateEnd { get; set; }
 
         public ICollection<TranningPart>? TranningParts { get; set; }
     }

@@ -109,9 +109,10 @@
                 @Html.DisplayFor(modelItem => item.IsDeleted)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Update", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Detail", new { id=item.Id}) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })|
+                <a asp-action="Index" asp-controller="TranningPart" asp-route-courseId="@item.Id">Create TranningPart</a>
             </td>
         </tr>
 }
