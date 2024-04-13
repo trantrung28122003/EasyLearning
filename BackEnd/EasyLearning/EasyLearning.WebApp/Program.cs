@@ -1,22 +1,33 @@
 using EasyLearning.Application;
 using EasyLearning.Infrastructure;
+using EasyLearning.Infrastructure.Data;
 using EasyLearning.WebApp.Helper;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication(builder.Configuration);
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
-
+services.AddControllersWithViews();
+services.AddInfrastructure(builder.Configuration);
+services.AddApplication(builder.Configuration);
+services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/account/login";
+    options.LogoutPath = $"/account/logout";
+    options.AccessDeniedPath = $"/account/accessDenied";
+});
+services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.User.RequireUniqueEmail = false;
+})
+    .AddEntityFrameworkStores<EasyLearningDbContext>()
+    .AddDefaultTokenProviders();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 app.UseHttpsRedirection();
@@ -26,8 +37,22 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(
+    endpoints =>
+    {
+        endpoints.MapAreaControllerRoute(
+            name: "admin",
+            areaName: "admin",
+            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+        );
+
+        // other areas configurations go here 
+
+        endpoints.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}"
+        );
+    }
+);
 
 app.Run();

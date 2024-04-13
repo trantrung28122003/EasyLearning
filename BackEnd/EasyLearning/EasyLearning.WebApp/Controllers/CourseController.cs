@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Repostiory;
-using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
