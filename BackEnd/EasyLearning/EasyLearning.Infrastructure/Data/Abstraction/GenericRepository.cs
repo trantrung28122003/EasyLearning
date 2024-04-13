@@ -23,7 +23,7 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : GenericEntity
     {
 
-        private readonly EasyLearningDbContext _dbContext;
+        public readonly EasyLearningDbContext _dbContext;
 
         public GenericRepository(EasyLearningDbContext dbContext)
         {

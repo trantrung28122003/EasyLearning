@@ -16,20 +16,7 @@ namespace EasyLearning.WebApp.Models
             public DateTime? DateChange { get; set; }
             public string? ChangedBy { get; set; }
             public bool IsDeleted { get; set; }
-            public ICollection<TranningPart>? TranningParts { get; set; }
-            public string? CourseId { get; set; }
-    }
-
-    public class TranningPartViewModel
-    {
-        public string? TranningPartName { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public string? Description { get; set; }
-        public DateTime? DateCreate { get; set; }
-        public DateTime? DateChange { get; set; }
-        public string? ChangedBy { get; set; }
-        public bool IsDeleted { get; set; }
+            public string TranningPartId { get; set; }
     }
 }
 

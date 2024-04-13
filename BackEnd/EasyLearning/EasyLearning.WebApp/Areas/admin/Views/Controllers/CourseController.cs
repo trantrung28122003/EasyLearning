@@ -4,7 +4,7 @@ using EasyLearning.Infrastructure.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace EasyLearning.WebApp.Controllers
+namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
     public class CourseController : Controller
     {
@@ -26,11 +26,11 @@ namespace EasyLearning.WebApp.Controllers
             return View(courese);
         }
 
-        public async Task<IActionResult> Create() 
+        public async Task<IActionResult> Create()
         {
             var categories = await _categoryService.GetAllCategories();
             ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");
-  
+
             return View();
         }
 
@@ -45,8 +45,9 @@ namespace EasyLearning.WebApp.Controllers
                 await _courseService.CreateCourse(course);
                 foreach (var categoryId in selectedCategories)
                 {
-                    var courDetail =new CourseDetail()
-                    { CategoryId = categoryId,
+                    var courDetail = new CourseDetail()
+                    {
+                        CategoryId = categoryId,
                         CourseId = course.Id,
                     };
                     await _courseDetailService.CreateCourseDetail(courDetail);
@@ -68,13 +69,13 @@ namespace EasyLearning.WebApp.Controllers
             }
             var categories = await _categoryService.GetAllCategories();
             var courseDetail = await _courseDetailService.GetAllCourseDetail();
-                ViewBag.Categories = categories.Select(s => new SelectListItem
-                {
-                    Value = s.Id,
-                    Text = s.CategoryName,
-                    Selected = courseDetail.Any(p => p.CategoryId == s.Id && p.CourseId == course.Id)
-                }).ToList();
-          
+            ViewBag.Categories = categories.Select(s => new SelectListItem
+            {
+                Value = s.Id,
+                Text = s.CategoryName,
+                Selected = courseDetail.Any(p => p.CategoryId == s.Id && p.CourseId == course.Id)
+            }).ToList();
+
             return View(course);
         }
 
@@ -92,14 +93,14 @@ namespace EasyLearning.WebApp.Controllers
                 try
                 {
                     await _courseService.UpdateCourse(course);
-                    foreach(var courdetail in await _courseDetailService.GetAllCourseDetail())
+                    foreach (var courdetail in await _courseDetailService.GetAllCourseDetail())
                     {
-                        if(courdetail.CourseId == course.Id)
+                        if (courdetail.CourseId == course.Id)
                         {
                             await _courseDetailService.DeleteCourseDetail(courdetail);
-                        }    
+                        }
                     }
-       
+
                     foreach (var categoryId in selectedCategories)
                     {
                         await _courseDetailService.CreateCourseDetail(new CourseDetail { CategoryId = categoryId, CourseId = course.Id });
@@ -127,7 +128,7 @@ namespace EasyLearning.WebApp.Controllers
 
         public async Task<IActionResult> Details(string id)
         {
-            var product = await _courseService.GetCourseById(id); 
+            var product = await _courseService.GetCourseById(id);
             if (product == null)
             {
                 return NotFound();
@@ -135,7 +136,7 @@ namespace EasyLearning.WebApp.Controllers
             return View(product);
         }
 
-        
+
         public async Task<IActionResult> Delete(string id)
         {
             var course = await _courseService.GetCourseById(id);
@@ -156,8 +157,8 @@ namespace EasyLearning.WebApp.Controllers
             }
             var courdetails = await _courseDetailService.GetAllCourseDetail();
             foreach (var courDetail in courdetails)
-            { 
-                if(courDetail.CourseId == course.Id)
+            {
+                if (courDetail.CourseId == course.Id)
                 {
                     await _courseDetailService.DeleteCourseDetail(courDetail);
                 }
@@ -166,7 +167,7 @@ namespace EasyLearning.WebApp.Controllers
             return RedirectToAction(nameof(Index)); // Chuyển hướng về trang danh sách khóa học sau khi xóa thành công
         }
 
-      
+
         /*[HttpPost]
         public async Task<IActionResult> Create(CourseCreateViewModel courseViewModel, string[] selectedCategories)
         {
