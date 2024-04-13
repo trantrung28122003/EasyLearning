@@ -2,7 +2,7 @@
 using EasyLearning.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EasyLearning.WebApp.Controllers
+namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
     public class TranningPartController : Controller
     {
@@ -26,8 +26,8 @@ namespace EasyLearning.WebApp.Controllers
 
         public async Task<IActionResult> Create(string courseId)
         {
-             ViewBag.CourseId = courseId;
-             return View();
+            ViewBag.CourseId = courseId;
+            return View();
         }
 
         [HttpPost]
@@ -38,7 +38,7 @@ namespace EasyLearning.WebApp.Controllers
             {
                 tranningPart.DateCreate = DateTime.Now;
                 tranningPart.ChangedBy = "User";
-           
+
                 await _tranningPartService.CreateTranningPart(tranningPart);
                 return RedirectToAction("Index", "TranningPart", new { courseId = tranningPart.CoursesId });
             }
@@ -74,7 +74,7 @@ namespace EasyLearning.WebApp.Controllers
                 }
                 catch (Exception)
                 {
-                    
+
                 }
                 return RedirectToAction("Index", "TranningPart", new { courseId = tranningPart.CoursesId });
             }

@@ -4,14 +4,14 @@ using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Repostiory;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EasyLearning.WebApp.Controllers
+namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
     public class CategoryController : Controller
     {
         private readonly ICourseService _courseService;
         private readonly ICategoryService _categoryService;
         private readonly ICourseDetailService _courseDetailService;
-     
+
         public CategoryController(ICourseService courseService, ICategoryService categoryService,
         ICourseDetailService courseDetailService)
         {
@@ -44,7 +44,7 @@ namespace EasyLearning.WebApp.Controllers
             return View(category);
         }
 
-        
+
         public async Task<IActionResult> Update(string id)
         {
             var category = await _categoryService.GetCategoryById(id);
@@ -80,7 +80,7 @@ namespace EasyLearning.WebApp.Controllers
         }
         public async Task<IActionResult> Delete(string id)
         {
-            var category = await _categoryService.GetCategoryById(id); 
+            var category = await _categoryService.GetCategoryById(id);
             if (category == null)
             {
                 return NotFound();
@@ -98,6 +98,6 @@ namespace EasyLearning.WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+
     }
 }

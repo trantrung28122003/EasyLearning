@@ -14,7 +14,7 @@ namespace EasyLearning.Application.Services
     {
         Task<List<CourseEvent>> GetAllCourseEvents();
         Task<CourseEvent> GetCourseEventById(string id);
-
+        Task<List<CourseEvent>> GetEventByCourse(string id);
         Task CreateEvent(CourseEvent courseEvent);
         Task UpdateEvent(CourseEvent courseEvent);
         Task DeleteEvent(CourseEvent courseEvent);
@@ -28,6 +28,7 @@ namespace EasyLearning.Application.Services
         {
             _coursseEventRepository = eventRepository;
         }
+        public async Task<List<CourseEvent>> GetEventByCourse(string id) => await _coursseEventRepository.GetEventByCourse(id);
         public async Task<CourseEvent> GetCourseEventById(string id) => await _coursseEventRepository.GetById(id);
         public async Task<List<CourseEvent>> GetAllCourseEvents() =>  await _coursseEventRepository.GetAll();
 
