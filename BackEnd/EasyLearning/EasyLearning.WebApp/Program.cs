@@ -1,6 +1,8 @@
 using EasyLearning.Application;
 using EasyLearning.Infrastructure;
+using EasyLearning.Infrastructure.Data;
 using EasyLearning.WebApp.Helper;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -15,6 +17,12 @@ services.ConfigureApplicationCookie(options =>
     options.LogoutPath = $"/account/logout";
     options.AccessDeniedPath = $"/account/accessDenied";
 });
+services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.User.RequireUniqueEmail = false;
+})
+    .AddEntityFrameworkStores<EasyLearningDbContext>()
+    .AddDefaultTokenProviders();
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
