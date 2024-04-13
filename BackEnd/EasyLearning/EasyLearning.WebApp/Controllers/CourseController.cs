@@ -5,9 +5,6 @@ using EasyLearning.Infrastructure.Data.Repostiory;
 using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 
 namespace EasyLearning.WebApp.Controllers
 {
