@@ -17,8 +17,8 @@ namespace EasyLearning.Application.Services
             MemoryStream memoryStream = new MemoryStream();
             await file.CopyToAsync(memoryStream);
             memoryStream.Position = 0;
-            await blobContainerClient.UploadBlobAsync(file.FileName,memoryStream);
-            var path = blobContainerClient.Uri.LocalPath;
+            await blobContainerClient.UploadBlobAsync(file.FileName + DateTime.Now.ToString(),memoryStream);
+            var path = blobContainerClient.Uri.AbsoluteUri;
             return path;
         }
     }

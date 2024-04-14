@@ -53,6 +53,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var imgLink = await _fileService.SaveFile(courseViewModel.Image);
                 Course course = new Course()
                 {
                     CoursesName = courseViewModel.CoursesName,
@@ -64,7 +65,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     StartEnd = courseViewModel.StartEnd,
                     RegistrationDeadline = courseViewModel.RegistrationDeadline,
                     MaxAttdendees = courseViewModel.MaxAttdendees,
-                    ImageUrl = await _fileService.SaveFile(courseViewModel.Image),
+                    ImageUrl = imgLink,
                     DateCreate = DateTime.Now
                 };
                 await _courseService.CreateCourse(course);

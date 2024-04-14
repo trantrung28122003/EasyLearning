@@ -1,5 +1,6 @@
 ﻿using EasyLearning.Infrastructure.Data.Abstraction;
 using EasyLearning.Infrastructure.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace EasyLearning.Infrastructure.Data.Repostiory
 {
@@ -7,6 +8,10 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
     {
         public CourseRepository(EasyLearningDbContext dbContext, UserRepository userRepository) : base(dbContext, userRepository)
         {
+        }
+        public async Task<Course> GetCourseDetailsById(string id)
+        {
+            return await _dbContext.Courses.FirstOrDefaultAsync(x => x.Id == id);
         }
 
     }
