@@ -65,14 +65,10 @@
                     </div>
                     <a href="contact.html" class="nav-item nav-link">Contact</a>
                 </div>
-                @if (SignInManager.IsSignedIn(User))
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" title="Manage">Hello @User.Identity.Name!</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-link text-dark" asp-controller="account" asp-action="Logout">Logout</a>
-                    </li>
+                    <a class="nav-link text-dark" title="Manage">Hello @User.Identity.Name</a>
+                    <a asp-action="logout" asp-controller="account" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Logout<i class="fa fa-arrow-right ms-3"></i></a>
                 }
                 else
                 {

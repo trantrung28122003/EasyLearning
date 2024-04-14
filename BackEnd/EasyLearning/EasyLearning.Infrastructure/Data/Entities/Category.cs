@@ -11,6 +11,9 @@ namespace EasyLearing.Infrastructure.Data.Entities
         [StringLength(50)]
         public string? CategoryName { get; set; }
 
+        [Column("Img_link")]
+        public string? ImageLink { get; set; }
+
         [Column("Category_Sort_Order")]
         public int? SortOrder { get; set; }
 
