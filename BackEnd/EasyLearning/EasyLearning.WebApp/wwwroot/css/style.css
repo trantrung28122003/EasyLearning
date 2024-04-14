@@ -432,3 +432,7 @@
     padding-right: 0;
     border-right: none;
 }
+
+.main-container{
+    padding: 1rem;
+}
