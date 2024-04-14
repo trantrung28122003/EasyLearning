@@ -6,7 +6,7 @@
 
 <div class="container">
     @Html.ValidationSummary()
-    <form asp-action="Login" asp-controller="Account" method="post">
+    <form asp-action="Register" asp-controller="Account" method="post">
         <div class="logindiv">
             <form id="formAuthentication" class="mb-3" action="index.html">
                 <div class="form-floating form-floating-outline mb-3">
@@ -28,13 +28,6 @@
                     <label for="phonenumber">PhoneNumber</label>
                     @Html.ValidationMessageFor(m => m.PhoneNumber)
                     <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
-                </div>
-
-                <div class="form-floating form-floating-outline mb-3">
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" asp-for="Email" />
-                    <label for="email">Email</label>
-                    @Html.ValidationMessageFor(m => m.Email)
-                    <span asp-validation-for="@Model.Email" class="text-danger"></span>
                 </div>
 
                 <div class="form-floating form-floating-outline mb-3">
@@ -76,7 +69,7 @@
                 <button type="submit" class="btn btn-primary d-grid w-100">Login</button>
                 <p class="text-center">
                     <span>Already have an account?</span>
-                    <a href="auth-login-basic.html">
+                    <a asp-action="login" asp-controller="account">
                         <span>Sign in instead</span>
                     </a>
                 </p>

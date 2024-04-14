@@ -249,9 +249,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[Shopping_Cart_User_Id] IS NOT NULL");
+                    b.HasIndex("UserId");
 
                     b.ToTable("ShoppingCarts");
                 });
@@ -295,7 +293,7 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.ToTable("ShoppingCartItems");
                 });
 
-            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TrannerDetail", b =>
+            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TrainnerDetail", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -381,103 +379,6 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.ToTable("TranningParts");
                 });
 
-            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.User", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ChangedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DateChange")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateCreate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserAddress")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("User_Address");
-
-                    b.Property<string>("UserAvatar")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("User_UserAvatar");
-
-                    b.Property<string>("UserEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("User_Email");
-
-                    b.Property<string>("UserFullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("User_Fullname");
-
-                    b.Property<bool>("UserGender")
-                        .HasColumnType("bit")
-                        .HasColumnName("User_Gender");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("User_Name");
-
-                    b.Property<string>("UserPassword")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("User_Password");
-
-                    b.Property<string>("UserPhone")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)")
-                        .HasColumnName("User_Phone");
-
-                    b.Property<string>("UserRole")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("User_UserRole");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserRole");
-
-                    b.ToTable("User");
-                });
-
-            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.UserRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ChangedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DateChange")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateCreate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Role_Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserRole");
-                });
-
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.AddOn", b =>
                 {
                     b.Property<string>("Id")
@@ -506,11 +407,84 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("LinkDownload")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("link_download");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("price");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CoureseId");
 
                     b.ToTable("AddOns");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Course", b =>
@@ -663,71 +637,6 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.ToTable("RoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("Users", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -820,8 +729,8 @@ namespace EasyLearning.Infrastructure.Migrations
 
             modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.Order", b =>
                 {
-                    b.HasOne("EasyLearing.Infrastructure.Data.Entities.User", "User")
-                        .WithMany("Orders")
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", "User")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -844,9 +753,9 @@ namespace EasyLearning.Infrastructure.Migrations
 
             modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.ShoppingCart", b =>
                 {
-                    b.HasOne("EasyLearing.Infrastructure.Data.Entities.User", "User")
-                        .WithOne("ShoppingCart")
-                        .HasForeignKey("EasyLearing.Infrastructure.Data.Entities.ShoppingCart", "UserId");
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -866,14 +775,14 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("ShoppingCart");
                 });
 
-            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TrannerDetail", b =>
+            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TrainnerDetail", b =>
                 {
                     b.HasOne("EasyLearning.Infrastructure.Data.Entities.Course", "Courses")
                         .WithMany("TrannerDetails")
                         .HasForeignKey("CoursesId");
 
-                    b.HasOne("EasyLearing.Infrastructure.Data.Entities.User", "User")
-                        .WithMany("TrannerDetails")
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", "User")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Courses");
@@ -894,15 +803,6 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("CourseEvent");
 
                     b.Navigation("Courses");
-                });
-
-            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.User", b =>
-                {
-                    b.HasOne("EasyLearing.Infrastructure.Data.Entities.UserRole", "UserRoles")
-                        .WithMany("Users")
-                        .HasForeignKey("UserRole");
-
-                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.AddOn", b =>
@@ -940,7 +840,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -949,7 +849,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -964,7 +864,7 @@ namespace EasyLearning.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -973,7 +873,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -998,20 +898,6 @@ namespace EasyLearning.Infrastructure.Migrations
             modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.ShoppingCart", b =>
                 {
                     b.Navigation("ShoppingCartItem");
-                });
-
-            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.User", b =>
-                {
-                    b.Navigation("Orders");
-
-                    b.Navigation("ShoppingCart");
-
-                    b.Navigation("TrannerDetails");
-                });
-
-            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.UserRole", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Course", b =>

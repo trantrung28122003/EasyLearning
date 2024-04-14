@@ -1,12 +1,11 @@
 ﻿using EasyLearning.Infrastructure.Data.Abstraction;
 using EasyLearning.Infrastructure.Data.Entities;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
 
 namespace EasyLearing.Infrastructure.Data.Entities
 {
-    public class TrannerDetail : GenericEntity
+    public class TrainnerDetail : GenericEntity
     {
         [Column("Courses_Id")]
         public string? CoursesId { get; set; }
@@ -16,6 +15,6 @@ namespace EasyLearing.Infrastructure.Data.Entities
         [Column("User_Id")]
         public string? UserId { get; set; }
         [ForeignKey("UserId")]
-        public User? User { get; set; }
+        public virtual ApplicationUser? User { get; set; }
     }
 }

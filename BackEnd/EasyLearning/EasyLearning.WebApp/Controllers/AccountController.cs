@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace EasyLearning.WebApp.Controllers
 {
@@ -10,12 +9,15 @@ namespace EasyLearning.WebApp.Controllers
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
         public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            RoleManager<IdentityRole> roleManager)
         {
 
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
         }
 
         [HttpGet, AllowAnonymous]
@@ -68,16 +70,14 @@ namespace EasyLearning.WebApp.Controllers
             return View(request);
         }
 
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet,AllowAnonymous]
         public IActionResult Login()
         {
             UserLoginViewModel model = new UserLoginViewModel();
             return View(model);
         }
 
-        [HttpPost]
-        [AllowAnonymous]
+        [HttpPost,AllowAnonymous]
         public async Task<IActionResult> Login(UserLoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -100,8 +100,8 @@ namespace EasyLearning.WebApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    await userManager.AddClaimAsync(user, new Claim("UserRole", "Admin"));
-                    return RedirectToAction("Dashboard");
+                    //await userManager.AddToRoleAsync(user, roleManager.GetRoleNameAsync);
+                    return RedirectToAction("");
                 }
                 else if (result.IsLockedOut)
                 {
