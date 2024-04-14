@@ -84,7 +84,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     CoursesId = course.Id,
                     UserId = _userRepository.getCurrrentUser(),
                 };
-                await _trannerDetailService.CreateTrannerDetail(trannerDetail);
+                await _trannerDetailService.CreateTranerDetail(trannerDetail);
                 return RedirectToAction("Index");
             }
             var categories = await _categoryService.GetAllCategories();
