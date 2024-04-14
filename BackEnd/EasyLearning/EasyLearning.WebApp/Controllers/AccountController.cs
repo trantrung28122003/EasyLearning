@@ -1,21 +1,24 @@
-﻿using EasyLearning.WebApp.Models;
+﻿using EasyLearning.Infrastructure.Data.Entities;
+using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace EasyLearning.WebApp.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
-        public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly RoleManager<ApplicationRole> roleManager;
+        public AccountController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            RoleManager<ApplicationRole> roleManager)
         {
 
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
         }
 
         [HttpGet, AllowAnonymous]
@@ -33,7 +36,7 @@ namespace EasyLearning.WebApp.Controllers
                 var userCheck = await userManager.FindByEmailAsync(request.Email);
                 if (userCheck == null)
                 {
-                    var user = new IdentityUser
+                    var user = new ApplicationUser
                     {
                         UserName = request.Email,
                         NormalizedUserName = request.Email,
@@ -68,16 +71,14 @@ namespace EasyLearning.WebApp.Controllers
             return View(request);
         }
 
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet,AllowAnonymous]
         public IActionResult Login()
         {
             UserLoginViewModel model = new UserLoginViewModel();
             return View(model);
         }
 
-        [HttpPost]
-        [AllowAnonymous]
+        [HttpPost,AllowAnonymous]
         public async Task<IActionResult> Login(UserLoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -100,8 +101,8 @@ namespace EasyLearning.WebApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    await userManager.AddClaimAsync(user, new Claim("UserRole", "Admin"));
-                    return RedirectToAction("Dashboard");
+                    //await userManager.AddToRoleAsync(user, roleManager.GetRoleNameAsync);
+                    return RedirectToAction("");
                 }
                 else if (result.IsLockedOut)
                 {

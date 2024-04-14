@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EasyLearning.Infrastructure.Data
 {
-    public class EasyLearningDbContext : IdentityDbContext
+    public class EasyLearningDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Course> Courses { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CourseDetail> CourseDetails { get; set; }
-        public DbSet<TrannerDetail> TrannerDetails { get; set; }
+        public DbSet<TrainnerDetail> TrannerDetails { get; set; }
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<TranningPart> TranningParts { get; set; }
@@ -37,13 +37,16 @@ namespace EasyLearning.Infrastructure.Data
                     entityType.SetTableName(tableName.Substring(6));
                 }
             }
+            modelBuilder.Entity<ApplicationUser>(e => { e.ToTable("Users"); });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Data Source=TRANTRUNG\\SQLEXPRESS; Initial Catalog=EasyLearning; Trusted_Connection=True; TrustServerCertificate=True");
+            //optionsBuilder.UseSqlServer("Data Source=TRANTRUNG\\SQLEXPRESS; Initial Catalog=EasyLearning; Trusted_Connection=True; TrustServerCertificate=True");
             //optionsBuilder.UseSqlServer("Data Source=localhost; Initial Catalog=EasyLearning; User Id = sa; pwd = Password@1234; Trusted_Connection=True; TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer("Server=tcp:easy-learning-dev.database.windows.net,1433;Initial Catalog=easy-learning;Persist Security Info=False;User ID=supper-admin;Password=Password@1234;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+
         }
     }
 }

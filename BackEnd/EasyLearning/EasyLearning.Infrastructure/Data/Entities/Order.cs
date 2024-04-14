@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using EasyLearning.Infrastructure.Data.Abstraction;
+using EasyLearning.Infrastructure.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace EasyLearing.Infrastructure.Data.Entities
 {
@@ -18,7 +20,7 @@ namespace EasyLearing.Infrastructure.Data.Entities
         [Column("Order_User")]
         public string? UserId { get; set; }
         [ForeignKey("UserId")]
-        public User? User { get; set; }
+        public virtual ApplicationUser? User { get; set; }
 
         public ICollection<OrderDetail>? OrderDetails { get; set; }
     }

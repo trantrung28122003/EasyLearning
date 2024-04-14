@@ -39,7 +39,7 @@ namespace EasyLearning.Infrastructure.Data.Entities
         
 
         public ICollection<CourseDetail>? CoursesDetails {  get; set; } 
-        public ICollection<TrannerDetail>? TrannerDetails { get; set; }
+        public ICollection<TrainnerDetail>? TrannerDetails { get; set; }
         public ICollection<TranningPart>? TranningParts { get; set; }
         public ICollection<ShoppingCartItem>? ShoppingCartItems { get; set; }
         public ICollection<OrderDetail>? OrderDetails { get; set; }

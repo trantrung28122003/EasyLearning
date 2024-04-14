@@ -1,5 +1,6 @@
 ﻿using EasyLearning.Infrastructure.Data.Abstraction;
-using System.ComponentModel.DataAnnotations;
+using EasyLearning.Infrastructure.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyLearing.Infrastructure.Data.Entities
@@ -15,7 +16,7 @@ namespace EasyLearing.Infrastructure.Data.Entities
         [Column("Shopping_Cart_User_Id")]
         public string? UserId { get; set; }
         [ForeignKey("UserId")]
-        public User? User { get; set; }
+        public virtual ApplicationUser? User { get; set; }
 
         public ICollection<ShoppingCartItem>? ShoppingCartItem { get; set; }
     }

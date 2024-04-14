@@ -1,6 +1,7 @@
 using EasyLearning.Application;
 using EasyLearning.Infrastructure;
 using EasyLearning.Infrastructure.Data;
+using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.WebApp.Helper;
 using Microsoft.AspNetCore.Identity;
 
@@ -11,13 +12,14 @@ services.AddControllersWithViews();
 services.AddInfrastructure(builder.Configuration);
 services.AddApplication(builder.Configuration);
 services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
 services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = $"/account/login";
     options.LogoutPath = $"/account/logout";
     options.AccessDeniedPath = $"/account/accessDenied";
 });
-services.AddIdentity<IdentityUser, IdentityRole>(options =>
+services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
     options.User.RequireUniqueEmail = false;
 })
@@ -42,9 +44,4 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
-
-
-
 app.Run();

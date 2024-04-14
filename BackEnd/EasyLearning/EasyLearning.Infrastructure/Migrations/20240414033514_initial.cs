@@ -34,7 +34,8 @@ namespace EasyLearning.Infrastructure.Migrations
                     Course_Event_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Course_Event_Type = table.Column<int>(type: "int", nullable: false),
                     Course_Event_Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Course_Event_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Course_Event_Date_Start = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Course_Event_Date_End = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateChange = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ChangedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -85,22 +86,6 @@ namespace EasyLearning.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserRole",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Role_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DateChange = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ChangedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRole", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -131,6 +116,8 @@ namespace EasyLearning.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Add_On_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    link_download = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     CoursesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CoureseId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -208,8 +195,7 @@ namespace EasyLearning.Infrastructure.Migrations
                     Tranning_Part_StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Tranning_Part_EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Tranning_Part_Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Tranning_Part_Event_Id = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TranningPartEventId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Tranning_Part_Event_Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Tranning_Part_Courese_Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateChange = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -220,8 +206,8 @@ namespace EasyLearning.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_TranningParts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TranningParts_CourseEvents_TranningPartEventId",
-                        column: x => x.TranningPartEventId,
+                        name: "FK_TranningParts_CourseEvents_Tranning_Part_Event_Id",
+                        column: x => x.Tranning_Part_Event_Id,
                         principalTable: "CourseEvents",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -253,19 +239,14 @@ namespace EasyLearning.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Orders",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    User_Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    User_Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    User_Phone = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
-                    User_Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    User_Fullname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    User_Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    User_Gender = table.Column<bool>(type: "bit", nullable: false),
-                    User_UserAvatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    User_UserRole = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Order_TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Order_PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Order_Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Order_User = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateChange = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ChangedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -273,11 +254,61 @@ namespace EasyLearning.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_User_UserRole_User_UserRole",
-                        column: x => x.User_UserRole,
-                        principalTable: "UserRole",
+                        name: "FK_Orders_Users_Order_User",
+                        column: x => x.Order_User,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Shopping_Cart_TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Shopping_Cart_PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Shopping_Cart_User_Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateChange = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ChangedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_Users_Shopping_Cart_User_Id",
+                        column: x => x.Shopping_Cart_User_Id,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TrannerDetails",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Courses_Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    User_Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateChange = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ChangedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrannerDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TrannerDetails_Courses_Courses_Id",
+                        column: x => x.Courses_Id,
+                        principalTable: "Courses",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TrannerDetails_Users_User_Id",
+                        column: x => x.User_Id,
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -364,80 +395,6 @@ namespace EasyLearning.Infrastructure.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Order_TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Order_PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Order_Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Order_User = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DateChange = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ChangedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_User_Order_User",
-                        column: x => x.Order_User,
-                        principalTable: "User",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ShoppingCarts",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Shopping_Cart_TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Shopping_Cart_PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Shopping_Cart_User_Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DateChange = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ChangedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ShoppingCarts_User_Shopping_Cart_User_Id",
-                        column: x => x.Shopping_Cart_User_Id,
-                        principalTable: "User",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TrannerDetails",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Courses_Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    User_Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DateChange = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ChangedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrannerDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TrannerDetails_Courses_Courses_Id",
-                        column: x => x.Courses_Id,
-                        principalTable: "Courses",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_TrannerDetails_User_User_Id",
-                        column: x => x.User_Id,
-                        principalTable: "User",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -556,9 +513,7 @@ namespace EasyLearning.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_ShoppingCarts_Shopping_Cart_User_Id",
                 table: "ShoppingCarts",
-                column: "Shopping_Cart_User_Id",
-                unique: true,
-                filter: "[Shopping_Cart_User_Id] IS NOT NULL");
+                column: "Shopping_Cart_User_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TrannerDetails_Courses_Id",
@@ -576,14 +531,9 @@ namespace EasyLearning.Infrastructure.Migrations
                 column: "Tranning_Part_Courese_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TranningParts_TranningPartEventId",
+                name: "IX_TranningParts_Tranning_Part_Event_Id",
                 table: "TranningParts",
-                column: "TranningPartEventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_User_User_UserRole",
-                table: "User",
-                column: "User_UserRole");
+                column: "Tranning_Part_Event_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
@@ -671,12 +621,6 @@ namespace EasyLearning.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "User");
-
-            migrationBuilder.DropTable(
-                name: "UserRole");
         }
     }
 }
