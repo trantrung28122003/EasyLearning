@@ -18,6 +18,7 @@ namespace EasyLearning.Infrastructure
             services.AddScoped<TranningPartRepository, TranningPartRepository>();
             services.AddScoped<ShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<ShoppingCartItemRepository, ShoppingCartItemRepository>();
+            services.AddScoped<TrainerDetailRepository, TrainerDetailRepository>();
             services.AddDbContext<EasyLearningDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetSection("Database:ConectionString").Value);
