@@ -8,6 +8,7 @@ namespace EasyLearning.Application
     {
         public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton<IFileService, FileService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICourseDetailService, CourseDetailService>();

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
+using EasyLearning.WebApp.Areas.admin.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -12,14 +13,16 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         private readonly ICourseService _courseService;
         private readonly ICategoryService _categoryService;
         private readonly ICourseDetailService _courseDetailService;
+        private readonly IFileService _fileService;
         private readonly IMapper _mapper;
         public CourseController(ICourseService courseService, ICategoryService categoryService,
-        ICourseDetailService courseDetailService, IMapper mapper)
+        ICourseDetailService courseDetailService, IMapper mapper, IFileService fileService)
         {
             _courseService = courseService;
             _categoryService = categoryService;
             _courseDetailService = courseDetailService;
             _mapper = mapper;
+            _fileService = fileService;
         }
         public async Task<IActionResult> Index()
         {
@@ -37,12 +40,25 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Course course, List<string> selectedCategories)
+        public async Task<IActionResult> Create(CourseViewModel courseViewModel, List<string> selectedCategories)
         {
             if (ModelState.IsValid)
             {
+                Course course = new Course()
+                {
+                    CoursesName = courseViewModel.CoursesName,
+                    CoursesDescription = courseViewModel.CoursesDescription,
+                    CoursesPrice = courseViewModel.CoursesPrice,
+                    Requirements = courseViewModel.Requirements,
+                    CoureseContent = courseViewModel.CoureseContent,
+                    StartDate = courseViewModel.StartDate,
+                    StartEnd = courseViewModel.StartEnd,
+                    RegistrationDeadline = courseViewModel.RegistrationDeadline,
+                    MaxAttdendees = courseViewModel.MaxAttdendees,
+                };
+
+                course.ImageUrl = await _fileService.SaveFile(courseViewModel.Image);
                 course.DateCreate = DateTime.Now;
-                //var course = _mapper.Map<Course>(courseViewModel);
                 await _courseService.CreateCourse(course);
                 foreach (var categoryId in selectedCategories)
                 {
