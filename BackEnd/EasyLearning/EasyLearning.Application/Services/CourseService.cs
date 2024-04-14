@@ -1,6 +1,5 @@
 ﻿using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repostiory;
-using System.Linq.Expressions;
 
 namespace EasyLearning.Application.Services
 {

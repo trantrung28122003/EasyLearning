@@ -1,4 +1,5 @@
 ﻿using EasyLearning.Infrastructure.Data.Entities;
+using EasyLearning.Infrastructure.Data.Repostiory;
 using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,14 +12,18 @@ namespace EasyLearning.WebApp.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<ApplicationRole> roleManager;
+
+        private readonly UserRepository _userRepository;
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            RoleManager<ApplicationRole> roleManager)
+            RoleManager<ApplicationRole> roleManager, 
+            UserRepository userRepository)
         {
 
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
+            this._userRepository = userRepository;
         }
 
         [HttpGet, AllowAnonymous]
@@ -48,6 +53,7 @@ namespace EasyLearning.WebApp.Controllers
                     var result = await userManager.CreateAsync(user, request.Password);
                     if (result.Succeeded)
                     {
+                        // tạo shopping cart
                         return RedirectToAction("Login");
                     }
                     else
@@ -97,11 +103,12 @@ namespace EasyLearning.WebApp.Controllers
 
                 }
 
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
 
+
+                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
                 if (result.Succeeded)
                 {
-                    //await userManager.AddToRoleAsync(user, roleManager.GetRoleNameAsync);
+                    _userRepository.setUser(user.Id);
                     return RedirectToAction("");
                 }
                 else if (result.IsLockedOut)
@@ -122,6 +129,5 @@ namespace EasyLearning.WebApp.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("login", "account");
         }
-
     }
 }

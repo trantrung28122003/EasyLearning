@@ -11,7 +11,7 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
 {
     public class ShoppingCartRepository: GenericRepository<ShoppingCart>
     {
-        public ShoppingCartRepository(EasyLearningDbContext dbContext) : base(dbContext)
+        public ShoppingCartRepository(EasyLearningDbContext dbContext, UserRepository userRepository) : base(dbContext, userRepository)
         { }
         public async Task<ShoppingCart> GetShoppingCartByUserIdAsync(string userId)
         {

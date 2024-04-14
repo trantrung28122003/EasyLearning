@@ -10,7 +10,7 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
 {
     public class ShoppingCartItemRepository : GenericRepository<ShoppingCartItem>
     {
-        public ShoppingCartItemRepository(EasyLearningDbContext dbContext) : base(dbContext)
+        public ShoppingCartItemRepository(EasyLearningDbContext dbContext, UserRepository userRepository) : base(dbContext, userRepository)
         { }
     }
 }

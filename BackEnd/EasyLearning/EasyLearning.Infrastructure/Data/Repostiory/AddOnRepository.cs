@@ -11,7 +11,7 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
 {
     public class AddOnRepository : GenericRepository<AddOn>
     {
-        public AddOnRepository(EasyLearningDbContext dbContext) : base (dbContext) 
+        public AddOnRepository(EasyLearningDbContext dbContext, UserRepository userRepository) : base (dbContext, userRepository) 
         {  }
     }
 }

@@ -1,17 +1,12 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Abstraction;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasyLearning.Infrastructure.Data.Repostiory
 {
     public class CourseEventRepository : GenericRepository<CourseEvent>
-    {
-        public CourseEventRepository(EasyLearningDbContext dbContext) : base(dbContext)   
+    {   
+        public CourseEventRepository(EasyLearningDbContext dbContext, UserRepository userRepository) : base(dbContext, userRepository)   
         {
         }
         public async Task<List<CourseEvent>> GetEventByCourse(string courseId)
