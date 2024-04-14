@@ -7,6 +7,7 @@ namespace EasyLearning.Application.Services
     {
         Task<List<ShoppingCart>> GetAllShoppingCarts();
         Task<ShoppingCart> GetShoppingCartById(string id);
+        Task<ShoppingCart> GetShoppingCartByUserIdAsync(string userId);
         Task CreateShoppingCart(ShoppingCart shoppingCart);
         Task UpdateShoppingCart(ShoppingCart shoppingCart);
         Task DeleteShoppingCart(ShoppingCart shoppingCart);
@@ -20,6 +21,7 @@ namespace EasyLearning.Application.Services
             _shoppingCartRepository = shoppingCartRepository;
         }
         public async Task<List<ShoppingCart>> GetAllShoppingCarts() => await _shoppingCartRepository.GetAll();
+        public async Task<ShoppingCart> GetShoppingCartByUserIdAsync(string userId) => await _shoppingCartRepository.GetShoppingCartByUserIdAsync(userId);
         public async Task<ShoppingCart>GetShoppingCartById(string id) => await _shoppingCartRepository.GetById(id);
         public async Task CreateShoppingCart(ShoppingCart shoppingCart) => await _shoppingCartRepository.Create(shoppingCart);
         public async Task UpdateShoppingCart(ShoppingCart shoppingCart) => await _shoppingCartRepository.Update(shoppingCart);

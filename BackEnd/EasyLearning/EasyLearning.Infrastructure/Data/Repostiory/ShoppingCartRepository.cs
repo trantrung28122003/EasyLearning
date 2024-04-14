@@ -1,5 +1,6 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Abstraction;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,9 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
     {
         public ShoppingCartRepository(EasyLearningDbContext dbContext) : base(dbContext)
         { }
+        public async Task<ShoppingCart> GetShoppingCartByUserIdAsync(string userId)
+        {
+           return await _dbContext.ShoppingCarts.FirstOrDefaultAsync(cart => cart.UserId == userId);
+        }
     }
 }

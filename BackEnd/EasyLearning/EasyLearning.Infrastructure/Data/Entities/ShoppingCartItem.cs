@@ -9,8 +9,6 @@ namespace EasyLearing.Infrastructure.Data.Entities
     {
         [Column("Shopping_Cart_Item_Quantity")]
         public int Quantity { get; set; }
-
-
         [Column("Shopping_Cart_Id")]
         public string? ShoppingCartId { get; set; }
         [ForeignKey("ShoppingCartId")]
