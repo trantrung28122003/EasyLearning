@@ -12,6 +12,13 @@ services.AddControllersWithViews();
 services.AddInfrastructure(builder.Configuration);
 services.AddApplication(builder.Configuration);
 services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+services.AddDistributedMemoryCache();
+// Configure session options
+
+services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(1); // Set session timeout
+});
 
 services.ConfigureApplicationCookie(options =>
 {
@@ -34,6 +41,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 
+
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -44,4 +52,5 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseSession();
 app.Run();

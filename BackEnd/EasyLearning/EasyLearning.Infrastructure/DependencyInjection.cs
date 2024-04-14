@@ -10,6 +10,7 @@ namespace EasyLearning.Infrastructure
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<UserRepository, UserRepository>();
             services.AddScoped<CourseRepository, CourseRepository>();
             services.AddScoped<CategoryRepository, CategoryRepository>();
             services.AddScoped<CourseDetailRepository, CourseDetailRepository>();

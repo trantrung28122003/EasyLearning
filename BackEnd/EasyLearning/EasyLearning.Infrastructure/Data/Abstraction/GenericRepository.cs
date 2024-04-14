@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EasyLearning.Infrastructure.Data.Repostiory;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace EasyLearning.Infrastructure.Data.Abstraction
@@ -24,10 +26,12 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
     {
 
         public readonly EasyLearningDbContext _dbContext;
+        private readonly UserRepository _userRepository;
 
-        public GenericRepository(EasyLearningDbContext dbContext)
+        public GenericRepository(EasyLearningDbContext dbContext, UserRepository userRepository)
         {
             _dbContext = dbContext;
+            _userRepository = userRepository;
         }
 
         public async Task<List<TEntity>> GetAll() => await _dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
@@ -39,7 +43,7 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
         public async Task Create(TEntity entity)
         {
             entity.DateCreate = DateTime.Now;
-           
+            entity.ChangedBy = _userRepository.getCurrrentUser();
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
                 try
@@ -59,6 +63,7 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
         public async Task Update(TEntity entity)
         {
             entity.DateChange = DateTime.Now;
+            entity.ChangedBy = _userRepository.getCurrrentUser();
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
                 try
@@ -101,6 +106,7 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
                     {
                         item.IsDeleted = true;
                         item.DateChange = DateTime.Now;
+                        item.ChangedBy = _userRepository.getCurrrentUser();
                         _dbContext.Set<TEntity>().Update(item);
                     }   
                     await _dbContext.SaveChangesAsync();
