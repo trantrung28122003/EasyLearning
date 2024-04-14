@@ -8,78 +8,76 @@
 
 <h4>Course</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CoursesName" class="control-label"></label>
-                <input asp-for="CoursesName" class="form-control" />
-                <span asp-validation-for="CoursesName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CoursesDescription" class="control-label"></label>
-                <input asp-for="CoursesDescription" class="form-control" />
-                <span asp-validation-for="CoursesDescription" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CoursesPrice" class="control-label"></label>
-                <input asp-for="CoursesPrice" class="form-control" />
-                <span asp-validation-for="CoursesPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Requirements" class="control-label"></label>
-                <input asp-for="Requirements" class="form-control" />
-                <span asp-validation-for="Requirements" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CoureseContent" class="control-label"></label>
-                <input asp-for="CoureseContent" class="form-control" />
-                <span asp-validation-for="CoureseContent" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" type="file" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartEnd" class="control-label"></label>
-                <input asp-for="StartEnd" class="form-control" />
-                <span asp-validation-for="StartEnd" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RegistrationDeadline" class="control-label"></label>
-                <input asp-for="RegistrationDeadline" class="form-control" />
-                <span asp-validation-for="RegistrationDeadline" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MaxAttdendees" class="control-label"></label>
-                <input asp-for="MaxAttdendees" class="form-control" />
-                <span asp-validation-for="MaxAttdendees" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label>Categories:</label>
-                @foreach (var category in ViewBag.Categories)
-                {
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="selectedCategories" value="@category.Value" />
-                            @category.Text
-                        </label>
-                    </div>
-                }
-            </div>
-     
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div class="container">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label class="control-label">Tên khóa học</label>
+            <input asp-for="CoursesName" class="form-control" />
+            <span asp-validation-for="CoursesName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label"> Mô tả chi tiết</label>
+            <input asp-for="CoursesDescription" class="form-control" />
+            <span asp-validation-for="CoursesDescription" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Giá</label>
+            <input asp-for="CoursesPrice" class="form-control" />
+            <span asp-validation-for="CoursesPrice" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Yêu cầu</label>
+            <input asp-for="Requirements" class="form-control" />
+            <span asp-validation-for="Requirements" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Nội dung</label>
+            <input asp-for="CoureseContent" class="form-control" />
+            <span asp-validation-for="CoureseContent" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Image" class="control-label"></label>
+            <input asp-for="Image" class="form-control" type="file" />
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="StartDate" class="control-label"></label>
+            <input asp-for="StartDate" class="form-control" />
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="StartEnd" class="control-label"></label>
+            <input asp-for="StartEnd" class="form-control" />
+            <span asp-validation-for="StartEnd" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="RegistrationDeadline" class="control-label"></label>
+            <input asp-for="RegistrationDeadline" class="form-control" />
+            <span asp-validation-for="RegistrationDeadline" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MaxAttdendees" class="control-label"></label>
+            <input asp-for="MaxAttdendees" class="form-control" />
+            <span asp-validation-for="MaxAttdendees" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>Categories:</label>
+            @foreach (var category in ViewBag.Categories)
+            {
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="selectedCategories" value="@category.Value" />
+                        @category.Text
+                    </label>
+                </div>
+            }
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
 </div>
 
 <div>

@@ -127,7 +127,7 @@ namespace EasyLearning.WebApp.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("login", "account");
+            return RedirectToAction("index","Home");
         }
     }
 }

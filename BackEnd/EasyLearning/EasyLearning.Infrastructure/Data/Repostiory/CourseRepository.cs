@@ -10,6 +10,10 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
         public CourseRepository(EasyLearningDbContext dbContext, UserRepository userRepository) : base(dbContext, userRepository)
         {
         }
+        public async Task<Course> GetCourseDetailsById(string id)
+        {
+            return await _dbContext.Courses.FirstOrDefaultAsync(x => x.Id == id);
+        }
 
         public async Task<List<Course>> GetcourseByUser()
         {
