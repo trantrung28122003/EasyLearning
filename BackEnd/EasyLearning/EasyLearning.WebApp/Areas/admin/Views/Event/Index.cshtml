@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-controller="Event" asp-route-CourseId="@ViewBag.CourseId">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -79,9 +79,9 @@
                 @Html.DisplayFor(modelItem => item.IsDeleted)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                 @Html.ActionLink("Edit", "Update", new { id=item.Id, courseId = @ViewBag.CourseId}, null) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new {  id=item.Id }) 
             </td>
         </tr>
 }

@@ -18,9 +18,10 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
         {
             return await _dbContext.TranningParts.AsNoTracking()
                                             .Include(tp => tp.CourseEvent)
-                                            .Where(tp => tp.CoursesId == courseId)
+                                            .Where(tp => tp.CoursesId == courseId && tp.CourseEvent != null)
                                             .Select(tp => tp.CourseEvent)
                                             .ToListAsync();
         }
+        
     }
 }

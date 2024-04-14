@@ -17,10 +17,10 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
         public TranningPartRepository(EasyLearningDbContext dbContext) : base(dbContext)
         {
         }
-        public async Task<List<TranningPart>> GetTranningPartWithoutEventId()
+        public async Task<List<TranningPart>> GetTranningPartWithoutEventId(string id)
         {
             return await _dbContext.TranningParts
-                                    .Where(tp => tp.EventId == null)
+                                    .Where(s => s.EventId == null && s.CoursesId == id)
                                     .ToListAsync();
         }
 
@@ -32,6 +32,19 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
                 tranningPart.EventId = eventId;
                 await _dbContext.SaveChangesAsync();
             }
+        }
+
+        public async Task UpdateCourseEventIdToNull(string eventId)
+        {
+            var tranningDetails = await _dbContext.TranningParts
+                .Where(s => s.EventId == eventId)
+                .ToListAsync();
+
+            foreach (var tranningDetail in tranningDetails)
+            {
+                tranningDetail.EventId = null;
+            }
+            await _dbContext.SaveChangesAsync();
         }
 
 

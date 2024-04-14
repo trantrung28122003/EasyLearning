@@ -46,7 +46,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             return View(tranningPart);
         }
 
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Update(string id)
         {
             var tranningPart = await _tranningPartService.GetTranningPartById(id);
             if (tranningPart == null)
@@ -56,9 +56,10 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
 
             return View(tranningPart);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(TranningPart tranningPart, string id)
+        public async Task<IActionResult> Update(TranningPart tranningPart, string id)
         {
             if (id != tranningPart.Id)
             {

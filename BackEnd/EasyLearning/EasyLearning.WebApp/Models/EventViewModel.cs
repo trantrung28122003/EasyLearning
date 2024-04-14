@@ -17,6 +17,7 @@ namespace EasyLearning.WebApp.Models
             public string? ChangedBy { get; set; }
             public bool IsDeleted { get; set; }
             public string TranningPartId { get; set; }
+            public string CourseId { get; set; }
     }
 }
 
