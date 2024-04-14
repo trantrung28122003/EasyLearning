@@ -18,11 +18,11 @@ namespace EasyLearning.WebApp.Controllers
         public async Task<ActionResult> GetShoppingCart()
         {
             var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync("User1");
-            var shoppingCartItem = await _shoppingCartItemService
-            if (shoppingCart == null)
-            {
-                return NotFound("Shopping cart not found.");
-            }
+            //var shoppingCartItem = await _shoppingCartItemService
+            //if (shoppingCart == null)
+            //{
+            //    return NotFound("Shopping cart not found.");
+            //}
             return Ok(shoppingCart);
         }
         public IActionResult Index()
