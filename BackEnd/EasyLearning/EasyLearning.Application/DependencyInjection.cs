@@ -16,6 +16,7 @@ namespace EasyLearning.Application
             services.AddScoped<ITranningPartService, TranningPartService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IShoppingCartItemService, ShoppingCartItemService>();
+            services.AddScoped<ITrannerDetailService, TrainerDetailService>();
         }
     }
 }

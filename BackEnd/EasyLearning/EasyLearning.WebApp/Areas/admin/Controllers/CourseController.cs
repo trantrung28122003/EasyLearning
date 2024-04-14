@@ -19,10 +19,11 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         private readonly ITrannerDetailService _trannerDetailService;
         private readonly IFileService _fileService;
         private readonly IMapper _mapper;
+        private readonly UserRepository _userRepository;
      
         public CourseController(ICourseService courseService, ICategoryService categoryService,
         ICourseDetailService courseDetailService, IMapper mapper, IFileService fileService,
-        SignInManager<ApplicationUser> signInManager, ITrannerDetailService trannerDetailService)
+        UserRepository userRepository, ITrannerDetailService trannerDetailService)
         {
             _courseService = courseService;
             _categoryService = categoryService;
@@ -30,7 +31,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             _trannerDetailService = trannerDetailService;
             _mapper = mapper;
             _fileService = fileService;
-          
+            _userRepository = userRepository;
         }
         public async Task<IActionResult> Index()
         {
@@ -79,8 +80,10 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
 
                 var trannerDetail = new TrainnerDetail()
                 {
-
+                    CoursesId = course.Id,
+                    UserId = _userRepository.getCurrrentUser(),
                 };
+                await _trannerDetailService.CreateTrannerDetail(trannerDetail);
                 return RedirectToAction("Index");
             }
             var categories = await _categoryService.GetAllCategories();

@@ -22,7 +22,7 @@ namespace EasyLearning.WebApp.Controllers
         }
         public async Task<IActionResult> ListCoursesWithSchedule()
         {
-            //var courses = await _courseService.GetAllCourses();
+            var courses = await _courseService.GetCourseByUserId();
 
             //var customerCourseViewModel = new List<CustomerCourseViewModel>();
 
@@ -33,8 +33,8 @@ namespace EasyLearning.WebApp.Controllers
                    
             //    };
 
-            //    courseViewModels.Add(courseViewModel);
-            //}
+                courseViewModels.Add(courseViewModel);
+            }*/
 
             return View();
         }
