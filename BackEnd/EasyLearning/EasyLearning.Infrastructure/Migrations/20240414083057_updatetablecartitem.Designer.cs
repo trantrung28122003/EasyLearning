@@ -4,6 +4,7 @@ using EasyLearning.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyLearning.Infrastructure.Migrations
 {
     [DbContext(typeof(EasyLearningDbContext))]
-    partial class EasyLearningDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240414083057_updatetablecartitem")]
+    partial class updatetablecartitem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,8 +264,8 @@ namespace EasyLearning.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CartItemName")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<decimal?>("CartItemName")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("Shopping_Cart_Item_Name");
 
                     b.Property<decimal?>("CartItemPrice")
@@ -283,8 +285,8 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Property<DateTime?>("DateCreate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<int?>("ImageUrl")
+                        .HasColumnType("int")
                         .HasColumnName("Shopping_Cart_Item_ImageUrl");
 
                     b.Property<bool>("IsDeleted")

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,29 +7,46 @@ namespace EasyLearning.WebApp.Controllers
 {
     public class ShoppingCartController : Controller
     {
+        private readonly ICourseService _courseService;
         private readonly IShoppingCartService _shoppingCartService;
         private readonly IShoppingCartItemService _shoppingCartItemService;
-        public ShoppingCartController(IShoppingCartService shoppingCartService, IShoppingCartItemService shoppingCartItemService)
+
+        public ShoppingCartController(ICourseService courseService, IShoppingCartService shoppingCartService, IShoppingCartItemService shoppingCartItemService)
         {
             _shoppingCartService = shoppingCartService;
             _shoppingCartItemService = shoppingCartItemService;
-  
+            _courseService = courseService;
         }
 
         public async Task<ActionResult> GetShoppingCart()
         {
-            var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync("User1");
-            var shoppingCartItem = await _shoppingCartItemService
-            if (shoppingCart == null)
+            var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
+            var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart("7367c551 - 5ba0 - 4a28 - 9268 - 218caeae9759");
+            if (shoppingCartItem == null)
             {
                 return NotFound("Shopping cart not found.");
             }
-            return Ok(shoppingCart);
+            return View(shoppingCartItem);
         }
-        public IActionResult Index()
+   
+        public async Task<ActionResult> AddToCart(string courseId)
+        {
+            var getCourse = await _courseService.GetCourseById(courseId);
+            var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
+            var shoppingCartItem = new ShoppingCartItem()
+            {
+                CartItemName = getCourse.CoursesName,
+                CartItemPrice = getCourse.CoursesPrice,
+                ImageUrl = "aaa",
+                CoursesId = getCourse.Id,
+                ShoppingCartId = "7367c551 - 5ba0 - 4a28 - 9268 - 218caeae9759",
+            };
+            await _shoppingCartItemService.CreateShoppingCartItem(shoppingCartItem);
+            return RedirectToAction("GetShoppingCart");
+        }
+    public IActionResult Index()
         {
             return View();
         }
-
     }
 }

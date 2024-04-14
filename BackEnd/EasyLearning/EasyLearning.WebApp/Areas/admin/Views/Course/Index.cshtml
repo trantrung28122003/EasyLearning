@@ -115,6 +115,7 @@
                 @Html.ActionLink("Delete", "Delete", new { id=item.Id })|
                 @Html.ActionLink("index TranningPart", "Index", "TranningPart", new { courseId = item.Id }, null)
                 @Html.ActionLink("AddEvent", "Index", "Event", new { courseId = item.Id }, null)
+                <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-courseId="@item.Id">aaa</a>
             </td>
         </tr>
 }

@@ -26,7 +26,7 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
     {
 
         public readonly EasyLearningDbContext _dbContext;
-        private readonly UserRepository _userRepository;
+        public readonly UserRepository _userRepository;
 
         public GenericRepository(EasyLearningDbContext dbContext, UserRepository userRepository)
         {

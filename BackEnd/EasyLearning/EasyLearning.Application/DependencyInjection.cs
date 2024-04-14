@@ -13,6 +13,8 @@ namespace EasyLearning.Application
             services.AddScoped<ICourseDetailService, CourseDetailService>();
             services.AddScoped<ICourseEventService, CourseEventService>();
             services.AddScoped<ITranningPartService, TranningPartService>();
+            services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddScoped<IShoppingCartItemService, ShoppingCartItemService>();
         }
     }
 }

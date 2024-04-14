@@ -109,7 +109,7 @@ namespace EasyLearning.WebApp.Controllers
                 if (result.Succeeded)
                 {
                     _userRepository.setUser(user.Id);
-                    return RedirectToAction("");
+                    return RedirectToAction("Index" , "Home");
                 }
                 else if (result.IsLockedOut)
                 {
