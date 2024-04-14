@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<EasyLearning.Infrastructure.Data.Entities.Course>
 
 @{
-    Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -63,60 +62,67 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CoursesName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CoursesDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CoursesPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Requirements)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CoureseContent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegistrationDeadline)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxAttdendees)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                
-            <td>
-                @Html.DisplayFor(modelItem => item.DateChange)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChangedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Update", new { id=item.Id }) |
-                @Html.ActionLink("Details", "Detail", new { id=item.Id}) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })|
-                @Html.ActionLink("index TranningPart", "Index", "TranningPart", new { courseId = item.Id }, null)
-                @Html.ActionLink("AddEvent", "Index", "Event", new { courseId = item.Id }, null)
-            </td>
-        </tr>
-}
+        @if (Model is null)
+        {
+            <div>Loading</div>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CoursesName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CoursesDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CoursesPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Requirements)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CoureseContent)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImageUrl)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartEnd)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RegistrationDeadline)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaxAttdendees)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+
+                    <td>
+                            @Html.DisplayFor(modelItem => item.DateChange)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.ChangedBy)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.IsDeleted)
+                    </td>
+                    <td>
+                            @Html.ActionLink("Edit", "Update", new { id = item.Id }) |
+                            @Html.ActionLink("Details", "Detail", new { id = item.Id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })|
+                            @Html.ActionLink("index TranningPart", "Index", "TranningPart", new { courseId = item.Id }, null)
+                            @Html.ActionLink("AddEvent", "Index", "Event", new { courseId = item.Id }, null)
+                    </td>
+                </tr>
+        }}
     </tbody>
 </table>

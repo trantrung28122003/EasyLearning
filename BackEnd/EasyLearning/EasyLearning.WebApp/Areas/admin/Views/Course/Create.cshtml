@@ -1,6 +1,4 @@
-﻿@model EasyLearning.Infrastructure.Data.Entities.Course 
-
-@* @model EasyLearning.WebApp.Models.CourseCreateViewModel *@
+﻿@model EasyLearning.WebApp.Areas.admin.Models.CourseViewModel
 @{
     ViewData["Title"] = "Create";
 }
@@ -39,9 +37,9 @@
                 <span asp-validation-for="CoureseContent" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" type="file" />
+                <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
