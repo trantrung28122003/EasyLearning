@@ -15,15 +15,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
+        with:
+            path: Backend
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
           include-prerelease: true
-      - name: go to right directory
-        working-directory: ./EasyLearning
-        run: cd BackEnd/EasyLearning
           
       - name: Build with dotnet
         run: dotnet build --configuration Release
