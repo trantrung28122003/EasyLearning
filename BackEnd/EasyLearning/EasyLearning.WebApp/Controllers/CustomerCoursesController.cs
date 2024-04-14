@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EasyLearning.Application.Services;
+using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.WebApp.Areas.admin.Models;
 using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -20,24 +21,19 @@ namespace EasyLearning.WebApp.Controllers
             _courseDetailService = courseDetailService;
             _fileService = fileService;
         }
-        public async Task<IActionResult> ListCoursesWithSchedule()
+        public async Task<IActionResult> ListCoursesOfUser()
         {
-            var courses = await _courseService.GetCourseByUserId();
-
-            var customerCourseViewModel = new List<CustomerCourseViewModel>();
-
+            var courses = await _courseService.GetcourseByUser();
+            var listCustomerCourseViewModel = new List<CustomerCourseViewModel>();
             foreach (var course in courses)
             {
-                var courseViewModel = new CourseViewModel
+                var customerCourseViewModel = new CustomerCourseViewModel
                 {
-                   
+                   Course = course,
                 };
-
-                courseViewModels.Add(courseViewModel);
-            }*/
-
-            return View();
+                listCustomerCourseViewModel.Add(customerCourseViewModel);
+            }
+            return View(courses);
         }
-
     }
 }

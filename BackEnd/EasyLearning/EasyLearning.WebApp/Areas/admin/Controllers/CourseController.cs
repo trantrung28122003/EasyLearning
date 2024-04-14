@@ -79,7 +79,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     await _courseDetailService.CreateCourseDetail(courDetail);
                 }
 
-                var trannerDetail = new TrainnerDetail()
+                var trannerDetail = new TrainerDetail()
                 {
                     CoursesId = course.Id,
                     UserId = _userRepository.getCurrrentUser(),

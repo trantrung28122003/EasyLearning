@@ -1,4 +1,5 @@
-﻿using EasyLearning.Infrastructure.Data.Entities;
+﻿using EasyLearing.Infrastructure.Data.Entities;
+using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repostiory;
 
 namespace EasyLearning.Application.Services
@@ -7,6 +8,7 @@ namespace EasyLearning.Application.Services
     {
         Task<List<Course>> GetAllCourses();
         Task<Course> GetCourseById(string id);
+        Task<List<Course>> GetcourseByUser();
         Task CreateCourse(Course courses);
         Task UpdateCourse(Course course);
         Task DeleteCourse(Course course);
@@ -22,6 +24,7 @@ namespace EasyLearning.Application.Services
         }
         public async Task<List<Course>> GetAllCourses() => await _courseRepository.GetAll();
         public async Task<Course> GetCourseById(string id) => await _courseRepository.GetById(id);
+        public async Task<List<Course>> GetcourseByUser() => await _courseRepository.GetcourseByUser();
         public async Task CreateCourse(Course courses) => await _courseRepository.Create(courses);
         public async Task UpdateCourse(Course course) => await _courseRepository.Update(course);
         public async Task DeleteCourse(Course course) => await _courseRepository.Delete(course);

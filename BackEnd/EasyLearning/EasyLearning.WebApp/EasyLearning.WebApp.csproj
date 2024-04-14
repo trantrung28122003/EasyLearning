@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\admin\Data\" />
+    <Folder Include="Views\CustomerCourses\" />
   </ItemGroup>
 
 </Project>
