@@ -22,7 +22,8 @@ jobs:
           dotnet-version: '6.0.x'
           include-prerelease: true
       - name: go to right directory
-        run: cd backend/easylearning
+        working-directory: ./EasyLearning
+        run: cd BackEnd/EasyLearning
           
       - name: Build with dotnet
         run: dotnet build --configuration Release
