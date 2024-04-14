@@ -8,5 +8,6 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
         public CourseRepository(EasyLearningDbContext dbContext, UserRepository userRepository) : base(dbContext, userRepository)
         {
         }
+
     }
 }

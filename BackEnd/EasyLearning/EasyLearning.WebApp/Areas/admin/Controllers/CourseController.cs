@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
+using EasyLearning.Infrastructure.Data.Repostiory;
 using EasyLearning.WebApp.Areas.admin.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -13,16 +16,21 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         private readonly ICourseService _courseService;
         private readonly ICategoryService _categoryService;
         private readonly ICourseDetailService _courseDetailService;
+        private readonly ITrannerDetailService _trannerDetailService;
         private readonly IFileService _fileService;
         private readonly IMapper _mapper;
+     
         public CourseController(ICourseService courseService, ICategoryService categoryService,
-        ICourseDetailService courseDetailService, IMapper mapper, IFileService fileService)
+        ICourseDetailService courseDetailService, IMapper mapper, IFileService fileService,
+        SignInManager<ApplicationUser> signInManager, ITrannerDetailService trannerDetailService)
         {
             _courseService = courseService;
             _categoryService = categoryService;
             _courseDetailService = courseDetailService;
+            _trannerDetailService = trannerDetailService;
             _mapper = mapper;
             _fileService = fileService;
+          
         }
         public async Task<IActionResult> Index()
         {
@@ -68,8 +76,12 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                         CourseId = course.Id,
                     };
                     await _courseDetailService.CreateCourseDetail(courDetail);
-
                 }
+
+                var trannerDetail = new TrainnerDetail()
+                {
+
+                };
                 return RedirectToAction("Index");
             }
             var categories = await _categoryService.GetAllCategories();

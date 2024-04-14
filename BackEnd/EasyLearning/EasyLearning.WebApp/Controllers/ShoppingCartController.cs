@@ -39,14 +39,10 @@ namespace EasyLearning.WebApp.Controllers
                 CartItemPrice = getCourse.CoursesPrice,
                 ImageUrl = "aaa",
                 CoursesId = getCourse.Id,
-                ShoppingCartId = "7367c551 - 5ba0 - 4a28 - 9268 - 218caeae9759",
+                ShoppingCartId = shoppingCart.Id,
             };
             await _shoppingCartItemService.CreateShoppingCartItem(shoppingCartItem);
             return RedirectToAction("GetShoppingCart");
-        }
-    public IActionResult Index()
-        {
-            return View();
         }
     }
 }
