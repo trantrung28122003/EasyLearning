@@ -11,7 +11,7 @@ namespace EasyLearning.Infrastructure.Data.Entities
         public string? LinkDownload {  get; set; }
         [Column("price")]
         public decimal? Price { get; set; }
-        public Guid CoursesId { get; set; }
+        public string? CoursesId { get; set; }
         [ForeignKey("CoureseId")]
         public Course? Course { get; set; }
 
