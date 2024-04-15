@@ -149,7 +149,7 @@ namespace EasyLearning.WebApp.Controllers
             var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
             string[] userInfo = { info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value };
             if (result.Succeeded)
-                return View(userInfo);
+                return RedirectToAction("Index", "Home");
             else
             {
                 ApplicationUser user = new ApplicationUser
@@ -165,10 +165,10 @@ namespace EasyLearning.WebApp.Controllers
                     if (identResult.Succeeded)
                     {
                         await signInManager.SignInAsync(user, false);
-                        return View(userInfo);
+                        RedirectToAction("Index", "Home");
                     }
                 }
-                return AccessDenied();
+                return RedirectToAction("AccessDenied");
             }
         }
 
