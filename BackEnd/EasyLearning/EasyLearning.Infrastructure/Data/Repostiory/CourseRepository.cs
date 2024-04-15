@@ -17,10 +17,11 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
 
         public async Task<List<Course>> GetcourseByUser()
         {
-            return await _dbContext.TrannerDetails.AsNoTracking()
+            var user = _userRepository.getCurrrentUser();
+            return await _dbContext.TrannerDetails
                                             .Include(s =>s.Courses)
-                                            .Where(s => s.UserId == _userRepository.getCurrrentUser())
-                                            .Select(s=>s.Courses)
+                                            .Where(s => s.UserId == user)
+                                            .Select(s => s.Courses)
                                             .ToListAsync();
         }
     }

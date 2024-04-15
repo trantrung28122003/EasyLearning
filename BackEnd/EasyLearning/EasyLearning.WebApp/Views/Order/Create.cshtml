@@ -1,0 +1,77 @@
+﻿@model EasyLearning.WebApp.Models.OrderViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>OrderViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OrderPaymentMethod" class="control-label"></label>
+                <input asp-for="OrderPaymentMethod" class="form-control" />
+                <span asp-validation-for="OrderPaymentMethod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderNotes" class="control-label"></label>
+                <input asp-for="OrderNotes" class="form-control" />
+                <span asp-validation-for="OrderNotes" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="OrderTotalPrice" class="control-label"></label>
+                <input asp-for="OrderTotalPrice" class="form-control" />
+                <span asp-validation-for="OrderTotalPrice" class="text-danger"></span>
+            </div>
+            <h2>Total Price: @Model.OrderTotalPrice</h2>
+            
+            <div class="form-group" hidden>
+                <label asp-for="UserId" class="control-label"></label>
+                <input asp-for="UserId" class="form-control" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+          
+            <h3>Shopping Cart Items:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Price</th>
+               
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.ShoppingCartItems.Count; i++)
+                    {
+                        <input type="hidden" name="ShoppingCartItems[@i].Id" value="@Model.ShoppingCartItems[i].Id" />
+                   
+                    }
+                    @foreach (var item in Model.ShoppingCartItems)
+                    {
+                        
+                        <tr>
+                            <td>@item.CartItemName</td>
+                            <td>@item.CartItemPrice</td>
+                         
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -29,6 +29,8 @@ namespace EasyLearning.WebApp.Controllers
             return View(shoppingCartItem);
         }
    
+
+        
         public async Task<ActionResult> AddToCart(string courseId)
         {
             var getCourse = await _courseService.GetCourseById(courseId);
@@ -44,5 +46,7 @@ namespace EasyLearning.WebApp.Controllers
             await _shoppingCartItemService.CreateShoppingCartItem(shoppingCartItem);
             return RedirectToAction("GetShoppingCart");
         }
+        
+
     }
 }

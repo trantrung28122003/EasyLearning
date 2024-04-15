@@ -17,6 +17,8 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
                                             .Select(tp => tp.CourseEvent)
                                             .ToListAsync();
         }
+
+
         
     }
 }
