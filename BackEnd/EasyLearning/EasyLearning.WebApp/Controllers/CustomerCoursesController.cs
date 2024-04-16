@@ -86,7 +86,7 @@ namespace EasyLearning.WebApp.Controllers
                 IsDeleted = false,
             };
             await _feedbackService.CreateFeedback(feeedBack);
-            return RedirectToAction("ListCourse");
+            return RedirectToAction("DetailCourse", "CustomerCourses", new { courseId = courseId });
 
         }
 

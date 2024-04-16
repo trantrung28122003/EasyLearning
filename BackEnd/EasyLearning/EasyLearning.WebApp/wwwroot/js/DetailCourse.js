@@ -35,3 +35,21 @@ document.getElementById("submitReviewBtn").addEventListener("click", function (e
     // Sau khi thiết lập các giá trị, tiến hành submit form
     document.getElementById("submitReviewBtn").closest("form").submit();
 });
+
+document.getElementById("convertButton").addEventListener("click", function () {
+    // Lấy giá trị điểm số từ ô nhập liệu
+    var rating = parseFloat(document.getElementById("ratingInput").value);
+
+    // Chuyển đổi điểm số thành số lượng sao
+    var stars = '';
+    for (var i = 1; i <= 5; i++) {
+        if (i <= rating / 2) {
+            stars += '<i class="fas fa-star fa-2x text-primary"></i>';
+        } else {
+            stars += '<i class="fas fa-star fa-2x text-muted"></i>';
+        }
+    }
+
+    // Hiển thị số lượng sao tương ứng
+    document.getElementById("starRating").innerHTML = stars;
+});
