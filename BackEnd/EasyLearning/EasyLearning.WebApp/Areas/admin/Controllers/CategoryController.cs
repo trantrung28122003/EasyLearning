@@ -1,10 +1,12 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
     [Area("admin")]
+    [Authorize(Roles = "Admin")]
     public class CategoryController : Controller
     {
         private readonly ICourseService _courseService;

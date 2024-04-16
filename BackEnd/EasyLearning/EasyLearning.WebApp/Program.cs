@@ -56,11 +56,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseRouting();
 app.MapControllerRoute(
     name: "admin",
     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");

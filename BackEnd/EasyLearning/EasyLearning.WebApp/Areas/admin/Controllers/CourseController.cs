@@ -4,13 +4,14 @@ using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repostiory;
 using EasyLearning.WebApp.Areas.admin.Models;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
     [Area("admin")]
+    [Authorize(Roles = "Admin")]
     public class CourseController : Controller
     {
         private readonly ICourseService _courseService;
