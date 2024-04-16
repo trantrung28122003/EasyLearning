@@ -1,4 +1,4 @@
-﻿@model EasyLearning.WebApp.Models.UserRegistrationViewModel
+@model EasyLearning.WebApp.Models.UserRegistrationViewModel
 @{
     ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/AuthenticationViewShared.cshtml";
@@ -10,22 +10,22 @@
         <div class="logindiv">
             <form id="formAuthentication" class="mb-3" action="index.html">
                 <div class="form-floating form-floating-outline mb-3">
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" asp-for="Name" />
-                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Nhập Họ Và Tên" asp-for="Name" />
+                    <label for="name">Họ Và Tên</label>
                     @Html.ValidationMessageFor(m => m.Name)
                     <span asp-validation-for="@Model.Name" class="text-danger"></span>
                 </div>
 
                 <div class="form-floating form-floating-outline mb-3">
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" asp-for="Email" />
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Nhập Email" asp-for="Email" />
                     <label for="email">Email</label>
                     @Html.ValidationMessageFor(m => m.Email)
                     <span asp-validation-for="@Model.Email" class="text-danger"></span>
                 </div>
 
                 <div class="form-floating form-floating-outline mb-3">
-                    <input type="text" class="form-control" id="phonenumber" name="phonenumber" placeholder="Enter your phone number" asp-for="PhoneNumber" />
-                    <label for="phonenumber">PhoneNumber</label>
+                    <input type="text" class="form-control" id="phonenumber" name="phonenumber" placeholder="Nhập Số Điện Thoại" asp-for="PhoneNumber" />
+                    <label for="phonenumber">Số Điện Thoại</label>
                     @Html.ValidationMessageFor(m => m.PhoneNumber)
                     <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
                 </div>
@@ -38,7 +38,7 @@
                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                            aria-describedby="password"
                            asp-for="Password" />
-                    <label for="password">Password</label>
+                    <label for="password">Mật Khẩu</label>
                     @Html.ValidationMessageFor(m => m.Password)
                     <span asp-validation-for="@Model.Password" class="text-danger"></span>
                 </div>
@@ -51,7 +51,7 @@
                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                            aria-describedby="confirmpassword"
                            asp-for="ConfirmPassword" />
-                    <label for="confirmpassword">Confirm Password</label>
+                    <label for="confirmpassword">Xác Nhận Mật Khẩu</label>
                     @Html.ValidationMessageFor(m => m.ConfirmPassword)
                     <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
                 </div>
@@ -60,17 +60,17 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms" />
                         <label class="form-check-label" for="terms-conditions">
-                            I agree to
-                            <a href="javascript:void(0);">privacy policy & terms</a>
+                            tôi đồng ý với
+                            <a href="javascript:void(0);">Chính sách bảo mật & Các điều khoản</a>
                         </label>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary d-grid w-100">Login</button>
+                <button type="submit" class="btn btn-primary d-grid w-100">Đăng Ký</button>
                 <p class="text-center">
-                    <span>Already have an account?</span>
+                    <span>Đã Có Tài Khoản ?</span>
                     <a asp-action="login" asp-controller="account">
-                        <span>Sign in instead</span>
+                        <span>Đăng Nhập</span>
                     </a>
                 </p>
             </form>

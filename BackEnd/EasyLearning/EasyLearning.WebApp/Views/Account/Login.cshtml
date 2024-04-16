@@ -1,4 +1,4 @@
-﻿@model EasyLearning.WebApp.Models.UserLoginViewModel
+@model EasyLearning.WebApp.Models.UserLoginViewModel
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/AuthenticationViewShared.cshtml";
@@ -10,7 +10,7 @@
         <div class="logindiv">
             <form id="formAuthentication" class="mb-3" action="index.html">
                 <div class="form-floating form-floating-outline mb-3">
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" asp-for="Email" />
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Nhập Email" asp-for="Email" />
                     <label for="email">Email</label>
                     @Html.ValidationMessageFor(m => m.Email)
                     <span asp-validation-for="@Model.Email" class="text-danger"></span>
@@ -23,24 +23,26 @@
                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                            aria-describedby="password"
                            asp-for="Password" />
-                    <label for="password">Password</label>
+                    <label for="password">Mật Khẩu</label>
                     @Html.ValidationMessageFor(m => m.Password)
                     <span asp-validation-for="@Model.Password" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms" />
-                        <label class="form-check-label" for="terms-conditions">Remember me</label>
+                        <label class="form-check-label" for="terms-conditions">Lưu Đăng Nhập</label>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary d-grid w-100">Login</button>
+                <button type="submit" class="btn btn-primary d-grid w-100">Đăng Nhập</button>
                 <p class="text-center">
-                    <span>Already have an account?</span>
+                    <span>Chưa có tài khoản ?</span>
                     <a asp-action="register" asp-controller="account">
-                        <span>Sign in instead</span>
+                        <span> Đăng ký <span>
                     </a>
                 </p>
             </form>
         </div>
     </form>
+
+    <a class="btn btn-info" asp-action="GoogleLogin" asp-controller="Account">Log In With Google</a>
 </div>  
