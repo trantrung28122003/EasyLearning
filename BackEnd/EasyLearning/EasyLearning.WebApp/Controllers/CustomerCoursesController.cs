@@ -13,43 +13,52 @@ namespace EasyLearning.WebApp.Controllers
         private readonly ICourseService _courseService;
         private readonly ICategoryService _categoryService;
         private readonly ICourseDetailService _courseDetailService;
-        private readonly ITranningPartService _tranningPartService;
         private readonly ICourseEventService _courseEventService;
+        private readonly ITranningPartService _tranningPartService;
+        private readonly IOrderService _orderService;
+        private readonly IOrderDetailService _orderDetailService;
         private readonly IFileService _fileService;
         public CustomerCoursesController(ICourseService courseService, ICategoryService categoryService,
-        ICourseDetailService courseDetailService, ITranningPartService tranningPartService,
-        ICourseEventService courseEventService,
+        ICourseDetailService courseDetailService, IOrderService orderService, IOrderDetailService orderDetailService,
+        ICourseEventService courseEventService, ITranningPartService tranningPartService,
         IMapper mapper, IFileService fileService)
         {
             _courseService = courseService;
             _categoryService = categoryService;
             _courseDetailService = courseDetailService;
-            _tranningPartService = tranningPartService;
             _courseEventService = courseEventService;
+            _tranningPartService = tranningPartService;
+            _orderService = orderService;
+            _orderDetailService = orderDetailService;
             _fileService = fileService;
         }
         public async Task<IActionResult> index()
         {
-            /*var courses = await _courseService.GetcourseByUser();
-            
-            List<TranningPart> listTranningPart = new List<TranningPart>();
+            List<Course> courses = new List<Course>();
             List<CourseEvent> listCourseEvent = new List<CourseEvent>();
-            foreach (var course in courses)
+            List<TranningPart> listTranningPart = new List<TranningPart>();
+            List<OrderDetail> listOrderDetail = new List<OrderDetail>();
+  
+            var orders = await _orderService.GetOrdersByUser();
+            foreach(var order in orders) 
             {
-                var tranningPart = await _tranningPartService.GetTranningPartByCourse(course.Id);
-                var courseEvent = await _courseEventService.GetEventByCourse(course.Id);
-                listCourseEvent = courseEvent.ToList();
-                listTranningPart = tranningPart.ToList();
-            }    
+                listOrderDetail = await _orderDetailService.GetOrderDetailByOrder(order.Id);
+            }
+            foreach (var itemOrderDetail in listOrderDetail)
+            {
+                var tranningPart = await _tranningPartService.GetTranningPartByCourse(itemOrderDetail.CoursesId);
+                var courseEvent = await _courseEventService.GetEventByCourse(itemOrderDetail.CoursesId);
+                listCourseEvent.AddRange(courseEvent.ToList());
+                listTranningPart.AddRange(tranningPart.ToList());
+                courses.AddRange(await _courseService.GetCoursesByOrderDetail(itemOrderDetail.Id));
+            }
             var customerCourseViewModel = new CustomerCourseViewModel
             {
-               Courses = courses,
+                Courses = courses,
                 CourseEvents = listCourseEvent,
                 TranningParts = listTranningPart,
             };
-            return View(customerCourseViewModel);*/
-            // e trung dang lam sai 
-            return View();
+            return View(customerCourseViewModel);
         }
     }
 }

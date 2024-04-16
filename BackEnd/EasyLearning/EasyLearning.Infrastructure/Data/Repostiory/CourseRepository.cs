@@ -2,6 +2,7 @@
 using EasyLearning.Infrastructure.Data.Abstraction;
 using EasyLearning.Infrastructure.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 namespace EasyLearning.Infrastructure.Data.Repostiory
 {
@@ -10,19 +11,17 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
         public CourseRepository(EasyLearningDbContext dbContext, UserRepository userRepository) : base(dbContext, userRepository)
         {
         }
-        public async Task<Course> GetCourseDetailsById(string id)
+        /*public async Task<Course> GetCourseDetailsById(string id)
         {
             return await _dbContext.Courses.FirstOrDefaultAsync(x => x.Id == id);
-        }
+        }*/
 
-        public async Task<List<Course>> GetcourseByUser()
+        public async Task<List<Course>> GetCourseByOrderDetail(string orderDetail)
         {
-            var user = _userRepository.getCurrrentUser();
-            return await _dbContext.TrannerDetails
-                                            .Include(s =>s.Courses)
-                                            .Where(s => s.UserId == user)
-                                            .Select(s => s.Courses)
-                                            .ToListAsync();
+            return await _dbContext.OrderDetails.Include(s => s.Courses)
+                                                .Where(s=>s.Id == orderDetail)
+                                                .Select(s=>s.Courses).ToListAsync();
         }
+  
     }
 }
