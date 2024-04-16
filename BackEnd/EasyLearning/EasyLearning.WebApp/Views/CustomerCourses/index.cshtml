@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "index";
-   
+
 }
 
 <link href="~/css/customerCourses.css" rel="stylesheet" />
@@ -26,423 +26,266 @@
         <!-- row end-->
         <div class="row">
             <div class="col-lg-12">
-                
+                @{
+                    bool isFirstCourse = true;
+                }
                 <ul class="nav custom-tab" id="myTab" role="tablist">
                     @foreach (var item in Model.Courses)
                     {
-                    <li class="nav-item">
-                        <a class="nav-link active show" id="home-taThursday" data-toggle="tab" href="#@item.Id" role="tab" aria-controls="home" aria-selected="true">@item.CoursesName</a>
-                    </li>
-                    }
-                </ul>
-
-                 @{
-                        bool isFirstCourse = true;
-                     }
- 
-                <div class="tab-content" id="myTabContent">
-                     @foreach (var item in Model.Courses)
-                     {
-                        <div class="tab-pane fade @(isFirstCourse ? "active show" : "")" id="@item.Id" role="tabpanel">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" scope="col">Date</th>
-                                        <th scope="col">Speakers</th>
-                                        <th scope="col">Session</th>
-                                        <th scope="col">Venue</th>
-                                        <th class="text-center" scope="col">Venue</th>
-                                    </tr>
-                                </thead>
-                                @foreach(var itemTraningPart in Model.TranningParts)
-                                    {
-                                        @if(itemTraningPart.CoursesId == item.Id)
-                                        {
-                                    <tbody>
-
-                                    <tr class="inner-box">
-                                        <th scope="row">
-                                            <div class="event-date">
-                                                <span>@itemTraningPart.StartTime.Day</span>
-                                                <p>@itemTraningPart.StartTime.Month</p>
-                                            </div>
-                                        </th>
-                                        <td>
-                                            <div class="event-img">
-                                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="event-wrap">
-                                                <h3><a href="#">Harman Kardon</a></h3>
-                                                <div class="meta">
-                                                    <div class="organizers">
-                                                        <a href="#">Aslan Lingker</a>
-                                                    </div>
-                                                    <div class="categories">
-                                                        <a href="#">Inspire</a>
-                                                    </div>
-                                                    <div class="time">
-                                                        <span>05:35 AM - 08:00 AM 2h 25'</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="r-no">
-                                                <span>Room B3</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="primary-btn">
-                                                <a class="btn btn-primary" href="#">Read More</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="inner-box">
-                                        <th scope="row">
-                                            <div class="event-date">
-                                                <span>20</span>
-                                                <p>Novembar</p>
-                                            </div>
-                                        </th>
-                                        <td>
-                                            <div class="event-img">
-                                                <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="event-wrap">
-                                                <h3><a href="#">Toni Duggan</a></h3>
-                                                <div class="meta">
-                                                    <div class="organizers">
-                                                        <a href="#">Aslan Lingker</a>
-                                                    </div>
-                                                    <div class="categories">
-                                                        <a href="#">Inspire</a>
-                                                    </div>
-                                                    <div class="time">
-                                                        <span>05:35 AM - 08:00 AM 2h 25'</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="r-no">
-                                                <span>Room D3</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="primary-btn">
-                                                <a class="btn btn-primary" href="#">Read More</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="inner-box border-bottom-0">
-                                        <th scope="row">
-                                            <div class="event-date">
-                                                <span>18</span>
-                                                <p>Novembar</p>
-                                            </div>
-                                        </th>
-                                        <td>
-                                            <div class="event-img">
-                                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="event-wrap">
-                                                <h3><a href="#">Billal Hossain</a></h3>
-                                                <div class="meta">
-                                                    <div class="organizers">
-                                                        <a href="#">Aslan Lingker</a>
-                                                    </div>
-                                                    <div class="categories">
-                                                        <a href="#">Inspire</a>
-                                                    </div>
-                                                    <div class="time">
-                                                        <span>05:35 AM - 08:00 AM 2h 25'</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="r-no">
-                                                <span>Room A3</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="primary-btn">
-                                                <a class="btn btn-primary" href="#">Read More</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                        }
-                                    }
-                            </table>
-                        </div>
-                    </div>
+                        <li class="nav-item">
+                            <a class="nav-link @(isFirstCourse ? "active" : "")" id="@("tab-" + item.Id)" data-toggle="tab" href="#@(item.Id)" role="tab" aria-controls="@item.Id" aria-selected="@(isFirstCourse ? "true" : "false")">@item.CoursesName</a>
+                        </li>
                         isFirstCourse = false;
                     }
-                    
-                     @* <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Speakers</th>
-                                        <th scope="col">Session</th>
-                                        <th scope="col">Venue</th>
-                                        <th scope="col">Venue</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="inner-box">
-                                        <th scope="row">
-                                            <div class="event-date">
-                                                <span>1611</span>
-                                                <p>Novembar</p>
-                                            </div>
-                                        </th>
-                                        <td>
-                                            <div class="event-img">
-                                                <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="event-wrap">
-                                                <h3><a href="#">Toni Duggan</a></h3>
-                                                <div class="meta">
-                                                    <div class="organizers">
-                                                        <a href="#">Aslan Lingker</a>
-                                                    </div>
-                                                    <div class="categories">
-                                                        <a href="#">Inspire</a>
-                                                    </div>
-                                                    <div class="time">
-                                                        <span>05:35 AM - 08:00 AM 2h 25'</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="r-no">
-                                                <span>Room B3</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="primary-btn">
-                                                <a class="btn btn-primary" href="#">Read More</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="inner-box">
-                                        <th scope="row">
-                                            <div class="event-date">
-                                                <span>16</span>
-                                                <p>Novembar</p>
-                                            </div>
-                                        </th>
-                                        <td>
-                                            <div class="event-img">
-                                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="event-wrap">
-                                                <h3><a href="#">Harman Kardon</a></h3>
-                                                <div class="meta">
-                                                    <div class="organizers">
-                                                        <a href="#">Aslan Lingker</a>
-                                                    </div>
-                                                    <div class="categories">
-                                                        <a href="#">Inspire</a>
-                                                    </div>
-                                                    <div class="time">
-                                                        <span>05:35 AM - 08:00 AM 2h 25'</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="r-no">
-                                                <span>Room B3</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="primary-btn">
-                                                <a class="btn btn-primary" href="#">Read More</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="inner-box border-bottom-0">
-                                        <th scope="row">
-                                            <div class="event-date">
-                                                <span>16</span>
-                                                <p>Novembar</p>
-                                            </div>
-                                        </th>
-                                        <td>
-                                            <div class="event-img">
-                                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" />
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="event-wrap">
-                                                <h3><a href="#">Billal Hossain</a></h3>
-                                                <div class="meta">
-                                                    <div class="organizers">
-                                                        <a href="#">Aslan Lingker</a>
-                                                    </div>
-                                                    <div class="categories">
-                                                        <a href="#">Inspire</a>
-                                                    </div>
-                                                    <div class="time">
-                                                        <span>05:35 AM - 08:00 AM 2h 25'</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="r-no">
-                                                <span>Room B3</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="primary-btn">
-                                                <a class="btn btn-primary" href="#">Read More</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+           
+                </ul>
+                @{
+                    bool isFirstCourse1 = true;
+                }
+                <div class="tab-content" id="myTabContent">
+                     @foreach (var item in Model.Courses)
+                    {
+                        <div class="tab-pane fade @(isFirstCourse1 ? "show active" : "")" id="@item.Id" role="tabpanel" aria-labelledby="@("tab-" + item.Id)">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" scope="col">Date</th>
+                                            <th scope="col">Speakers</th>
+                                            <th scope="col">Session</th>
+                                            <th scope="col">Venue</th>
+                                            <th class="text-center" scope="col">Venue</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var itemTraningPart in Model.TranningParts)
+                                        {
+                                            @if (itemTraningPart.CoursesId == item.Id)
+                                            {
+                                                <tr class="inner-box">
+                                                    <th scope="row">
+                                                        <div class="event-date">
+                                                            <span>@itemTraningPart.StartTime.Day</span>
+                                                            @{
+                                                                @using System.Globalization
+                                                                // Lấy tên của tháng từ số tháng
+                                                                string monthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(itemTraningPart.StartTime.Month);
+                                                            }
+                                                            <p>@monthName</p>
+                                                        </div>
+                                                    </th>
+                                                    <td>
+                                                        <div class="event-img">
+                                                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="event-wrap">
+                                                            <h3><a href="#">@itemTraningPart.TranningPartName</a></h3>
+                                                            <div class="meta">
+                                                                <div class="organizers">
+                                                                    <a href="#">Aslan Lingker</a>
+                                                                </div>
+                                                                <div class="categories">
+                                                                    <a href="#">Inspire</a>
+                                                                </div>
+                                                                
+                                                                @foreach(var itemCourseEvent in Model.CourseEvents)
+                                                                {
+                                                                    if(itemCourseEvent.Id == itemTraningPart.EventId)
+                                                                    {
+                                                                    <div class="time">
+                                                                            @{
+                                                                                // Lấy giờ bắt đầu và kết thúc từ các thuộc tính DateStart và DateEnd
+                                                                                DateTime startTime = itemCourseEvent.DateStart;
+                                                                                DateTime endTime = itemCourseEvent.DateEnd;
+
+                                                                                // Định dạng thời gian theo AM/PM và chuỗi dạng hh:mm tt
+                                                                                string startTimeFormatted = startTime.ToString("hh:mm tt", CultureInfo.InvariantCulture);
+                                                                                string endTimeFormatted = endTime.ToString("hh:mm tt", CultureInfo.InvariantCulture);
+
+                                                                                // Tính khoảng thời gian giữa hai thời điểm
+                                                                                TimeSpan duration = endTime - startTime;
+                                                                                string durationFormatted = duration.ToString(@"h\h\ m\m", CultureInfo.InvariantCulture);
+                                                                            }
+                                                                            <span>@startTimeFormatted - @endTimeFormatted @durationFormatted</span>
+                                                                    </div>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="r-no">
+                                                            @foreach (var itemCourseEvent in Model.CourseEvents)
+                                                            {
+                                                                if (itemCourseEvent.Id == itemTraningPart.EventId)
+                                                                {
+                                                                    <span>@itemCourseEvent.Location</span>
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="primary-btn">
+                                                            <a class="btn btn-primary" href="#">Read More</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div> 
-                  
-                <div class="primary-btn text-center">
-                    <a href="#" class="btn btn-primary">Download Schedule</a>
-                </div> *@
+                        isFirstCourse1 = false;
+                     } 
+   
+                </div>
             </div>
-            <!-- /col end-->
         </div>
-        <!-- /row end-->
     </div>
 </div>
-            @* <p>
-                <a asp-action="Create">Create New</a>
-            </p>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].CoursesName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].CoursesDescription)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].CoursesPrice)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].Requirements)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].CoureseContent)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].ImageUrl)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].StartDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].StartEnd)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].RegistrationDeadline)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].MaxAttdendees)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].Id)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].DateCreate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].DateChange)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].ChangedBy)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Courses[0].IsDeleted)
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
+
+<script>
+    // Bắt sự kiện click trên các tab
+    document.querySelectorAll('.nav-link').forEach(tab => {
+        tab.addEventListener('click', function (e) {
+            e.preventDefault(); // Ngăn chặn hành động mặc định của thẻ a
+            const targetId = this.getAttribute('href').replace('#', ''); // Lấy id của tab được chọn
+            showTab(targetId); // Hiển thị tab tương ứng
+        });
+    });
+
+    // Hàm hiển thị tab tương ứng
+    function showTab(tabId) {
+        // Ẩn tất cả các tab
+        document.querySelectorAll('.tab-pane').forEach(tab => {
+            tab.classList.remove('show', 'active');
+        });
+        // Hiển thị tab được chọn
+        document.getElementById(tabId).classList.add('show', 'active');
+
+        // Đặt thuộc tính aria-selected
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.setAttribute('aria-selected', 'false');
+        });
+        document.querySelector('[href="#' + tabId + '"]').setAttribute('aria-selected', 'true');
+    }
+</script>
+
+    @* <p>
+    <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+    <thead>
+    <tr>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].CoursesName)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].CoursesDescription)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].CoursesPrice)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].Requirements)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].CoureseContent)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].ImageUrl)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].StartDate)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].StartEnd)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].RegistrationDeadline)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].MaxAttdendees)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].Id)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].DateCreate)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].DateChange)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].ChangedBy)
+    </th>
+    <th>
+    @Html.DisplayNameFor(model => model.Courses[0].IsDeleted)
+    </th>
+    <th></th>
+    </tr>
+    </thead>
+    <tbody>
 
 
-                    @foreach (var item in Model.Courses)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CoursesName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CoursesDescription)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CoursesPrice)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Requirements)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CoureseContent)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ImageUrl)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StartDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StartEnd)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RegistrationDeadline)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MaxAttdendees)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DateCreate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DateChange)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ChangedBy)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IsDeleted)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                            </td>
-                        </tr>
-                    }
-                    }
-                </tbody>
-            </table> *@
+    @foreach (var item in Model.Courses)
+    {
+    <tr>
+    <td>
+    @Html.DisplayFor(modelItem => item.CoursesName)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.CoursesDescription)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.CoursesPrice)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.Requirements)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.CoureseContent)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.ImageUrl)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.StartDate)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.StartEnd)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.RegistrationDeadline)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.MaxAttdendees)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.Id)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.DateCreate)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.DateChange)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.ChangedBy)
+    </td>
+    <td>
+    @Html.DisplayFor(modelItem => item.IsDeleted)
+    </td>
+    <td>
+    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+    </td>
+    </tr>
+    }
+    }
+    </tbody>
+    </table> *@
