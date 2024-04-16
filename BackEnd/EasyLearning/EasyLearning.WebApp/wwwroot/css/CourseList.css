@@ -1,0 +1,15 @@
+﻿.main-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.custom-input{
+    width: 70% !important;
+}
+.custom-input > input{
+    border-radius: 10px 10px 0;
+}
+.search-button {
+    border-radius: 0 10px 10px 0;
+}

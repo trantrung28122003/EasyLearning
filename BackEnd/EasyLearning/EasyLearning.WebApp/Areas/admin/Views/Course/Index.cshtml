@@ -39,7 +39,7 @@
                             @Html.DisplayFor(modelItem => item.StartDate)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.StartEnd)
+                        @Html.DisplayFor(modelItem => item.EndDate)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.RegistrationDeadline)
@@ -53,7 +53,7 @@
                             @Html.ActionLink("Xóa", "Delete", "Course", new { id = item.Id }, new { @class = "btn btn-danger", @role = "button" })
                             @Html.ActionLink("Thêm phần của khóa", "Index", "TranningPart", new { courseId = item.Id }, new { @class = "btn btn-info", @role = "button" })
                             @Html.ActionLink("Thêm lớp", "Index", "Event", new { courseId = item.Id }, new { @class = "btn btn-info", @role = "button" })
-                        <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-courseId="@item.Id">Addtocarrt</a>
+                        
                         </td>
                     </tr>
                 }

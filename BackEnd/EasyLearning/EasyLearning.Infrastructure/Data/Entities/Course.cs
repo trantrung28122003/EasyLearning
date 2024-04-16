@@ -24,12 +24,15 @@ namespace EasyLearning.Infrastructure.Data.Entities
         [Column("Courese_ImageUrl")]
         public string? ImageUrl { get; set; }
 
+        [Column("Courese_Instructor")]
+        public string? Instructor { get; set; }
+
         [Column("Courses_StartDate")]
         public DateTime StartDate { get; set; }
 
-        [Column("Courses_StartEnd")]
+        [Column("Courses_EndDate")]
        
-        public DateTime StartEnd { get; set; }
+        public DateTime EndDate { get; set; }
 
         [Column("Courese_RegistrationDeadline")]
         public DateTime RegistrationDeadline { get; set; }

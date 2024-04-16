@@ -1,4 +1,6 @@
-﻿namespace EasyLearning.Infrastructure.Data.Repostiory
+﻿using EasyLearning.Infrastructure.Data.Entities;
+
+namespace EasyLearning.Infrastructure.Data.Repostiory
 {
     public class UserRepository
     {

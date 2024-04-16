@@ -22,6 +22,7 @@ namespace EasyLearning.Infrastructure
             services.AddScoped<TrainerDetailRepository, TrainerDetailRepository>();
             services.AddScoped<OrderRepository, OrderRepository>();
             services.AddScoped<OrderDetailRepository, OrderDetailRepository>();
+            services.AddScoped<FeedbackRepository, FeedbackRepository>();
             services.AddDbContext<EasyLearningDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetSection("Database:ConectionString").Value);
