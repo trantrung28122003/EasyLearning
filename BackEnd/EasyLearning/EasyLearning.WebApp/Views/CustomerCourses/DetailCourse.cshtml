@@ -122,30 +122,43 @@
                            
                             <div class="chat-body no-padding profile-message">
                                 <ul>
-                                    @foreach(var itemFeedback in Model.Feedbacks)
+
+                                    @foreach (var itemFeedback in Model.Feedbacks)
                                     {
-                                    <li class="message">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="online" />
-                                        <span class="message-text">
-                                            <a href="javascript:void(0);" class="username">
-                                                @itemFeedback.FeedbackUserId
-                                                <span class="badge bg-primary">Purchase Verified</span>
-                                                <span class="pull-right">
-                                                    <i class="fas fa-star fa-2x text-primary"></i>
-                                                    <i class="fas fa-star fa-2x text-primary"></i>
-                                                    <i class="fas fa-star fa-2x text-primary"></i>
-                                                    <i class="fas fa-star fa-2x text-primary"></i>
-                                                    <i class="fas fa-star fa-2x text-muted"></i>
-                                                </span>
-                                            </a>
-                                            @itemFeedback.FeedbackContent
-                                        </span>
-                                        <ul class="list-inline font-xs">
-                                            <li class="pull-right">
-                                                <small class="text-muted pull-right ultra-light"> @itemFeedback.DateCreate</small>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                        @foreach (var itemUser in Model.Users)
+                                        {
+                                            if (itemUser.Id == itemFeedback.FeedbackUserId)
+                                            {
+                                                <li class="message row">
+                                                    <div class="col-md-2">
+                                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="online" />
+                                                    
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <span class="message-text">
+                                                            <a href="javascript:void(0);" class="username">
+                                                                @itemUser.UserName;
+                                                                <span class="badge bg-primary" style="margin-bottom: 4px">Purchase Verified  </span>
+                                                                <span class="pull-right" style="margin-left: 25px">
+                                                                    @for (int i = 1; i <= 5; i++)
+                                                                    {
+                                                                        <i class="fas fa-star fa-2x @(i <= itemFeedback.FeedbackRating ? "text-primary" : "text-muted")"></i>
+                                                                    }
+                                                                </span>
+                                                            </a>
+                                                            <br />
+                                                            @itemFeedback.FeedbackContent
+                                                            <small class="text-muted pull-right ultra-light">   -    @itemFeedback.DateCreate</small>
+                                                        </span>
+                                                        <ul class="list-inline font-xs">
+                                                            <li class="pull-right">
+
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            }
+                                        }
                                     }
                                 </ul>
                             </div>
@@ -154,9 +167,8 @@
                 </div>
                 <hr />
                 <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-6">
-                        <a href="javascript:void(0);" class="btn btn-success btn-lg">Add to cart ($129.54)</a>
-                    </div>
+                    <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-courseId="@Model.Course.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 30px 30px 30px;">Thêm vào giỏ hàng</a>
+                    
                 </div>
             </div>
         </div>
