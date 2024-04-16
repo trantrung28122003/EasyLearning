@@ -125,33 +125,40 @@
 
                                     @foreach (var itemFeedback in Model.Feedbacks)
                                     {
-                                        <li class="message row">
-                                            <div class="col-md-2">
-                                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="online" />
-                                            </div>
-                                            <div class="col-md-10">
-                                                <span class="message-text">
-                                                    <a href="javascript:void(0);" class="username">
-                                                        @itemFeedback.FeedbackUserId
-                                                        <span class="badge bg-primary" style="margin-bottom: 4px">Purchase Verified  </span>
-                                                        <span class="pull-right" style="margin-left: 25px">
-                                                            @for (int i = 1; i <= 5; i++)
-                                                            {
-                                                                <i class="fas fa-star fa-2x @(i <= itemFeedback.FeedbackRating ? "text-primary" : "text-muted")"></i>
-                                                            }
+                                        @foreach (var itemUser in Model.Users)
+                                        {
+                                            if (itemUser.Id == itemFeedback.FeedbackUserId)
+                                            {
+                                                <li class="message row">
+                                                    <div class="col-md-2">
+                                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="online" />
+                                                    
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <span class="message-text">
+                                                            <a href="javascript:void(0);" class="username">
+                                                                @itemUser.UserName;
+                                                                <span class="badge bg-primary" style="margin-bottom: 4px">Purchase Verified  </span>
+                                                                <span class="pull-right" style="margin-left: 25px">
+                                                                    @for (int i = 1; i <= 5; i++)
+                                                                    {
+                                                                        <i class="fas fa-star fa-2x @(i <= itemFeedback.FeedbackRating ? "text-primary" : "text-muted")"></i>
+                                                                    }
+                                                                </span>
+                                                            </a>
+                                                            <br />
+                                                            @itemFeedback.FeedbackContent
+                                                            <small class="text-muted pull-right ultra-light">   -    @itemFeedback.DateCreate</small>
                                                         </span>
-                                                    </a>
-                                                    <br />
-                                                    @itemFeedback.FeedbackContent
-                                                    <small class="text-muted pull-right ultra-light">   -    @itemFeedback.DateCreate</small>
-                                                </span>
-                                                <ul class="list-inline font-xs">
-                                                    <li class="pull-right">
-                                                     
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
+                                                        <ul class="list-inline font-xs">
+                                                            <li class="pull-right">
+
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            }
+                                        }
                                     }
                                 </ul>
                             </div>

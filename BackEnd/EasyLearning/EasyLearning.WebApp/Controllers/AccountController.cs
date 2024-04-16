@@ -1,4 +1,5 @@
-﻿using EasyLearning.Application.Services;
+﻿using EasyLearing.Infrastructure.Data.Entities;
+using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repostiory;
 using EasyLearning.WebApp.Models;
@@ -20,13 +21,14 @@ namespace EasyLearning.WebApp.Controllers
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<ApplicationRole> roleManager, 
-            UserRepository userRepository)
+            UserRepository userRepository, IShoppingCartService shoppingCartService)
         {
 
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             this._userRepository = userRepository;
+            _shoppingCartService = shoppingCartService;
         }
 
         [HttpGet, AllowAnonymous]
@@ -57,7 +59,14 @@ namespace EasyLearning.WebApp.Controllers
                     if (result.Succeeded)
                     {
                         // tạo shopping cart
-
+                        var shoppingCart = new ShoppingCart()
+                        {
+                            UserId = _userRepository.getCurrrentUser(),
+                            DateChange = DateTime.Now,
+                            DateCreate = DateTime.Now,
+                            IsDeleted = false,
+                        };
+                        await _shoppingCartService.CreateShoppingCart(shoppingCart);
                         return RedirectToAction("Login");
                     }
                     else

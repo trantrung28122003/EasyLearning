@@ -29,8 +29,6 @@ namespace EasyLearning.WebApp.Controllers
             return View(shoppingCartItem);
         }
    
-
-        
         public async Task<ActionResult> AddToCart(string courseId)
         {
             var getCourse = await _courseService.GetCourseById(courseId);
@@ -41,12 +39,27 @@ namespace EasyLearning.WebApp.Controllers
                 CartItemPrice = getCourse.CoursesPrice,
                 ImageUrl = "aaa",
                 CoursesId = getCourse.Id,
+                Quantity = 1,
                 ShoppingCartId = shoppingCart.Id,
             };
             await _shoppingCartItemService.CreateShoppingCartItem(shoppingCartItem);
             return RedirectToAction("GetShoppingCart");
         }
-        
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteCartItem(string cartItemId)
+        {
+            var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemById(cartItemId);
+            if (shoppingCartItem != null)
+            {
+                await _shoppingCartItemService.DeleteShoppingCartItem(shoppingCartItem);
+
+                return Ok(); 
+            }
+            else
+            {
+                return NotFound(); 
+            }
+        }
     }
 }

@@ -59,12 +59,14 @@ namespace EasyLearning.WebApp.Controllers
             var course = await _courseService.GetCourseById(courseId);
             var tranningParts = await _tranningPartService.GetTranningPartByCourse(courseId);
             var getFeedbackbyCourse = await _feedbackService.GetFeedbacksByCourseId(courseId);
-          
+            var getUsers = await _userRepository.GetUsersAsync();
+
             var customerCourseViewModel = new CustomerCourseViewModel()
             {
                 Course = course,
                 TranningParts = tranningParts,
                 Feedbacks = getFeedbackbyCourse,
+                Users = getUsers,
             };
             return View(customerCourseViewModel);
         }
