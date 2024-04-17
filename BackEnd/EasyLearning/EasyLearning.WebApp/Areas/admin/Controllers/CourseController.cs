@@ -67,6 +67,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     EndDate = courseViewModel.StartEnd,
                     RegistrationDeadline = courseViewModel.RegistrationDeadline,
                     MaxAttdendees = courseViewModel.MaxAttdendees,
+                    Instructor = courseViewModel.Instructor,
                     ImageUrl = imgLink,
                     DateCreate = DateTime.Now
                 };

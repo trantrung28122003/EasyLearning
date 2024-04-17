@@ -21,6 +21,10 @@
 
         public DateTime RegistrationDeadline { get; set; }
 
+        public string? Instructor { get; set; }
+
         public int MaxAttdendees { get; set; }
+
+
     }
 }
