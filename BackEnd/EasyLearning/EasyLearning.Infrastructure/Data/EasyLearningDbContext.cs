@@ -1,5 +1,6 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,6 +39,13 @@ namespace EasyLearning.Infrastructure.Data
                 }
             }
             modelBuilder.Entity<ApplicationUser>(e => { e.ToTable("Users"); });
+
+            modelBuilder.Entity<ApplicationRole>()
+            .HasData(
+                new ApplicationRole { Name = "Admin", NormalizedName = "ADMINISTRATOR" }, // Predefined ID
+                new ApplicationRole { Name = "User", NormalizedName = "USER" },
+                new ApplicationRole { Name = "Trainer", NormalizedName = "TRAINER" } // Predefined ID
+            );
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

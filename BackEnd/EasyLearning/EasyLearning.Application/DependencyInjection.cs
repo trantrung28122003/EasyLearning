@@ -20,6 +20,7 @@ namespace EasyLearning.Application
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderDetailService, OrderDetailService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<IPaymentService, PaymentService>();
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
-using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Security.AccessControl;
 
 namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
     [Area("admin")]
+    [Authorize(Roles = "Admin")]
     public class EventController : Controller
     {
         private readonly ICourseService _courseService;

@@ -1,6 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using EasyLearning.Infrastructure.Data.Entities
-
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -56,20 +55,28 @@
                     <a href="about.html" class="nav-item nav-link">Thông Tin Về Chúng Tôi</a>
 
                     
-                    <a href="courses.html" class="nav-item nav-link">Các Khóa Học</a>
+                    <a asp-controller="CustomerCourses" asp-action="ListCourse" class="nav-item nav-link">Các Khóa Học</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mục Lục</a>
                         <div class="dropdown-menu fade-down m-0">
-                            <a href="team.html" class="dropdown-item">Thành Viên</a>
+                            <a asp-controller="CustomerCourses" asp-action="EventSchedule" class="dropdown-item">Thời khóa biểu</a>
                             <a href="testimonial.html" class="dropdown-item">Đánh Giá</a>
                             <a href="404.html" class="dropdown-item">404 Page</a>
                         </div>
                     </div>
-                    <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
+                    
+               
+                    <a asp-controller="ShoppingCart" asp-action="GetShoppingCart" class="position-relative me-4 my-auto">
+                        <i class="fa fa-shopping-bag fa-2x"></i>
+                        
+                    </a>
+                   
+
+
                 </div>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a class="nav-link text-dark" title="Manage">Xin Chào @User.Identity.Name</a>
+                    @* <a class="nav-link text-dark" title="Manage">Xin Chào @User.Identity.Name</a> *@
                     <a asp-action="logout" asp-controller="account" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Đăng Xuất<i class="fa fa-arrow-right ms-3"></i></a>
                 }
                 else
@@ -96,7 +103,7 @@
                         <a class="btn btn-link" href="">Câu hỏi thường gặp và Trợ giúp</a>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <h4 class="text-white mb-3">Contact</h4>
+                        <h4 class="text-white mb-3">Liên Hệ</h4>
                         <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i> 475A Điện Biên Phủ, Phường 25, Quận Bình Thạnh, TP.HCM.</p>
                         <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+084 345 678 9</p>
                         <p class="mb-2"><i class="fa fa-envelope me-3"></i>eLEARNING@gmail.com</p>
@@ -108,7 +115,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <h4 class="text-white mb-3">Gallery</h4>
+                        <h4 class="text-white mb-3">Bộ Sưu TậpTập</h4>
                         <div class="row g-2 pt-2">
                             <div class="col-4">
                                 <img class="img-fluid bg-light p-1" src="img/course-1.jpg" alt="">
@@ -131,7 +138,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
-                        <h4 class="text-white mb-3">Newsletter</h4>
+                        <h4 class="text-white mb-3">Thông Tin</h4>
                         <p>Cung cấp thông tin liên lạc để nhận được thông báo mới nhất của chúng tôi</p>
                         <div class="position-relative mx-auto" style="max-width: 400px;">
                             <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Email">
@@ -176,3 +183,4 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+

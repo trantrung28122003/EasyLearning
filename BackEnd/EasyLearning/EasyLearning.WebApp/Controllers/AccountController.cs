@@ -1,4 +1,5 @@
-﻿using EasyLearning.Application.Services;
+﻿using EasyLearing.Infrastructure.Data.Entities;
+using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repostiory;
 using EasyLearning.WebApp.Models;
@@ -15,18 +16,21 @@ namespace EasyLearning.WebApp.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly IShoppingCartService _shoppingCartService;
+        private readonly IShoppingCartItemService _shoppingCartItemService;
 
         private readonly UserRepository _userRepository;
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<ApplicationRole> roleManager, 
-            UserRepository userRepository)
+            UserRepository userRepository, IShoppingCartService shoppingCartService, IShoppingCartItemService shoppingCartItemService)
         {
 
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             this._userRepository = userRepository;
+            _shoppingCartService = shoppingCartService;
+            _shoppingCartItemService = shoppingCartItemService;
         }
 
         [HttpGet, AllowAnonymous]
@@ -57,7 +61,14 @@ namespace EasyLearning.WebApp.Controllers
                     if (result.Succeeded)
                     {
                         // tạo shopping cart
-
+                        var shoppingCart = new ShoppingCart()
+                        {
+                            UserId = _userRepository.getCurrrentUser(),
+                            DateChange = DateTime.Now,
+                            DateCreate = DateTime.Now,
+                            IsDeleted = false,
+                        };
+                        await _shoppingCartService.CreateShoppingCart(shoppingCart);
                         return RedirectToAction("Login");
                     }
                     else
@@ -113,7 +124,13 @@ namespace EasyLearning.WebApp.Controllers
                 if (result.Succeeded)
                 {
                     _userRepository.setUser(user.Id);
+              
+             
+  
+       
                     return RedirectToAction("Index" , "Home");
+
+                   
                 }
                 else if (result.IsLockedOut)
                 {
