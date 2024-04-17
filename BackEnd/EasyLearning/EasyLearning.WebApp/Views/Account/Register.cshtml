@@ -55,11 +55,14 @@
                     @Html.ValidationMessageFor(m => m.ConfirmPassword)
                     <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Image" class="control-label"></label>
-                    <input asp-for="Image" class="form-control" type="file" />
-                    <span asp-validation-for="Image" class="text-danger"></span>
+
+                <div class="form-floating form-floating-outline mb-3">
+                    <input asp-for="Image" type="file" class="form-control" id="Image" name="Image" placeholder="Chọn file ảnh" />
+                    <label for="Image">Hình ảnh</label>
                 </div>
+             
+               
+             
 
                 <div class="mb-3">
                     <div class="form-check">
