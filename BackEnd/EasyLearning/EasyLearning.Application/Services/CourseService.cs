@@ -7,7 +7,7 @@ namespace EasyLearning.Application.Services
     public interface ICourseService
     {
         Task<List<Course>> GetAllCourses();
-        Task<List<Course>> GetCoursesByOrderDetail(string id);
+        Task<List<Course>> GetCourseByOrderDetail(string id);
         Task<Course> GetCourseById(string id);
         Task CreateCourse(Course courses);
         Task UpdateCourse(Course course);
@@ -24,7 +24,7 @@ namespace EasyLearning.Application.Services
         }
         public async Task<List<Course>> GetAllCourses() => await _courseRepository.GetAll();
         public async Task<Course> GetCourseById(string id) => await _courseRepository.GetById(id);
-        public async Task<List<Course>> GetCoursesByOrderDetail(string id) => await _courseRepository.GetCourseByOrderDetail(id);
+        public async Task<List<Course>> GetCourseByOrderDetail(string id) => await _courseRepository.GetCourseByOrderDetail(id);
         public async Task CreateCourse(Course courses) => await _courseRepository.Create(courses);
         public async Task UpdateCourse(Course course) => await _courseRepository.Update(course);
         public async Task DeleteCourse(Course course) => await _courseRepository.Delete(course);

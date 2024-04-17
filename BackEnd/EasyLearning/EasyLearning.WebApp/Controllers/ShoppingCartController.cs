@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using EasyLearing.Infrastructure.Data.Entities;
+﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
