@@ -63,7 +63,7 @@ namespace EasyLearning.WebApp.Controllers
                         // tạo shopping cart
                         var shoppingCart = new ShoppingCart()
                         {
-                            UserId = _userRepository.getCurrrentUser(),
+                            UserId = user.Id,
                             DateChange = DateTime.Now,
                             DateCreate = DateTime.Now,
                             IsDeleted = false,
