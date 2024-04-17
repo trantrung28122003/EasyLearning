@@ -4,9 +4,7 @@
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 
-<h1>Tạo</h1>
-
-<h4>Khóa Học</h4>
+<h1 class="text-center ">Thêm khóa học</h1>
 <hr />
 <div class="container">
     <form asp-action="Create" method="post" enctype="multipart/form-data">
@@ -56,11 +54,19 @@
             <input asp-for="RegistrationDeadline" class="form-control" />
             <span asp-validation-for="RegistrationDeadline" class="text-danger"></span>
         </div>
+
+        <div class="form-group">
+            <label asp-for="Instructor" class="control-label">Giảng Viên</label>
+            <input asp-for="Instructor" class="form-control" />
+            <span asp-validation-for="Instructor" class="text-danger"></span>
+        </div>
+
         <div class="form-group">
             <label asp-for="MaxAttdendees" class="control-label">Số học viên tối đa</label>
             <input asp-for="MaxAttdendees" class="form-control" />
             <span asp-validation-for="MaxAttdendees" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label>Thể Loại:</label>
             @foreach (var category in ViewBag.Categories)
@@ -75,7 +81,7 @@
         </div>
 
         <div class="form-group">
-            <input type="submit" value="Tạo" class="btn btn-outline-primary" />
+            <input type="submit" value="Thêm khóa học" class="btn btn-outline-primary" />
         </div>
     </form>
 </div>

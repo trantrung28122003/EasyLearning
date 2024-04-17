@@ -58,6 +58,12 @@
                 <span asp-validation-for="RegistrationDeadline" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Instructor" class="control-label">Giảng Viên</label>
+                <input asp-for="Instructor" class="form-control" />
+                <span asp-validation-for="Instructor" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <label asp-for="MaxAttdendees" class="control-label">Số học viên tối đa</label>
                 <input asp-for="MaxAttdendees" class="form-control" />
                 <span asp-validation-for="MaxAttdendees" class="text-danger"></span>

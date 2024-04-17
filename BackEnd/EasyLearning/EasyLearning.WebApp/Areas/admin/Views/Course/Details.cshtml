@@ -6,6 +6,51 @@
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 <link href="~/css/coursedetails.css" rel="stylesheet" />
+
+@* <div class="container mt-5 mb-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-6 bg-primary">
+                        <div class="images p-3">
+                            <img src="@Html.DisplayFor(model => model.ImageUrl)" width="500" height="400" title="" alt="" />
+                        </div>
+                    </div>
+                    <div class="col-md-6 bg-primary">
+                        <div class="product p-4">
+                            <div class="mt-4 mb-3">
+                                <div class="text-white ">
+                                    <h2>@Html.DisplayFor(model => model.CoursesName)</h2>
+                                </div>
+                                <div class="price d-flex flex-row align-items-center text-white">
+                                    <h2>@Html.DisplayFor(model => model.CoursesPrice)</h2>
+                                </div>
+                                <div>
+                                    <p><h4 class ="text-white">@Html.DisplayFor(model => model.CoursesDescription)</h4></p>
+                                </div>
+                                <div class="text-white">
+                                    <label class="control-label text-white"> Ngày bắt đầu :</label>
+                                    @Html.DisplayFor(model => model.StartDate)
+                                </div>
+                                <div class="text-white">
+                                    <label class="control-label text-white"> Ngày kết thúc :</label>
+                                    @Html.DisplayFor(model => model.EndDate)
+                                </div>
+                                <div class="text-white">
+                                    <label class="control-label text-white"> Hạn đăng ký :</label>
+                                    @Html.DisplayFor(model => model.RegistrationDeadline)
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@
+
 <div class="blog-single gray-bg">
     <div class="container">
         <div class="row align-items-start">
@@ -15,15 +60,14 @@
                         <img src="@Html.DisplayFor(model => model.ImageUrl)" title="" alt="" />
                     </div>
                     <div class="article-title">
-                        <h6><a href="#">Khóa học</a></h6>
+                        <h6><a href="https://localhost:7008/CustomerCourses/ListCourse">Khóa học</a></h6>
                         <h2>@Html.DisplayFor(model => model.CoursesName)</h2>
                         <div class="media">
                             <div class="avatar">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" title="" alt="">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar6.png" title="" alt="">
                             </div>
                             <div class="media-body">
-                                <label>Rachel Roth</label>
-                                <span>26 FEB 2020</span>
+                                @Html.DisplayFor(model => model.Instructor)
                             </div>
                         </div>
                     </div>
@@ -40,13 +84,13 @@
                         }
                     </div>
                 </article>
-                <div class="contact-form article-comment">
-                    <h4>Leave a Reply</h4>
+                @* <div class="contact-form article-comment">
+                    <h4>Hãy để lại nhận xét</h4>
                     <form id="contact-form" method="POST">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input name="Name" id="name" placeholder="Name *" class="form-control" type="text">
+                                    <input name="Name" id="name" placeholder="Họ và tên *" class="form-control" type="text">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -56,23 +100,23 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <textarea name="message" id="message" placeholder="Your message *" rows="4" class="form-control"></textarea>
+                                    <textarea name="message" id="message" placeholder="nhận xét của bạn *" rows="4" class="form-control"></textarea>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="send">
-                                    <button class="px-btn theme"><span>Submit</span> <i class="arrow"></i></button>
+                                    <button class="px-btn theme"><span>Gửi</span> <i class="arrow"></i></button>
                                 </div>
                             </div>
                         </div>
                     </form>
-                </div>
+                </div> *@
             </div>
             <div class="col-lg-4 m-15px-tb blog-aside">
                 <!-- Author -->
                 <div class="widget widget-author">
                     <div class="widget-title">
-                        <h3>Author</h3>
+                        <h3></h3>
                     </div>
                     <div class="widget-body">
                         <div class="media align-items-center">
@@ -80,92 +124,80 @@
                                 <img src="https://bootdey.com/img/Content/avatar/avatar6.png" title="" alt="">
                             </div>
                             <div class="media-body">
-                                <h6>Hello, I'm<br> Rachel Roth</h6>
+                                <h6> Tôi là 
+                                    <br>  @Html.DisplayFor(model => model.Instructor)
+                                </h6>
                             </div>
                         </div>
-                        <p>I design and develop services for customers of all sizes, specializing in creating stylish, modern websites, web services and online stores</p>
+                        <p></p>
                     </div>
                 </div>
                 <!-- End Author -->
                 <!-- Trending Post -->
                 <div class="widget widget-post">
                     <div class="widget-title">
-                        <h3>Trending Now</h3>
-                    </div>
-                    <div class="widget-body">
-                    </div>
-                </div>
-                <!-- End Trending Post -->
-                <!-- Latest Post -->
-                <div class="widget widget-latest-post">
-                    <div class="widget-title">
-                        <h3>Latest Post</h3>
+                        <h3>Các khóa học nổi tiếng</h3>
                     </div>
                     <div class="widget-body">
                         <div class="latest-post-aside media">
                             <div class="lpa-left media-body">
                                 <div class="lpa-title">
-                                    <h5><a href="#">Prevent 75% of visitors from google analytics</a></h5>
-                                </div>
-                                <div class="lpa-meta">
-                                    <a class="name" href="#">
-                                        Rachel Roth
-                                    </a>
-                                    <a class="date" href="#">
-                                        26 FEB 2020
-                                    </a>
-                                </div>
+                                    <h5><a href="https://localhost:7008/admin/Course/Details/20e40ec8-6cb6-446b-901b-c09def412ce6">Tiếng Anh căn bản cho người mới bắt đầu</a></h5>
+                                </div>                      
                             </div>
                             <div class="lpa-right">
-                                <a href="#">
-                                    <img src="https://www.bootdey.com/image/400x200/FFB6C1/000000" title="" alt="">
+                                <a href="https://localhost:7008/admin/Course/Details/20e40ec8-6cb6-446b-901b-c09def412ce6">
+                                    <img src="https://ecorp.edu.vn/wp-content/uploads/ung-dung-hoc-tieng-anh-0.jpg" title="" alt="">
                                 </a>
                             </div>
                         </div>
+                    </div>
+                    <div class="widget-body">
                         <div class="latest-post-aside media">
                             <div class="lpa-left media-body">
                                 <div class="lpa-title">
-                                    <h5><a href="#">Prevent 75% of visitors from google analytics</a></h5>
-                                </div>
-                                <div class="lpa-meta">
-                                    <a class="name" href="#">
-                                        Rachel Roth
-                                    </a>
-                                    <a class="date" href="#">
-                                        26 FEB 2020
-                                    </a>
+                                    <h5><a href="https://localhost:7008/admin/Course/Details/361ef5c5-26dd-4a6f-aa18-d21a49fd217f">5 Kỹ Năng Thiết Kế Adobe</a></h5>
                                 </div>
                             </div>
                             <div class="lpa-right">
-                                <a href="#">
-                                    <img src="https://www.bootdey.com/image/400x200/FFB6C1/000000" title="" alt="">
+                                <a href="https://localhost:7008/admin/Course/Details/361ef5c5-26dd-4a6f-aa18-d21a49fd217f">
+                                    <img src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs2/119110577/original/1e0417fdf5be05844383198a56d8acd8b57831e3/do-any-job-related-to-photoshop-premiere-pro-illustrator.jpg" title="" alt="">
                                 </a>
                             </div>
                         </div>
+                    </div>
+                    <div class="widget-body">
                         <div class="latest-post-aside media">
                             <div class="lpa-left media-body">
                                 <div class="lpa-title">
-                                    <h5><a href="#">Prevent 75% of visitors from google analytics</a></h5>
-                                </div>
-                                <div class="lpa-meta">
-                                    <a class="name" href="#">
-                                        Rachel Roth
-                                    </a>
-                                    <a class="date" href="#">
-                                        26 FEB 2020
-                                    </a>
+                                    <h5><a href="https://localhost:7008/admin/Course/Details/6aefc6ee-bdb3-427a-9e75-e038d543fab6">HTML, CSS căn bản</a></h5>
                                 </div>
                             </div>
                             <div class="lpa-right">
-                                <a href="#">
-                                    <img src="https://www.bootdey.com/image/400x200/FFB6C1/000000" title="" alt="">
+                                <a href="https://localhost:7008/admin/Course/Details/6aefc6ee-bdb3-427a-9e75-e038d543fab6">
+                                    <img src="https://camo.githubusercontent.com/3795e5487dfe7c70b09b3e40c9d7a170bbb61aaec2b8bc35a2b4d0b5af1205ca/68747470733a2f2f7777772e69696d2e66722f65636f6c652d7765622f77702d636f6e74656e742f75706c6f6164732f323031372f30312f48544d4c352e6a7067" title="" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="latest-post-aside media">
+                            <div class="lpa-left media-body">
+                                <div class="lpa-title">
+                                    <h5><a href="https://localhost:7008/admin/Course/Details/20e1d085-2b7e-4bc0-aaad-651949bd99a2">Guitar cơ bản cho người mới bắt đầu</a></h5>
+                                </div>
+                            </div>
+                            <div class="lpa-right">
+                                <a href="https://localhost:7008/admin/Course/Details/20e1d085-2b7e-4bc0-aaad-651949bd99a2">
+                                    <img src="https://vietthuong.vn/upload/content/images/tu-van/2023/thang7-2023/guitar-lead-va-guitar-dem-su-khac-biet-la-gi.jpg" title="" alt="">
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- End Latest Post -->
-                <!-- widget Tags -->
+                <!-- End Trending Post -->
+              
+               @*  <!-- widget Tags -->
                 <div class="widget widget-tags">
                     <div class="widget-title">
                         <h3>Latest Tags</h3>
@@ -182,7 +214,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- End widget Tags -->
+                <!-- End widget Tags --> *@
             </div>
         </div>
     </div>
@@ -286,6 +318,5 @@
     </dl>
 </div> *@
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index" class="btn btn-outline-danger">Quay lại</a>
 </div>

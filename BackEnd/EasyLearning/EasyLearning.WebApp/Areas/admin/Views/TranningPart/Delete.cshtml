@@ -82,6 +82,6 @@
     
     <form asp-action="Delete">
         <input type="submit" value="Xóa" class="btn btn-outline-danger" /> |
-        <a asp-action="Index" asp-controller="Course" class="btn btn-outline-primary">Quay lại</a>
+        <a asp-action="Index" asp-route-courseId="@Model.CoursesId " class="btn btn-outline-primary">Quay lại</a>
     </form>
 </div>

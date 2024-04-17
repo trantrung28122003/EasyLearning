@@ -5,9 +5,7 @@
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 
-<h1>Tạo</h1>
-
-<h4>Lớp</h4>
+<h1 class="text-center">Thêm lớp</h1>
 <hr />
     <div class="container">
         <form asp-action="Create">
@@ -55,7 +53,7 @@
     </div>
 
 <div>
-    <a asp-action="Index" class="btn btn-outline-danger">Quay lại</a>
+    <a asp-action="Index" asp-controller="course" class="btn btn-outline-danger">Quay lại</a>
 </div>
 
 @section Scripts {

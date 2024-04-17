@@ -5,12 +5,11 @@
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 
-<h1>Tạo</h1>
+<h1 class="text-center">Thêm thể loại</h1>
 
-<h4>Thể loại</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="container">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -18,8 +17,8 @@
                 <input asp-for="CategoryName" class="form-control" />
                 <span asp-validation-for="CategoryName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Tạo" class="btn btn-outline-primary" />
+            <div class="form-group text-center">
+                <input type="submit" value="Thêm thể loại" class="btn btn-outline-primary" />
             </div>
         </form>
     </div>
