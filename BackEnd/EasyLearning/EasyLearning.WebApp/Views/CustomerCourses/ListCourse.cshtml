@@ -6,7 +6,6 @@
 
 <link href="~/css/CourseList.css" rel="stylesheet" />
 <div class="main-container">
-    
     <form asp-action="ListCourse" asp-controller="CustomerCourses" method="get">
         <div class="input-group mb-3 ">
             <input type="text" class="form-control" name="searchString" placeholder="Search..." aria-label="Search" aria-describedby="button-addon2" style="border-radius: 15px 0px 0px 15px;width:800px">
@@ -46,8 +45,6 @@
                             {
                                 if (itemCourse.Id == itemCourseDetail.CourseId)
                                 {
-
-
                                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                                         <div class="course-item bg-light">
                                             <div class="position-relative overflow-hidden">
