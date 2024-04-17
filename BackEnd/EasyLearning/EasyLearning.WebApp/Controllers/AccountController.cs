@@ -2,11 +2,13 @@
 using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repostiory;
+using EasyLearning.WebApp.Areas.admin.Models;
 using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static System.Net.WebRequestMethods;
 
 namespace EasyLearning.WebApp.Controllers
 {
@@ -17,12 +19,14 @@ namespace EasyLearning.WebApp.Controllers
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly IShoppingCartService _shoppingCartService;
         private readonly IShoppingCartItemService _shoppingCartItemService;
+        private readonly IFileService _fileService;
 
         private readonly UserRepository _userRepository;
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<ApplicationRole> roleManager, 
-            UserRepository userRepository, IShoppingCartService shoppingCartService, IShoppingCartItemService shoppingCartItemService)
+            UserRepository userRepository, IShoppingCartService shoppingCartService,
+            IFileService fileService, IShoppingCartItemService shoppingCartItemService)
         {
 
             this.userManager = userManager;
@@ -31,6 +35,7 @@ namespace EasyLearning.WebApp.Controllers
             this._userRepository = userRepository;
             _shoppingCartService = shoppingCartService;
             _shoppingCartItemService = shoppingCartItemService;
+            _fileService = fileService;
         }
 
         [HttpGet, AllowAnonymous]
@@ -45,6 +50,7 @@ namespace EasyLearning.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+          
                 var userCheck = await userManager.FindByEmailAsync(request.Email);
                 if (userCheck == null)
                 {
@@ -56,7 +62,7 @@ namespace EasyLearning.WebApp.Controllers
                         PhoneNumber = request.PhoneNumber,
                         EmailConfirmed = true,
                         PhoneNumberConfirmed = true,
-                        
+                        ImageUrl = "https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg",
                     };
                     var result = await userManager.CreateAsync(user, request.Password);
                     if (result.Succeeded)

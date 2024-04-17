@@ -12,7 +12,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            int amount = 10000; 
+            int amount = 100000;
             var url = await _paymentService.doPayment(amount.ToString(),"test");
             return Redirect(url);
         }

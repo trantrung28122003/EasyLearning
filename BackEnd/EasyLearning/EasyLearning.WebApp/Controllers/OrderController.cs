@@ -5,6 +5,7 @@ using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
 using System.Net.WebSockets;
 
 namespace EasyLearning.WebApp.Controllers
@@ -72,7 +73,7 @@ namespace EasyLearning.WebApp.Controllers
                 };
                 await _orderDetailService.CreateOrderDetail(orderDetail);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Payment");
         }
     }
 }
