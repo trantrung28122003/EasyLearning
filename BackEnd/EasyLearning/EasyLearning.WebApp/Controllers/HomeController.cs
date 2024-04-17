@@ -1,4 +1,10 @@
-﻿using EasyLearning.WebApp.Models;
+﻿using AutoMapper;
+using Azure.Storage.Blobs.Models;
+using EasyLearing.Infrastructure.Data.Entities;
+using EasyLearning.Application.Services;
+using EasyLearning.Infrastructure.Data.Entities;
+using EasyLearning.Infrastructure.Data.Repostiory;
+using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,15 +13,72 @@ namespace EasyLearning.WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ICourseService _courseService;
+        private readonly ICategoryService _categoryService;
+        private readonly ICourseDetailService _courseDetailService;
+        private readonly ICourseEventService _courseEventService;
+        private readonly ITranningPartService _tranningPartService;
+        private readonly IOrderService _orderService;
+        private readonly IOrderDetailService _orderDetailService;
+        private readonly IFileService _fileService;
+        private readonly UserRepository _userRepository;
+        private readonly IFeedbackService _feedbackService;
+        private readonly IShoppingCartItemService _shoppingCartItemService;
+        private readonly IShoppingCartService _shoppingCartService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ICourseService courseService, ICategoryService categoryService,
+        ICourseDetailService courseDetailService, IOrderService orderService, IOrderDetailService orderDetailService,
+        ICourseEventService courseEventService, ITranningPartService tranningPartService,
+        IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService,
+        IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService)
         {
-            _logger = logger;
+            _courseService = courseService;
+            _categoryService = categoryService;
+            _courseDetailService = courseDetailService;
+            _courseEventService = courseEventService;
+            _tranningPartService = tranningPartService;
+            _orderService = orderService;
+            _orderDetailService = orderDetailService;
+            _fileService = fileService;
+            _userRepository = userRepository;
+            _feedbackService = feedbackService;
+            _shoppingCartItemService = shoppingCartItemService;
+            _shoppingCartService = shoppingCartService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<OrderDetail> listOrderDetail = new List<OrderDetail>();
+            List<ShoppingCartItem> shoppingCartItem = new List<ShoppingCartItem>();
+            var courses = await _courseService.GetAllCourses();
+            var categories = await _categoryService.GetAllCategories();
+            var courDetails = await _courseDetailService.GetAllCourseDetail();
+            var feedbacks = await _feedbackService.GetAllFeedbacks();
+            if (!string.IsNullOrEmpty(_userRepository.getCurrrentUser()))
+            { 
+                var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
+                shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
+                var orders = await _orderService.GetOrdersByUser();
+                foreach (var order in orders)
+                {
+                    listOrderDetail = await _orderDetailService.GetOrderDetailByOrder(order.Id);
+                }
+            }
+            else
+            {
+                
+    
+            }
+            var customerCourseViewModel = new CustomerCourseViewModel()
+            {
+                Courses = courses,
+                Categories = categories,
+                CourseDetails = courDetails,
+                Feedbacks = feedbacks,
+                ShoppingCartItems = shoppingCartItem,
+                OrderDetails = listOrderDetail,
+            };
+            return View(customerCourseViewModel);
         }
 
         public IActionResult Privacy()
@@ -23,10 +86,10 @@ namespace EasyLearning.WebApp.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        /*[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        }*/
     }
 }

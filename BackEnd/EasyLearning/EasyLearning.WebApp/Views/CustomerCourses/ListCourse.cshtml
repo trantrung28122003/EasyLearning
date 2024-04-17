@@ -2,7 +2,9 @@
 
 @{
     ViewData["Title"] = "ListCourse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <link href="~/css/CourseList.css" rel="stylesheet" />
 <div class="main-container">
     <div class="input-group custom-input mb-3">
@@ -11,6 +13,7 @@
             <span class="input-group-text search-button" id="basic-addon2">Search</span>
         </div>
     </div>
+  
     @foreach (var itemCategory in Model.Categories)
     {
 
@@ -42,7 +45,7 @@
                                                 <img class="img-fluid" src="~/img/course-1.jpg" alt="">
                                                 <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
                                                     <a asp-controller="CustomerCourses" asp-action="DetailCourse" asp-route-courseId="@itemCourse.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Xem Thêm</a>
-                                                    <a asp-controller="ShoppingCart" asp-route-courseId="@itemCourse.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Tham Gia Ngay</a>
+                                                    <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-courseId="@itemCourse.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Tham Gia Ngay</a>
                                                 </div>
                                             </div>
                                             <div class="text-center p-4 pb-0">
@@ -67,10 +70,10 @@
                                                     // Tính toán khoảng thời gian giữa hai ngày
                                                     TimeSpan duration = endDate - startDate;
 
-                                                    // Lấy số giờ từ khoảng thời gian
-                                                    double hours = duration.TotalHours;
+                                                    // Lấy số tháng từ khoảng thời gian
+                                                    int months = (int)duration.TotalDays / 30;
                                                 }
-                                                <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>@hours Giờ</small>
+                                                <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>@months tháng</small>
                                                 <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>@itemCourse.MaxAttdendees</small>
                                             </div>
                                         </div>
