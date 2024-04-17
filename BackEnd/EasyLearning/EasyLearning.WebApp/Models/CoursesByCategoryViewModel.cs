@@ -7,7 +7,9 @@ namespace EasyLearning.WebApp.Models
     {
         public List<Course>? Courses { get; set; }
         public List<Category>? Categories { get; set; }
-        
         public List<CourseDetail>? CourseDetails { get; set; }
+        public bool IsSearchResult { get; set; }
+
+
     }
 }

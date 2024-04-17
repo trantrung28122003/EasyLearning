@@ -16,12 +16,13 @@ namespace EasyLearning.WebApp.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly IShoppingCartService _shoppingCartService;
+        private readonly IShoppingCartItemService _shoppingCartItemService;
 
         private readonly UserRepository _userRepository;
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<ApplicationRole> roleManager, 
-            UserRepository userRepository, IShoppingCartService shoppingCartService)
+            UserRepository userRepository, IShoppingCartService shoppingCartService, IShoppingCartItemService shoppingCartItemService)
         {
 
             this.userManager = userManager;
@@ -29,6 +30,7 @@ namespace EasyLearning.WebApp.Controllers
             this.roleManager = roleManager;
             this._userRepository = userRepository;
             _shoppingCartService = shoppingCartService;
+            _shoppingCartItemService = shoppingCartItemService;
         }
 
         [HttpGet, AllowAnonymous]
@@ -61,7 +63,7 @@ namespace EasyLearning.WebApp.Controllers
                         // tạo shopping cart
                         var shoppingCart = new ShoppingCart()
                         {
-                            UserId = _userRepository.getCurrrentUser(),
+                            UserId = user.Id,
                             DateChange = DateTime.Now,
                             DateCreate = DateTime.Now,
                             IsDeleted = false,
@@ -122,7 +124,13 @@ namespace EasyLearning.WebApp.Controllers
                 if (result.Succeeded)
                 {
                     _userRepository.setUser(user.Id);
+              
+             
+  
+       
                     return RedirectToAction("Index" , "Home");
+
+                   
                 }
                 else if (result.IsLockedOut)
                 {
@@ -183,7 +191,6 @@ namespace EasyLearning.WebApp.Controllers
                 return RedirectToAction("AccessDenied");
             }
         }
-
         public IActionResult AccessDenied()
         {
             return View();

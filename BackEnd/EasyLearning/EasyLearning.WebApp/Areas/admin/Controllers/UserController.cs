@@ -1,6 +1,4 @@
-﻿using EasyLearning.Infrastructure.Data;
-using EasyLearning.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Repostiory;
+﻿using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.WebApp.Areas.admin.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

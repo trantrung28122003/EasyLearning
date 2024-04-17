@@ -12,5 +12,7 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
         {
            return await _dbContext.ShoppingCarts.FirstOrDefaultAsync(s => s.UserId == _userRepository.getCurrrentUser());
         }
+
+   
     }
 }

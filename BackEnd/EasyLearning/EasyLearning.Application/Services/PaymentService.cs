@@ -7,28 +7,22 @@ namespace EasyLearning.Application.Services
 {
     public interface IPaymentService
     {
-        Task<string> doPayment();
+        Task<string> doPayment(string amount, string orderInfo);
     }
     public class PaymentService : IPaymentService
     {
-        public async Task<string> doPayment()
+        public async Task<string> doPayment(string amount, string orderInfo)
         {
-            //request params need to request to MoMo system
             string endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
             string partnerCode = "MOMOOJOI20210710";
             string accessKey = "iPXneGmrJH0G8FOP";
             string serectkey = "sFcbSGRSJjwGxwhhcEktCHWYUuTuPNDB";
-            string orderInfo = "test";
-            string returnUrl = "https://localhost:44394/Home/ConfirmPaymentClient";
-            string notifyurl = "https://4c8d-2001-ee0-5045-50-58c1-b2ec-3123-740d.ap.ngrok.io/Home/SavePayment";
-            //lưu ý: notifyurl không được sử dụng localhost, có thể sử dụng ngrok để public localhost trong quá trình test
-
-            string amount = "1000";
+            string returnUrl = "http://localhost:5138/Payment/ConfirmPaymentClient";
+            string notifyurl = "https://4c8d-2001-ee0-5045-50-58c1-b2ec-3123-740d.ap.ngrok.io/Home/SavePayment"; 
             string orderid = DateTime.Now.Ticks.ToString(); //mã đơn hàng
             string requestId = DateTime.Now.Ticks.ToString();
             string extraData = "";
 
-            //Before sign HMAC SHA256 signature
             string rawHash = "partnerCode=" +
                 partnerCode + "&accessKey=" +
                 accessKey + "&requestId=" +
@@ -40,10 +34,8 @@ namespace EasyLearning.Application.Services
                 notifyurl + "&extraData=" +
                 extraData;
 
-            //sign signature SHA256
             string signature = signSHA256(rawHash, serectkey);
 
-            //build body json request
             JObject message = new JObject
             {
                 { "partnerCode", partnerCode },
@@ -63,15 +55,7 @@ namespace EasyLearning.Application.Services
             string responseFromMomo = await sendPaymentRequest(endpoint, message.ToString());
 
             JObject jmessage = JObject.Parse(responseFromMomo);
-
-            try
-            {
-                return jmessage.GetValue("payUrl").ToString();
-            }
-            catch
-            {
-                throw new Exception(jmessage.GetValue("localMessage").ToString());
-            }
+            return jmessage.GetValue("payUrl").ToString() ?? "";
         }
 
         public async Task<string> sendPaymentRequest(string endpoint, string postJsonString)

@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
+using EasyLearning.Infrastructure.Data;
 using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repostiory;
 using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EasyLearning.WebApp.Controllers
 {
@@ -20,10 +23,13 @@ namespace EasyLearning.WebApp.Controllers
         private readonly IFileService _fileService;
         private readonly UserRepository _userRepository;
         private readonly IFeedbackService _feedbackService;
+        private readonly EasyLearningDbContext _easyLearningDbContext;
+        private readonly IShoppingCartItemService _shoppingCartItemService;
+        private readonly IShoppingCartService _shoppingCartService;
         public CustomerCoursesController(ICourseService courseService, ICategoryService categoryService,
         ICourseDetailService courseDetailService, IOrderService orderService, IOrderDetailService orderDetailService,
         ICourseEventService courseEventService, ITranningPartService tranningPartService,
-        IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService)
+        IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService, EasyLearningDbContext easyLearningDbContext, IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService)
         {
             _courseService = courseService;
             _categoryService = categoryService;
@@ -35,37 +41,63 @@ namespace EasyLearning.WebApp.Controllers
             _fileService = fileService;
             _userRepository = userRepository;
             _feedbackService = feedbackService;
+            _easyLearningDbContext = easyLearningDbContext;
+            _shoppingCartItemService = shoppingCartItemService;
+            _shoppingCartService = shoppingCartService;
         }
 
-        public async Task<IActionResult> ListCourse()
+        public async Task<IActionResult> ListCourse(string searchString)
         {
 
-           var course = await _courseService.GetAllCourses();
-           var categories = await _categoryService.GetAllCategories();
-           var coursedetail = await _courseDetailService.GetAllCourseDetail();
-           var coursesByCategory = new CoursesByCategoryViewModel()
-           {
-                Courses = course,
+            var courses = await _courseService.GetAllCourses();
+            var categories = await _categoryService.GetAllCategories();
+            var coursedetail = await _courseDetailService.GetAllCourseDetail();
+
+            // Tạo ViewModel chứa dữ liệu khóa học, danh mục và chi tiết khóa học
+            var coursesByCategory = new CoursesByCategoryViewModel()
+            {
+                Courses = courses,
                 Categories = categories,
                 CourseDetails = coursedetail,
-           };
-           return View(coursesByCategory);
-        }
+                IsSearchResult = !string.IsNullOrEmpty(searchString)
+            };
 
-        
+            // Lọc danh sách khóa học theo từ khóa tìm kiếm nếu có
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                // Lấy danh sách các khóa học có tên chứa từ khóa tìm kiếm
+                coursesByCategory.Courses = courses.Where(p => p.CoursesName.ToLower().Contains(searchString.ToLower())).ToList(); 
+            }
+            else
+            {
+                coursesByCategory.Courses = courses;
+            }
+            
+            // Trả về View với danh sách khóa học đã lọc
+            return View(coursesByCategory);
+        }
         public async Task<IActionResult> DetailCourse(string courseId)
         {
+            List<OrderDetail> listOrderDetail = new List<OrderDetail>();
+            var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
+            var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
             var course = await _courseService.GetCourseById(courseId);
             var tranningParts = await _tranningPartService.GetTranningPartByCourse(courseId);
             var getFeedbackbyCourse = await _feedbackService.GetFeedbacksByCourseId(courseId);
             var getUsers = await _userRepository.GetUsersAsync();
-
+            var orders = await _orderService.GetOrdersByUser();
+            foreach (var order in orders)
+            {
+                listOrderDetail = await _orderDetailService.GetOrderDetailByOrder(order.Id);
+            }
             var customerCourseViewModel = new CustomerCourseViewModel()
             {
                 Course = course,
+                ShoppingCartItems = shoppingCartItem,
                 TranningParts = tranningParts,
                 Feedbacks = getFeedbackbyCourse,
                 Users = getUsers,
+                OrderDetails = listOrderDetail,
             };
             return View(customerCourseViewModel);
         }
@@ -91,7 +123,7 @@ namespace EasyLearning.WebApp.Controllers
 
         }
 
-        public async Task<IActionResult> index()
+        public async Task<IActionResult> EventSchedule()
         {
             List<Course> courses = new List<Course>();
             List<CourseEvent> listCourseEvent = new List<CourseEvent>();
@@ -109,7 +141,7 @@ namespace EasyLearning.WebApp.Controllers
                 var courseEvents = await _courseEventService.GetEventByCourse(itemOrderDetail.CoursesId);
                 listCourseEvent.AddRange(courseEvents.ToList());
                 listTranningPart.AddRange(tranningParts.ToList());
-                courses.AddRange(await _courseService.GetCoursesByOrderDetail(itemOrderDetail.Id));
+                courses.AddRange(await _courseService.GetCourseByOrderDetail(itemOrderDetail.Id));
             }
             var customerCourseViewModel = new CustomerCourseViewModel
             {
