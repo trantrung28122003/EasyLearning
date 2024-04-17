@@ -4,6 +4,7 @@ using EasyLearning.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyLearning.Infrastructure.Migrations
 {
     [DbContext(typeof(EasyLearningDbContext))]
-    partial class EasyLearningDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240417170845_updateusser")]
+    partial class updateusser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -466,22 +468,22 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f1789ad2-e451-44f0-a0b8-45c666d14f44",
-                            ConcurrencyStamp = "70c6062a-a7b2-448f-900a-735668de5483",
+                            Id = "b9f8c82f-459d-4d3e-bc08-9c8bf0c915b5",
+                            ConcurrencyStamp = "02f6eda8-2355-4838-bce2-86f1ba2c44a6",
                             Name = "Admin",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "8dfabc5f-abf9-4782-bdeb-ad08185f2ca9",
-                            ConcurrencyStamp = "5d5779a1-0ec0-4268-aea2-0d3626d1bbd6",
+                            Id = "de6c71e6-80f3-4b8c-adce-c90779c42de2",
+                            ConcurrencyStamp = "33312d77-50d8-4caf-9944-0a0d6d951d6f",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "a68b3dde-5b9e-47f7-8238-0547d71409ef",
-                            ConcurrencyStamp = "dfa89656-4c6e-40d8-9a71-4a2398b61fbb",
+                            Id = "28d6e3f3-fd28-44a7-b84f-efcc4742b1a6",
+                            ConcurrencyStamp = "4baa885e-b2b7-4608-8182-ddc65c7089f9",
                             Name = "Trainer",
                             NormalizedName = "TRAINER"
                         });
@@ -505,10 +507,6 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Courese_ImageUrl");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
