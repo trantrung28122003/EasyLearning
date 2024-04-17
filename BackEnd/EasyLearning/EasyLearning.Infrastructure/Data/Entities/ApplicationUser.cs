@@ -13,5 +13,7 @@ namespace EasyLearning.Infrastructure.Data.Entities
         public TrainerDetail? TrannerDetail { get; set; }
         public ICollection<Order>? Orders { get; set; }
 
+        [Column("Courese_ImageUrl")]
+        public string? ImageUrl { get; set; }
     }
 }
