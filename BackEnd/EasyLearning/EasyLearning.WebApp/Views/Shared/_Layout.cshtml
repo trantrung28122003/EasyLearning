@@ -1,6 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using EasyLearning.Infrastructure.Data.Entities
-
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -56,16 +55,24 @@
                     <a href="about.html" class="nav-item nav-link">Thông Tin Về Chúng Tôi</a>
 
                     
-                    <a href="courses.html" class="nav-item nav-link">Các Khóa Học</a>
+                    <a asp-controller="CustomerCourses" asp-action="ListCourse" class="nav-item nav-link">Các Khóa Học</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mục Lục</a>
                         <div class="dropdown-menu fade-down m-0">
-                            <a href="team.html" class="dropdown-item">Thành Viên</a>
+                            <a asp-controller="CustomerCourses" asp-action="EventSchedule" class="dropdown-item">Thời khóa biểu</a>
                             <a href="testimonial.html" class="dropdown-item">Đánh Giá</a>
                             <a href="404.html" class="dropdown-item">404 Page</a>
                         </div>
                     </div>
-                    <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
+                    
+               
+                    <a asp-controller="ShoppingCart" asp-action="GetShoppingCart" class="position-relative me-4 my-auto">
+                        <i class="fa fa-shopping-bag fa-2x"></i>
+                        
+                    </a>
+                   
+
+
                 </div>
                 @if (User.Identity.IsAuthenticated)
                 {
@@ -176,3 +183,4 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+

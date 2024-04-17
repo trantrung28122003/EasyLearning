@@ -21,10 +21,13 @@ namespace EasyLearning.WebApp.Controllers
         private readonly IFileService _fileService;
         private readonly UserRepository _userRepository;
         private readonly IFeedbackService _feedbackService;
+        private readonly IShoppingCartItemService _shoppingCartItemService;
+        private readonly IShoppingCartService _shoppingCartService;
         public CustomerCoursesController(ICourseService courseService, ICategoryService categoryService,
         ICourseDetailService courseDetailService, IOrderService orderService, IOrderDetailService orderDetailService,
         ICourseEventService courseEventService, ITranningPartService tranningPartService,
-        IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService)
+        IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService,
+        IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService)
         {
             _courseService = courseService;
             _categoryService = categoryService;
@@ -36,6 +39,8 @@ namespace EasyLearning.WebApp.Controllers
             _fileService = fileService;
             _userRepository = userRepository;
             _feedbackService = feedbackService;
+            _shoppingCartItemService = shoppingCartItemService;
+            _shoppingCartService = shoppingCartService;
         }
 
         public async Task<IActionResult> ListCourse()
@@ -56,17 +61,26 @@ namespace EasyLearning.WebApp.Controllers
         
         public async Task<IActionResult> DetailCourse(string courseId)
         {
+            List<OrderDetail> listOrderDetail = new List<OrderDetail>();
+            var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
+            var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
             var course = await _courseService.GetCourseById(courseId);
             var tranningParts = await _tranningPartService.GetTranningPartByCourse(courseId);
             var getFeedbackbyCourse = await _feedbackService.GetFeedbacksByCourseId(courseId);
             var getUsers = await _userRepository.GetUsersAsync();
-
+            var orders = await _orderService.GetOrdersByUser();
+            foreach (var order in orders)
+            {
+                listOrderDetail = await _orderDetailService.GetOrderDetailByOrder(order.Id);
+            }
             var customerCourseViewModel = new CustomerCourseViewModel()
             {
                 Course = course,
+                ShoppingCartItems = shoppingCartItem,
                 TranningParts = tranningParts,
                 Feedbacks = getFeedbackbyCourse,
                 Users = getUsers,
+                OrderDetails = listOrderDetail,
             };
             return View(customerCourseViewModel);
         }
@@ -92,7 +106,7 @@ namespace EasyLearning.WebApp.Controllers
 
         }
 
-        public async Task<IActionResult> index()
+        public async Task<IActionResult> EventSchedule()
         {
             List<Course> courses = new List<Course>();
             List<CourseEvent> listCourseEvent = new List<CourseEvent>();

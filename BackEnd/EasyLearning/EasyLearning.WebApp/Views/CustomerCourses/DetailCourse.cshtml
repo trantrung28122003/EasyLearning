@@ -166,10 +166,28 @@
                     </div>
                 </div>
                 <hr />
-                <div class="row">
-                    <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-courseId="@Model.Course.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 30px 30px 30px;">Thêm vào giỏ hàng</a>
-                    
-                </div>
+                @if (Model.OrderDetails.Any(itemOrderDetail => itemOrderDetail.CoursesId == Model.Course.Id))
+                {
+                        
+                    <div class="row">
+                        <a asp-controller="CustomerCourses" asp-action="EventSchedule" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 30px 30px 30px;">Đi đến lịch học</a>
+                    </div>
+                }
+                else
+                {
+                    if (!Model.ShoppingCartItems.Any(shoppingCartItem => shoppingCartItem.CoursesId == Model.Course.Id) || Model.ShoppingCartItems.Count == 0)
+                    {
+                        <div class="row">
+                            <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-courseId="@Model.Course.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 30px 30px 30px;">Thêm vào giỏ hàng</a>
+                        </div>
+                    }
+                    else if(Model.ShoppingCartItems.Any(shoppingCartItem => shoppingCartItem.CoursesId == Model.Course.Id))
+                    {
+                        <div class="row">
+                            <a asp-controller="ShoppingCart" asp-action="GetShoppingCart" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 30px 30px 30px;">Đi đến giỏ hàng</a>
+                        </div>
+                    }
+                }
             </div>
         </div>
     </div>
