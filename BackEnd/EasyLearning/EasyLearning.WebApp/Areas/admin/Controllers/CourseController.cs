@@ -4,13 +4,14 @@ using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repostiory;
 using EasyLearning.WebApp.Areas.admin.Models;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
     [Area("admin")]
+    [Authorize(Roles = "Admin")]
     public class CourseController : Controller
     {
         private readonly ICourseService _courseService;
@@ -43,9 +44,9 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         {
             var categories = await _categoryService.GetAllCategories();
             ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");
-
             return View();
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -53,18 +54,21 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var imgLink = await _fileService.SaveFile(courseViewModel.Image);
                 Course course = new Course()
                 {
+                    
                     CoursesName = courseViewModel.CoursesName,
                     CoursesDescription = courseViewModel.CoursesDescription,
                     CoursesPrice = courseViewModel.CoursesPrice,
                     Requirements = courseViewModel.Requirements,
                     CoureseContent = courseViewModel.CoureseContent,
                     StartDate = courseViewModel.StartDate,
-                    StartEnd = courseViewModel.StartEnd,
+                    EndDate = courseViewModel.StartEnd,
                     RegistrationDeadline = courseViewModel.RegistrationDeadline,
                     MaxAttdendees = courseViewModel.MaxAttdendees,
-                    ImageUrl = await _fileService.SaveFile(courseViewModel.Image),
+                    Instructor = courseViewModel.Instructor,
+                    ImageUrl = imgLink,
                     DateCreate = DateTime.Now
                 };
                 await _courseService.CreateCourse(course);
@@ -78,12 +82,12 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     await _courseDetailService.CreateCourseDetail(courDetail);
                 }
 
-                var trannerDetail = new TrainnerDetail()
+               /* var trannerDetail = new TrainerDetail()
                 {
                     CoursesId = course.Id,
                     UserId = _userRepository.getCurrrentUser(),
                 };
-                await _trannerDetailService.CreateTrannerDetail(trannerDetail);
+                await _trannerDetailService.CreateTranerDetail(trannerDetail);*/
                 return RedirectToAction("Index");
             }
             var categories = await _categoryService.GetAllCategories();
@@ -156,7 +160,6 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             return View(course);
         }
 
-
         public async Task<IActionResult> Details(string id)
         {
             var product = await _courseService.GetCourseById(id);
@@ -197,29 +200,5 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             await _courseService.DeleteCourse(course);
             return RedirectToAction(nameof(Index)); // Chuyển hướng về trang danh sách khóa học sau khi xóa thành công
         }
-
-
-        /*[HttpPost]
-        public async Task<IActionResult> Create(CourseCreateViewModel courseViewModel, string[] selectedCategories)
-        {
-            if (!ModelState.IsValid)
-            {
-
-                var course = _mapper.Map<Course>(courseViewModel);
-                if(course is not null)
-                {
-                    course?.CoursesDetails?.Add(new CourseDetail
-                    {
-                        course = course,
-                        Category = courseViewModel.Category
-                    });
-                }
-                await _courseService.CreateCourse(_mapper.Map<Course>(courseViewModel));
-                return RedirectToAction("Index");
-            }
-            *//*var categories = await _categoryService.GetAllCategories();
-            ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");*//*
-            return View();
-        }*/
     }
 }

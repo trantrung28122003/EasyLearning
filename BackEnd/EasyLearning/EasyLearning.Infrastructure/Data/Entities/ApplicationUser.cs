@@ -10,7 +10,10 @@ namespace EasyLearning.Infrastructure.Data.Entities
 
         public string? TrannerDetailId { get; set; }
         [ForeignKey("TrannerDetailId")]
-        public TrainnerDetail? TrannerDetail { get; set; }
+        public TrainerDetail? TrannerDetail { get; set; }
         public ICollection<Order>? Orders { get; set; }
+
+        [Column("Courese_ImageUrl")]
+        public string? ImageUrl { get; set; }
     }
 }

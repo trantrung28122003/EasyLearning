@@ -1,9 +1,14 @@
-﻿using EasyLearning.Infrastructure.Data.Entities;
+﻿using EasyLearing.Infrastructure.Data.Entities;
+using EasyLearning.Application.Services;
+using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repostiory;
+using EasyLearning.WebApp.Areas.admin.Models;
 using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using static System.Net.WebRequestMethods;
 
 namespace EasyLearning.WebApp.Controllers
 {
@@ -12,18 +17,25 @@ namespace EasyLearning.WebApp.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<ApplicationRole> roleManager;
+        private readonly IShoppingCartService _shoppingCartService;
+        private readonly IShoppingCartItemService _shoppingCartItemService;
+        private readonly IFileService _fileService;
 
         private readonly UserRepository _userRepository;
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<ApplicationRole> roleManager, 
-            UserRepository userRepository)
+            UserRepository userRepository, IShoppingCartService shoppingCartService,
+            IFileService fileService, IShoppingCartItemService shoppingCartItemService)
         {
 
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             this._userRepository = userRepository;
+            _shoppingCartService = shoppingCartService;
+            _shoppingCartItemService = shoppingCartItemService;
+            _fileService = fileService;
         }
 
         [HttpGet, AllowAnonymous]
@@ -38,6 +50,7 @@ namespace EasyLearning.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+          
                 var userCheck = await userManager.FindByEmailAsync(request.Email);
                 if (userCheck == null)
                 {
@@ -49,11 +62,20 @@ namespace EasyLearning.WebApp.Controllers
                         PhoneNumber = request.PhoneNumber,
                         EmailConfirmed = true,
                         PhoneNumberConfirmed = true,
+                        ImageUrl = "https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg",
                     };
                     var result = await userManager.CreateAsync(user, request.Password);
                     if (result.Succeeded)
                     {
                         // tạo shopping cart
+                        var shoppingCart = new ShoppingCart()
+                        {
+                            UserId = user.Id,
+                            DateChange = DateTime.Now,
+                            DateCreate = DateTime.Now,
+                            IsDeleted = false,
+                        };
+                        await _shoppingCartService.CreateShoppingCart(shoppingCart);
                         return RedirectToAction("Login");
                     }
                     else
@@ -109,7 +131,13 @@ namespace EasyLearning.WebApp.Controllers
                 if (result.Succeeded)
                 {
                     _userRepository.setUser(user.Id);
+              
+             
+  
+       
                     return RedirectToAction("Index" , "Home");
+
+                   
                 }
                 else if (result.IsLockedOut)
                 {
@@ -128,6 +156,51 @@ namespace EasyLearning.WebApp.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("index","Home");
+        }
+
+        [AllowAnonymous]
+        public IActionResult GoogleLogin()
+        {
+            string redirectUrl = Url.Action("GoogleResponse", "Account");
+            var properties = signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+            return new ChallengeResult("Google", properties);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            ExternalLoginInfo info = await signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+                return RedirectToAction(nameof(Login));
+
+            var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            string[] userInfo = { info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value };
+            if (result.Succeeded)
+                return RedirectToAction("Index", "Home");
+            else
+            {
+                ApplicationUser user = new ApplicationUser
+                {
+                    Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
+                    UserName = info.Principal.FindFirst(ClaimTypes.Email).Value
+                };
+
+                IdentityResult identResult = await userManager.CreateAsync(user);
+                if (identResult.Succeeded)
+                {
+                    identResult = await userManager.AddLoginAsync(user, info);
+                    if (identResult.Succeeded)
+                    {
+                        await signInManager.SignInAsync(user, false);
+                        RedirectToAction("Index", "Home");
+                    }
+                }
+                return RedirectToAction("AccessDenied");
+            }
+        }
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

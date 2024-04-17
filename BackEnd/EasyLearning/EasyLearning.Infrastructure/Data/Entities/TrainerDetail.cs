@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyLearing.Infrastructure.Data.Entities
 {
-    public class TrainnerDetail : GenericEntity
+    public class TrainerDetail : GenericEntity
     {
         [Column("Courses_Id")]
         public string? CoursesId { get; set; }

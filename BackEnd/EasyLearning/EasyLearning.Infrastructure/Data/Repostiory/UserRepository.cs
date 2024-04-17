@@ -1,4 +1,8 @@
-﻿namespace EasyLearning.Infrastructure.Data.Repostiory
+﻿using EasyLearning.Infrastructure.Data.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+namespace EasyLearning.Infrastructure.Data.Repostiory
 {
     public class UserRepository
     {
@@ -10,6 +14,13 @@
         public void setUser(string user)
         {
             _user = user;
+        }
+        public async Task<List<ApplicationUser>> GetUsersAsync()
+        {
+            using (var context = new EasyLearningDbContext())
+            {
+                return await context.Users.ToListAsync();
+            }
         }
     }
 }

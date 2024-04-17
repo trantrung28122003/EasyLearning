@@ -9,7 +9,7 @@ namespace EasyLearing.Infrastructure.Data.Entities
     {
         [Column("Order_Id")]
         public string? OrderId { get; set; }
-        [ForeignKey("OrderID")]
+        [ForeignKey("OrderId")]
         public Order? Order { get; set; }
 
         [Column("Courses_Id")]

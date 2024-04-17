@@ -1,0 +1,83 @@
+﻿@model EasyLearning.WebApp.Models.OrderViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body class='snippet-body'>
+    <main>
+        <div class="py-5 text-center " >
+            <h2>Checkout form</h2>
+        </div>
+        <div class="row g-5">
+            <div class="col-md-5 col-lg-4 order-md-last">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-primary">Your cart</span>
+                    @* <span class="badge bg-primary rounded-pill">3</span> *@
+                </h4>
+                <ul class="list-group mb-3">
+                    @for (var i = 0; i < Model.ShoppingCartItems.Count; i++)
+                    {
+                        <input type="hidden" name="ShoppingCartItems[@i].Id" value="@Model.ShoppingCartItems[i].Id" />
+
+                    }
+                    @foreach (var item in Model.ShoppingCartItems)
+                    {
+
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">@item.CartItemName</h6>
+                                <small class="text-muted"></small>
+                            </div>
+                            <span class="text-muted">@item.CartItemPrice</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total </span>
+                            <strong>@Model.OrderTotalPrice</strong>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3">Billing address</h4>
+                <form asp-action="Create" class="needs-validation" method="post">
+                    <div class="col-sm-6">
+                        <label asp-for="OrderNotes"for=" firstName" class="form-label">Ghi chú</label>
+                        <input asp-for ="OrderNotes" type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                        <span asp-validation-for="OrderNotes" class="text-danger"></span>
+                        <div class="invalid-feedback">
+                            Valid first name is required.
+                        </div>
+                    </div>
+
+                    <div class="form-group" hidden>
+                        <label asp-for="OrderTotalPrice" class="control-label"></label>
+                        <input asp-for="OrderTotalPrice" class="form-control" />
+                        <span asp-validation-for="OrderTotalPrice" class="text-danger"></span>
+                    </div>
+                    <hr class="my-4">
+                    <h4 class="mb-3">Payment</h4>
+                    <div class="my-3">
+                        <div class="form-check">
+                            <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
+                            <label class="form-check-label" for="credit">momo</label>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+               
+                    <button class="w-100 btn btn-lg" type="submit" style="background-color: #06bbcc; border-color: #06bbcc; color: white;">Continue to checkout</button>
+                  
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -5,10 +5,12 @@
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Trang Chính</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-info">Create New</a>
+    <a asp-action="Create" class="btn btn-info">Khóa Học Mới</a>
+    <a asp-controller="CustomerCourses" asp-action="Index"></a>
+    
 </p>
     <table class="table">
         <table class="table">
@@ -37,7 +39,7 @@
                             @Html.DisplayFor(modelItem => item.StartDate)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.StartEnd)
+                        @Html.DisplayFor(modelItem => item.EndDate)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.RegistrationDeadline)
@@ -46,11 +48,12 @@
                             @Html.DisplayFor(modelItem => item.MaxAttdendees)
                         </td>
                         <td>
-                            @Html.ActionLink("Sửa", "Update", new { id = item.Id }, new { @class = "btn btn-info", @role = "button" }) 
-                            @Html.ActionLink("Chi tiết", "Detail", new { id = item.Id }, new { @class = "btn btn-warning", @role = "button" }) 
-                            @Html.ActionLink("Xóa", "Delete", new { id = item.Id }, new { @class = "btn btn-danger", @role = "button" })
+                            @Html.ActionLink("Sửa", "Update","Course", new { id = item.Id }, new { @class = "btn btn-info", @role = "button" })
+                            @Html.ActionLink("Chi tiết", "Details", "Course", new { id = item.Id }, new { @class = "btn btn-warning", @role = "button" })
+                            @Html.ActionLink("Xóa", "Delete", "Course", new { id = item.Id }, new { @class = "btn btn-danger", @role = "button" })
                             @Html.ActionLink("Thêm phần của khóa", "Index", "TranningPart", new { courseId = item.Id }, new { @class = "btn btn-info", @role = "button" })
                             @Html.ActionLink("Thêm lớp", "Index", "Event", new { courseId = item.Id }, new { @class = "btn btn-info", @role = "button" })
+                        
                         </td>
                     </tr>
                 }
@@ -59,7 +62,7 @@
 
         @if (Model is null)
         {
-            <div>Loading</div>
+            <div>Đang tải</div>
         }
         else
         {
