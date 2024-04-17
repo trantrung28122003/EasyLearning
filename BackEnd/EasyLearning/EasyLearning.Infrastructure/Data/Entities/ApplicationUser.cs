@@ -14,5 +14,7 @@ namespace EasyLearning.Infrastructure.Data.Entities
         public ICollection<Order>? Orders { get; set; }
         public string? Image { get; set; }
 
+        [Column("Courese_ImageUrl")]
+        public string? ImageUrl { get; set; }
     }
 }
