@@ -23,13 +23,13 @@ namespace EasyLearning.WebApp.Controllers
         private readonly IFileService _fileService;
         private readonly UserRepository _userRepository;
         private readonly IFeedbackService _feedbackService;
-        //private readonly EasyLearningDbContext _easyLearningDbContext;//
+        private readonly EasyLearningDbContext _easyLearningDbContext;
         private readonly IShoppingCartItemService _shoppingCartItemService;
         private readonly IShoppingCartService _shoppingCartService;
         public CustomerCoursesController(ICourseService courseService, ICategoryService categoryService,
         ICourseDetailService courseDetailService, IOrderService orderService, IOrderDetailService orderDetailService,
         ICourseEventService courseEventService, ITranningPartService tranningPartService,
-        IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService, IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService)
+        IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService, EasyLearningDbContext easyLearningDbContext, IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService)
         {
             _courseService = courseService;
             _categoryService = categoryService;
@@ -41,7 +41,7 @@ namespace EasyLearning.WebApp.Controllers
             _fileService = fileService;
             _userRepository = userRepository;
             _feedbackService = feedbackService;
-        
+            _easyLearningDbContext = easyLearningDbContext;
             _shoppingCartItemService = shoppingCartItemService;
             _shoppingCartService = shoppingCartService;
         }

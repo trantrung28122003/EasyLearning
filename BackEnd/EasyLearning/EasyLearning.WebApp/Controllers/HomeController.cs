@@ -83,7 +83,6 @@ namespace EasyLearning.WebApp.Controllers
             else
             {
                 
-    
             }
             var customerCourseViewModel = new CustomerCourseViewModel()
             {
