@@ -55,14 +55,20 @@ namespace EasyLearning.WebApp.Controllers
                 Courses = courses,
                 Categories = categories,
                 CourseDetails = coursedetail,
+                IsSearchResult = !string.IsNullOrEmpty(searchString)
             };
 
             // Lọc danh sách khóa học theo từ khóa tìm kiếm nếu có
             if (!string.IsNullOrEmpty(searchString))
             {
                 // Lấy danh sách các khóa học có tên chứa từ khóa tìm kiếm
-                coursesByCategory.Courses = courses.Where(p => p.CoursesName.ToLower().Contains(searchString.ToLower())).ToList();
+                coursesByCategory.Courses = courses.Where(p => p.CoursesName.ToLower().Contains(searchString.ToLower())).ToList(); 
             }
+            else
+            {
+                coursesByCategory.Courses = courses;
+            }
+            
             // Trả về View với danh sách khóa học đã lọc
             return View(coursesByCategory);
         }           

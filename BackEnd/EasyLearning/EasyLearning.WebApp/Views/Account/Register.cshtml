@@ -55,6 +55,11 @@
                     @Html.ValidationMessageFor(m => m.ConfirmPassword)
                     <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
                 </div>
+                <div class="form-group">
+                    <label asp-for="Image" class="control-label"></label>
+                    <input asp-for="Image" class="form-control" type="file" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
 
                 <div class="mb-3">
                     <div class="form-check">
@@ -65,7 +70,6 @@
                         </label>
                     </div>
                 </div>
-
                 <button type="submit" class="btn btn-primary d-grid w-100">Đăng Ký</button>
                 <p class="text-center">
                     <span>Đã Có Tài Khoản ?</span>

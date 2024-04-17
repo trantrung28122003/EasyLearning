@@ -21,6 +21,7 @@ namespace EasyLearning.WebApp.Models
         public string? PhoneNumber { get; set; }
 
         public string? isConfirmPolicy { get; set; }
+        public string? Image {  get; set; }
     }
 }
     
