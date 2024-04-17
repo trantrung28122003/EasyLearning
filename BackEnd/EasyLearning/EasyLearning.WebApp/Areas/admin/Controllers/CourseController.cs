@@ -82,12 +82,12 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     await _courseDetailService.CreateCourseDetail(courDetail);
                 }
 
-                var trannerDetail = new TrainerDetail()
+               /* var trannerDetail = new TrainerDetail()
                 {
                     CoursesId = course.Id,
                     UserId = _userRepository.getCurrrentUser(),
                 };
-                await _trannerDetailService.CreateTranerDetail(trannerDetail);
+                await _trannerDetailService.CreateTranerDetail(trannerDetail);*/
                 return RedirectToAction("Index");
             }
             var categories = await _categoryService.GetAllCategories();

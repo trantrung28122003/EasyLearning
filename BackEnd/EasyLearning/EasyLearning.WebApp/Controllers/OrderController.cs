@@ -44,7 +44,6 @@ namespace EasyLearning.WebApp.Controllers
                 UserId = _userRepository.getCurrrentUser(),
                 ShoppingCartItems = getShoppingCartItem,
             };
-           
             return View(orderViewModel);
         }
         [HttpPost]
@@ -73,6 +72,10 @@ namespace EasyLearning.WebApp.Controllers
                 };
                 await _orderDetailService.CreateOrderDetail(orderDetail);
             }
+            foreach(var itemCart in getShoppingCartItem)
+            {
+                await _shoppingCartItemService.DeleteShoppingCartItem(itemCart);
+            }    
             return RedirectToAction("Index", "Payment");
         }
     }
