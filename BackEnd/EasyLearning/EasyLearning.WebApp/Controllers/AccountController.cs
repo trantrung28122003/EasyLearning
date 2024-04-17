@@ -56,6 +56,7 @@ namespace EasyLearning.WebApp.Controllers
                         PhoneNumber = request.PhoneNumber,
                         EmailConfirmed = true,
                         PhoneNumberConfirmed = true,
+                        
                     };
                     var result = await userManager.CreateAsync(user, request.Password);
                     if (result.Succeeded)
