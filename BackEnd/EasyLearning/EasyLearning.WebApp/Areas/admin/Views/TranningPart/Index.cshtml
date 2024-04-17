@@ -5,11 +5,11 @@
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Trang Chính</h1>
 
 <p>
-    <a asp-action="Create" asp-controller="TranningPart" asp-route-CourseId="@ViewBag.CourseId">Create New</a>
-    <a asp-action="Index" asp-controller="Course" >back</a>
+    <a asp-action="Create" asp-controller="TranningPart" asp-route-CourseId="@ViewBag.CourseId" class="btn btn-outline-primary">Tạo</a>
+    <a asp-action="Index" asp-controller="Course" class="btn btn-outline-danger" >Quay lại</a>
 
 </p>
    

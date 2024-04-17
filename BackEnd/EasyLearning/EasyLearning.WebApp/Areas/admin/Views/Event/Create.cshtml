@@ -5,28 +5,27 @@
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Tạo</h1>
 
-<h4>CourseEvent</h4>
+<h4>Lớp</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+    <div class="container">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <p>Course ID: @ViewBag.CourseId</p>
+            <p>Mã khóa học: @ViewBag.CourseId</p>
             <input type="hidden" id="CourseId" name="CourseId" value="@ViewBag.CourseId" />
             <div class="form-group">
-                <label asp-for="TranningPartId" class="control-label"></label>
+                <label asp-for="TranningPartId" class="control-label">Mã nội dung</label>
                 <select asp-for="TranningPartId" class="form-control" asp-items="@ViewBag.TranningParts"></select>
                 <span asp-validation-for="TranningPartId" class="text-danger"></span>
             </div> 
             <div class="form-group">
-                <label asp-for="EventName" class="control-label"></label>
+                <label asp-for="EventName" class="control-label">Tên lớp</label>
                 <input asp-for="EventName" class="form-control" />
                 <span asp-validation-for="EventName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EventType">Event Type:</label>
+                <label asp-for="EventType">Hình thức:</label>
                 <select asp-for="EventType" class="form-control">
                     <option value="@((int)EasyLearing.Infrastructure.Data.Entities.EnventType.Online)">Online</option>
                     <option value="@((int)EasyLearing.Infrastructure.Data.Entities.EnventType.Offline)">Offline</option>
@@ -34,30 +33,29 @@
                 <span asp-validation-for="EventType" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
+                <label asp-for="Location" class="control-label">Địa chỉ</label>
                 <input asp-for="Location" class="form-control" />
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateStart" class="control-label"></label>
+                <label asp-for="DateStart" class="control-label">Ngày bắt đầu</label>
                 <input asp-for="DateStart" class="form-control" />
                 <span asp-validation-for="DateStart" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateEnd" class="control-label"></label>
+                <label asp-for="DateEnd" class="control-label">Ngày kết thúc</label>
                 <input asp-for="DateEnd" class="form-control" />
                 <span asp-validation-for="DateEnd" class="text-danger"></span>
             </div>
          
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Tạo" class="btn btn-outline-primary" />
             </div>
         </form>
     </div>
-</div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-danger">Quay lại</a>
 </div>
 
 @section Scripts {

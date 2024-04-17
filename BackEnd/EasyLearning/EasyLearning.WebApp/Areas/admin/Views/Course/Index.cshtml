@@ -5,11 +5,11 @@
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Trang Chính</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-info">Create New</a>
-    <a asp-controller="CustomerCourses" asp-action="Index">Aaaa</a>
+    <a asp-action="Create" class="btn btn-info">Khóa Học Mới</a>
+    <a asp-controller="CustomerCourses" asp-action="Index"></a>
     
 </p>
     <table class="table">
@@ -62,7 +62,7 @@
 
         @if (Model is null)
         {
-            <div>Loading</div>
+            <div>Đang tải</div>
         }
         else
         {

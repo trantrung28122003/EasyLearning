@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
     [Area("admin")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "User")]
     public class CategoryController : Controller
     {
         private readonly ICourseService _courseService;

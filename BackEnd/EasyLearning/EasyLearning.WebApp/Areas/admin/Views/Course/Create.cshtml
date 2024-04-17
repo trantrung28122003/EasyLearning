@@ -4,9 +4,9 @@
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Tạo</h1>
 
-<h4>Course</h4>
+<h4>Khóa Học</h4>
 <hr />
 <div class="container">
     <form asp-action="Create" method="post" enctype="multipart/form-data">
@@ -37,32 +37,32 @@
             <span asp-validation-for="CoureseContent" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Image" class="control-label"></label>
+            <label asp-for="Image" class="control-label">Hình ảnh</label>
             <input asp-for="Image" class="form-control" type="file" />
             <span asp-validation-for="Image" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="StartDate" class="control-label"></label>
+            <label asp-for="StartDate" class="control-label">Ngày bắt đầu </label>
             <input asp-for="StartDate" class="form-control" />
             <span asp-validation-for="StartDate" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="StartEnd" class="control-label"></label>
+            <label asp-for="StartEnd" class="control-label">Ngày kết thúc</label>
             <input asp-for="StartEnd" class="form-control" />
             <span asp-validation-for="StartEnd" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="RegistrationDeadline" class="control-label"></label>
+            <label asp-for="RegistrationDeadline" class="control-label">Hạn đăng ký</label>
             <input asp-for="RegistrationDeadline" class="form-control" />
             <span asp-validation-for="RegistrationDeadline" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="MaxAttdendees" class="control-label"></label>
+            <label asp-for="MaxAttdendees" class="control-label">Số học viên tối đa</label>
             <input asp-for="MaxAttdendees" class="form-control" />
             <span asp-validation-for="MaxAttdendees" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label>Categories:</label>
+            <label>Thể Loại:</label>
             @foreach (var category in ViewBag.Categories)
             {
                 <div class="checkbox">
@@ -75,13 +75,13 @@
         </div>
 
         <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" />
+            <input type="submit" value="Tạo" class="btn btn-outline-primary" />
         </div>
     </form>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-danger">Quay lại</a>
 </div>
 
 @section Scripts {
