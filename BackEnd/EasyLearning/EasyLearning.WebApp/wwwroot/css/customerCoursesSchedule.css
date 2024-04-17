@@ -1,13 +1,10 @@
 ﻿
-body {
-}
-
 .event-schedule-area .section-title .title-text {
     margin-bottom: 50px;
 }
 
-.text-header{
-    text-align: center; 
+.text-header {
+    text-align: center;
     padding-top: 1rem;
 }
 
@@ -98,9 +95,11 @@ body {
         margin: 0;
         font-weight: normal;
     }
-h2.h2-text-center{
-    margin: 1rem 0 !important; 
+
+h2.h2-text-center {
+    margin: 1rem 0 !important;
 }
+
 .event-schedule-area-two .section-title .title-text h2 {
     margin: 0px 0 15px;
 }

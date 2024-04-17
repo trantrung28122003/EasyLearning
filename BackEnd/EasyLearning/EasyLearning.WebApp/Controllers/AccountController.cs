@@ -191,7 +191,6 @@ namespace EasyLearning.WebApp.Controllers
                 return RedirectToAction("AccessDenied");
             }
         }
-
         public IActionResult AccessDenied()
         {
             return View();

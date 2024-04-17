@@ -13,7 +13,8 @@ namespace EasyLearning.WebApp.Models
         public List<CourseEvent>? CourseEvents { get; set; }
         public List<TranningPart>? TranningParts { get; set; }
         public List<Feedback>? Feedbacks { get; set; }
-        public List<ApplicationUser>? Users { get; set; }    
+        public List<ApplicationUser>? Users { get; set; }
+        public List<ApplicationUser>? UsersAdmin { get; set; }
         public List<OrderDetail>? OrderDetails { get; set; }
     }
 

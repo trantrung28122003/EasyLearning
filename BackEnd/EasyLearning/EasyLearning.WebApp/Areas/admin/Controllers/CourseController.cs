@@ -44,9 +44,9 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         {
             var categories = await _categoryService.GetAllCategories();
             ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");
-
             return View();
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -57,6 +57,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                 var imgLink = await _fileService.SaveFile(courseViewModel.Image);
                 Course course = new Course()
                 {
+                    
                     CoursesName = courseViewModel.CoursesName,
                     CoursesDescription = courseViewModel.CoursesDescription,
                     CoursesPrice = courseViewModel.CoursesPrice,
@@ -158,7 +159,6 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             return View(course);
         }
 
-
         public async Task<IActionResult> Details(string id)
         {
             var product = await _courseService.GetCourseById(id);
@@ -199,29 +199,5 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             await _courseService.DeleteCourse(course);
             return RedirectToAction(nameof(Index)); // Chuyển hướng về trang danh sách khóa học sau khi xóa thành công
         }
-
-
-        /*[HttpPost]
-        public async Task<IActionResult> Create(CourseCreateViewModel courseViewModel, string[] selectedCategories)
-        {
-            if (!ModelState.IsValid)
-            {
-
-                var course = _mapper.Map<Course>(courseViewModel);
-                if(course is not null)
-                {
-                    course?.CoursesDetails?.Add(new CourseDetail
-                    {
-                        course = course,
-                        Category = courseViewModel.Category
-                    });
-                }
-                await _courseService.CreateCourse(_mapper.Map<Course>(courseViewModel));
-                return RedirectToAction("Index");
-            }
-            *//*var categories = await _categoryService.GetAllCategories();
-            ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");*//*
-            return View();
-        }*/
     }
 }

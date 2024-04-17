@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link href="~/css/customerCourses.css" rel="stylesheet" />
+<link href="~/css/customerCoursesSchedule.css" rel="stylesheet" />
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
-<div class="event-schedule-area-two bg-color ">
+@* <div class="event-schedule-area-two bg-color ">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-header">
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <!-- /.col end-->
-        </div>
+        </div> *@
         <!-- row end-->
         <div class="row">
             <div class="col-lg-12">
@@ -145,14 +145,12 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
 <script>
     // Bắt sự kiện click trên các tab
     document.querySelectorAll('.nav-link').forEach(tab => {
         tab.addEventListener('click', function (e) {
-            e.preventDefault(); // Ngăn chặn hành động mặc định của thẻ a
+            //e.preventDefault(); // Ngăn chặn hành động mặc định của thẻ a
             const targetId = this.getAttribute('href').replace('#', ''); // Lấy id của tab được chọn
             showTab(targetId); // Hiển thị tab tương ứng
         });

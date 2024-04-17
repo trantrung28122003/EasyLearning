@@ -276,7 +276,6 @@
                                             {
                                                 <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-courseId="@itemCourse.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Đi đến giỏ hàng</a>
                                             }
-
                                         }
                                     } 
                                     else
@@ -332,6 +331,9 @@
             <h6 class="section-title bg-white text-center text-primary px-3">Giảng Viên</h6>
             <h1 class="mb-5">Các Giảng Viên</h1>
         </div>
+
+
+
         <div class="row g-4">
             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
                 <div class="team-item bg-light">
@@ -363,39 +365,25 @@
             <h6 class="section-title bg-white text-center text-primary px-3">Phản Hồi</h6>
             <h1 class="mb-5">Đánh Giá Từ Các Học Viên</h1>
         </div>
+
         <div class="owl-carousel testimonial-carousel position-relative">
-            <div class="testimonial-item text-center">
-                <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-1.jpg" style="width: 80px; height: 80px;">
-                <h5 class="mb-0">Trần Anh Tuấn</h5>
-                <p>Profession</p>
-                <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tôi rất ấn tượng với chất lượng của khóa học. Giảng viên rất am hiểu và dễ thương, luôn sẵn lòng giải đáp mọi thắc mắc của tôi. Các tài liệu và tài nguyên hỗ trợ rất phong phú và hữu ích. Tôi đã cảm thấy tự tin hơn trong lĩnh vực này sau khi hoàn thành khóa học.</p>
-                </div>
-            </div>
-            <div class="testimonial-item text-center">
-                <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-2.jpg" style="width: 80px; height: 80px;">
-                <h5 class="mb-0">Trần Anh Tuấn</h5>
-                <p>Profession</p>
-                <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tôi đã tìm kiếm một khóa học về Digital Marketing lâu nay và cuối cùng tôi đã tìm thấy nó ở đây! Khóa học cung cấp một cái nhìn toàn diện về Digital Marketing và hướng dẫn từ cơ bản đến nâng cao. Các bài giảng được trình bày một cách sinh động và dễ hiểu, giúp tôi tiếp cận với những khái niệm khó hiểu một cách dễ dàng. Tôi rất hài lòng với trải nghiệm học tập của mình ở đây</p>
-                </div>
-            </div>
-            <div class="testimonial-item text-center">
-                <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-3.jpg" style="width: 80px; height: 80px;">
-                <h5 class="mb-0">Trần Anh Tuấn</h5>
-                <p>Profession</p>
-                <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Đây là một trang web tuyệt vời cho những ai muốn phát triển kỹ năng cá nhân và chuyên môn. Khóa học rất thú vị và thách thức, giúp tôi mở rộng kiến thức và nâng cao khả năng của mình. Tôi đã học được rất nhiều điều mới và không thể chờ đợi để áp dụng chúng vào thực tế.</p>
-                </div>
-            </div>
-            <div class="testimonial-item text-center">
-                <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-4.jpg" style="width: 80px; height: 80px;">
-                <h5 class="mb-0">Trần Anh Tuấn</h5>
-                <p>Profession</p>
-                <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Khóa học này là một nguồn thông tin quý báu về Thiết kế Đồ họa!. Nội dung của khóa học rất thú vị và được trình bày một cách dễ hiểu, giúp tôi tiếp cận những khái niệm khó khăn một cách dễ dàng. Tôi đã học được nhiều kỹ thuật mới và cảm thấy tự tin hơn trong việc thực hiện các dự án thiết kế của mình.</p>
-                </div>
-            </div>
+            @foreach(var itemUser in Model.Users)
+            {
+                @foreach (var itemFeeedback in Model.Feedbacks)
+                {
+                    if (itemUser.Id == itemFeeedback.FeedbackUserId)
+                    {
+                        <div class="testimonial-item text-center">
+                            <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-1.jpg" style="width: 80px; height: 80px;">
+                            <h5 class="mb-0">@itemUser.UserName>
+                            <p>Profession</p>
+                            <div class="testimonial-text bg-light text-center p-4">
+                                <p class="mb-0">@itemFeeedback.FeedbackContent</p>
+                            </div>
+                        </div>
+                    }
+                }
+            }
         </div>
     </div>
 </div>
