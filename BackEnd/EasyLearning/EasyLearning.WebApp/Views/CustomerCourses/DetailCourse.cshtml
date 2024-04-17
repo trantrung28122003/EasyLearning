@@ -19,16 +19,16 @@
                         <div class="carousel-inner">
                             <!-- Slide 1 -->
                             <div class="carousel-item active">
-                                <img src=" @* @Model.Course.ImageUrl *@111 " class="img-fluid" alt="" />
+                                <img src=" @*@Model.Course.ImageUrl *@111 " class="img-fluid" alt="" />
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel-2" data-bs-slide="prev">
                       
-                            <span class="visually-hidden">Previous</span>
+                            <span class="visually-hidden">Trước</span>
                         </button>
                         <button class="carousel-control-next" type="button" data-bs-target="#myCarousel-2" data-bs-slide="next">
                        
-                            <span class="visually-hidden">Next</span>
+                            <span class="visually-hidden">Sau</span>
                         </button>
                     </div>
                 </div>
@@ -43,35 +43,23 @@
                     <i class="fas fa-star fa-2x text-primary"></i>
                     <i class="fas fa-star fa-2x text-primary"></i>
                     <i class="fas fa-star fa-2x text-muted"></i>
-                    <span class="fa fa-2x"><h5>(109) Votes</h5></span>
-                    <a href="javascript:void(0);">109 customer reviews</a>
+                    <span class="fa fa-2x"><h5>(109) Lượt đánh giá</h5></span>
+                    <a href="javascript:void(0);">109 Lượt bình luận</a>
                 </h2>
                 <hr />
                 <h3 class="price-container">
                      @Model.Course.CoursesPrice VNĐ
-                    <small>*includes tax</small>
                 </h3>
-                <div class="certified">
-                    <ul>
-                        <li>
-                            <a href="javascript:void(0);">Delivery time<span>7 Working Days</span></a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);">Certified<span>Quality Assured</span></a>
-                        </li>
-                    </ul>
-                </div>
                 <hr />
                 <div class="description description-tabs">
                     <ul class="nav nav-pills">
-                        <li class="nav-item"><a href="#more-information" data-bs-toggle="tab" class="nav-link active no-margin">Product Description</a></li>
-                        <li class="nav-item"><a href="#specifications" data-bs-toggle="tab" class="nav-link">Tranning Part</a></li>
-                        <li class="nav-item"><a href="#reviews" data-bs-toggle="tab" class="nav-link">Reviews</a></li>
+                        <li class="nav-item"><a href="#more-information" data-bs-toggle="tab" class="nav-link active no-margin">Chi tiết khóa học</a></li>
+                        <li class="nav-item"><a href="#specifications" data-bs-toggle="tab" class="nav-link">Nội dung khóa học</a></li>
+                        <li class="nav-item"><a href="#reviews" data-bs-toggle="tab" class="nav-link">Đánh giá</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="more-information">
                             <br />
-                            <strong>Description Title</strong>
                             <p>
                                 @Model.Course.CoursesDescription
                             </p>
@@ -131,7 +119,7 @@
                                             {
                                                 <li class="message row">
                                                     <div class="col-md-2">
-                                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="online" />
+                                                        <img src="=" itemUser.img" class="online" />
                                                     
                                                     </div>
                                                     <div class="col-md-10">
