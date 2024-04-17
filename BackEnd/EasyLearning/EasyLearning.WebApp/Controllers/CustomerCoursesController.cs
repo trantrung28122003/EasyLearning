@@ -44,32 +44,29 @@ namespace EasyLearning.WebApp.Controllers
 
         public async Task<IActionResult> ListCourse(string searchString)
         {
-            
-           var course = await _courseService.GetAllCourses();
-           var categories = await _categoryService.GetAllCategories();
-           var coursedetail = await _courseDetailService.GetAllCourseDetail();
-           
-            /*var courses = from p in _easyLearningDbContext.Courses select p; */
-            if(!string.IsNullOrEmpty(searchString) )
-            {
-                course = course.Where(p => p.CoursesName.Contains(searchString)).ToList();
-            }
-            /*var courses = _easyLearningDbContext.Courses.AsQueryable();
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                courses = courses.Where(p => p.CoursesName.Contains(searchString));
-            }*/
+
+            var courses = await _courseService.GetAllCourses();
+            var categories = await _categoryService.GetAllCategories();
+            var coursedetail = await _courseDetailService.GetAllCourseDetail();
+
+            // Tạo ViewModel chứa dữ liệu khóa học, danh mục và chi tiết khóa học
             var coursesByCategory = new CoursesByCategoryViewModel()
             {
-                Courses = course,   
+                Courses = courses,
                 Categories = categories,
                 CourseDetails = coursedetail,
             };
-            return View(coursesByCategory);
-           
-        }
 
-        
+            // Lọc danh sách khóa học theo từ khóa tìm kiếm nếu có
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                // Lấy danh sách các khóa học có tên chứa từ khóa tìm kiếm
+                coursesByCategory.Courses = courses.Where(p => p.CoursesName.Contains(searchString)).ToList();
+            }
+
+            // Trả về View với danh sách khóa học đã lọc
+            return View(coursesByCategory);
+        }           
         public async Task<IActionResult> DetailCourse(string courseId)
         {
             var course = await _courseService.GetCourseById(courseId);
