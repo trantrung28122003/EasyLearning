@@ -38,14 +38,6 @@ namespace EasyLearning.Infrastructure.Data
                     entityType.SetTableName(tableName.Substring(6));
                 }
             }
-            modelBuilder.Entity<ApplicationUser>(e => { e.ToTable("Users"); });
-
-            modelBuilder.Entity<ApplicationRole>()
-            .HasData(
-                new ApplicationRole { Name = "Admin", NormalizedName = "ADMINISTRATOR" }, // Predefined ID
-                new ApplicationRole { Name = "User", NormalizedName = "USER" },
-                new ApplicationRole { Name = "Trainer", NormalizedName = "TRAINER" } // Predefined ID
-            );
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
