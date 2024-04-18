@@ -168,8 +168,8 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             }
             await _tranningPartService.UpdateCourseEventIdToNull(id);
             await _courseEventService.DeleteEvent(courseEvent);
-            return RedirectToAction("Index", "Event");
-         
+            return RedirectToAction("Index", "Course");
+
         }
     }
 }

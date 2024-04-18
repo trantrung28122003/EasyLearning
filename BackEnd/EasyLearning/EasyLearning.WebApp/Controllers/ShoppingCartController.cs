@@ -44,9 +44,8 @@ namespace EasyLearning.WebApp.Controllers
             {
                 CartItemName = getCourse.CoursesName,
                 CartItemPrice = getCourse.CoursesPrice,
-                ImageUrl = "aaa",
+                ImageUrl = getCourse.ImageUrl,
                 CoursesId = getCourse.Id,
-  
                 ShoppingCartId = shoppingCart.Id,
             };
             await _shoppingCartItemService.CreateShoppingCartItem(shoppingCartItem);

@@ -67,7 +67,7 @@ namespace EasyLearning.WebApp.Controllers
 
 
             var users = await _userRepository.GetUsersAsync();
-            List<ApplicationUser> usersAdmin = (List<ApplicationUser>)await _userManager.GetUsersInRoleAsync("admin");
+            List<ApplicationUser> usersAdmin = (List<ApplicationUser>)await _userManager.GetUsersInRoleAsync("Admin");
             if (!string.IsNullOrEmpty(_userRepository.getCurrrentUser()))
             {
                

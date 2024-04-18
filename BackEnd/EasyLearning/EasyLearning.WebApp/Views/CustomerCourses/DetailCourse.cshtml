@@ -19,7 +19,7 @@
                         <div class="carousel-inner">
                             <!-- Slide 1 -->
                             <div class="carousel-item active">
-                                <img src=" @*@Model.Course.ImageUrl *@111 " class="img-fluid" alt="" />
+                                <img src=" @Model.Course.ImageUrl" class="img-fluid" alt="" />
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel-2" data-bs-slide="prev">
@@ -33,7 +33,17 @@
                     </div>
                 </div>
             </div>
-
+            @{
+                var countFeedback = 0;
+            }
+            @foreach (var itemFeedback in Model.Feedbacks)
+            {
+                if(itemFeedback.CoursesId == Model.Course.Id)
+                {
+                    countFeedback += 1;
+                }
+                            
+            }
             <div class="col-md-6 col-sm-12 col-12">
                 <h2 class="name">
                     @Model.Course.CoursesName
@@ -42,9 +52,9 @@
                     <i class="fas fa-star fa-2x text-primary"></i>
                     <i class="fas fa-star fa-2x text-primary"></i>
                     <i class="fas fa-star fa-2x text-primary"></i>
-                    <i class="fas fa-star fa-2x text-muted"></i>
-                    <span class="fa fa-2x"><h5>(109) Lượt đánh giá</h5></span>
-                    <a href="javascript:void(0);">109 Lượt bình luận</a>
+                    <i class="fas fa-star fa-2x text-primary"></i>
+                    <span class="fa fa-2x"><h5>(@countFeedback) Lượt đánh giá</h5></span>
+                    <a href="javascript:void(0);">@countFeedback Lượt bình luận</a>
                 </h2>
                 <hr />
                 <h3 class="price-container">
@@ -119,13 +129,13 @@
                                             {
                                                 <li class="message row">
                                                     <div class="col-md-2">
-                                                        <img src="@itemUser.UserImageUrl" class="online" />
-                                                    
+                                                        <img src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg" class="online" />
+
                                                     </div>
                                                     <div class="col-md-10">
                                                         <span class="message-text">
                                                             <a href="javascript:void(0);" class="username">
-                                                                @itemUser.UserName;
+                                                                @itemUser.UserName
                                                                 <span class="badge bg-primary" style="margin-bottom: 4px">Purchase Verified  </span>
                                                                 <span class="pull-right" style="margin-left: 25px">
                                                                     @for (int i = 1; i <= 5; i++)
