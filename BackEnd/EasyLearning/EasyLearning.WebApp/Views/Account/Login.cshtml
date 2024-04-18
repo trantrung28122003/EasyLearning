@@ -11,7 +11,7 @@
             <form id="formAuthentication" class="mb-3" action="index.html">
                 <div class="form-floating form-floating-outline mb-3">
                     <input type="text" class="form-control" id="email" name="email" placeholder="Nhập Email" asp-for="Email" />
-                    <label for="email">Email</label>
+                    <label style=" color: #1fc2d1;"for="email">Email</label>
                     @Html.ValidationMessageFor(m => m.Email)
                     <span asp-validation-for="@Model.Email" class="text-danger"></span>
                 </div>

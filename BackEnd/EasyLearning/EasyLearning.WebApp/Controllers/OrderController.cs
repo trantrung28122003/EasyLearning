@@ -58,7 +58,7 @@ namespace EasyLearning.WebApp.Controllers
                 OrderPaymentMethod = orderViewModel.OrderPaymentMethod,
                 OrderNotes = orderViewModel.OrderNotes,
                 DateCreate = DateTime.Now,
-                IsDeleted = false
+                IsDeleted = false,
             };
             await _orderService.CreateOrder(order);
 

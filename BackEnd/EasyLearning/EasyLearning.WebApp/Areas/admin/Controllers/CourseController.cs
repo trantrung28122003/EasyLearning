@@ -102,6 +102,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             {
                 return NotFound();
             }
+    
             var categories = await _categoryService.GetAllCategories();
             var courseDetail = await _courseDetailService.GetAllCourseDetail();
             ViewBag.Categories = categories.Select(s => new SelectListItem

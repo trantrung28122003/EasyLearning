@@ -4,15 +4,40 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+.Order {
+    max-width: 600px; /* Giới hạn chiều rộng để tránh căn lề quá rộng */
+    margin: 0 auto; /* Để căn giữa theo chiều ngang */
+    padding: 20px; /* Khoảng cách xung quanh nội dung */
+    background-color: #f8f9fa; /* Màu nền */
+    border-radius: 10px; /* Bo góc */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+}
+
+    .Order h4 {
+        color: #06bbcc; /* Màu chữ cho tiêu đề */
+        margin-bottom: 20px; /* Khoảng cách dưới của tiêu đề */
+    }
+
+    .Order .list-group {
+        margin-bottom: 30px; /* Khoảng cách dưới của danh sách */
+    }
+
+    .Order form {
+        margin-top: 30px; /* Khoảng cách trên của biểu mẫu */
+    }
+</style>
 <body class='snippet-body'>
     <main>
-        <div class="py-5 text-center " >
-            <h2>Checkout form</h2>
+        <div class="py-5 text-center ">
+            <h2 style="color: #06bbcc">Phương thức thanh toán</h2>
         </div>
-        <div class="row g-5">
+        @*<div class="row g-5" style="align-items: center">*@
+
+        <div class="Order">
             <div class="col-md-5 col-lg-4 order-md-last">
-                <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-primary">Your cart</span>
+                <h4>
+                    <span class="text-primary">Giỏ hàng</span>
                     @* <span class="badge bg-primary rounded-pill">3</span> *@
                 </h4>
                 <ul class="list-group mb-3">
@@ -24,60 +49,59 @@
                     @foreach (var item in Model.ShoppingCartItems)
                     {
 
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <li class="list-group-item d-flex justify-content-between lh-sm" style="width:500px">
                             <div>
                                 <h6 class="my-0">@item.CartItemName</h6>
                                 <small class="text-muted"></small>
                             </div>
                             <span class="text-muted">@item.CartItemPrice</span>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Total </span>
+                        <li class="list-group-item d-flex justify-content-between" style="width:500px">
+                            <span>Tổng</span>
                             <strong>@Model.OrderTotalPrice</strong>
                         </li>
                     }
                 </ul>
             </div>
-            <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">Billing address</h4>
-                <form asp-action="Create" class="needs-validation" method="post">
-                    <div class="col-sm-6">
-                        <label asp-for="OrderNotes"for=" firstName" class="form-label">Ghi chú</label>
-                        <input asp-for ="OrderNotes" type="text" class="form-control" id="firstName" placeholder="" value="" required>
-                        <span asp-validation-for="OrderNotes" class="text-danger"></span>
-                        <div class="invalid-feedback">
-                            Valid first name is required.
-                        </div>
+            <h4 class="mb-3" style="color: #06bbcc">Địa chỉ thanh toán</h4>
+            <form asp-action="Create" class="needs-validation" method="post">
+                <div class="col-sm-6">
+                    <label asp-for="OrderNotes" for=" firstName" class="form-label" style="color: #06bbcc">Ghi chú</label>
+                    <input asp-for="OrderNotes" type="text" class="form-control" style="width: 500px" id="firstName" placeholder="" value="" required>
+                    <span asp-validation-for="OrderNotes" class="text-danger"></span>
+                    <div class="invalid-feedback">
+                        Valid first name is required.
                     </div>
+                </div>
 
-                    <div class="form-group" hidden>
-                        <label asp-for="OrderTotalPrice" class="control-label"></label>
-                        <input asp-for="OrderTotalPrice" class="form-control" />
-                        <span asp-validation-for="OrderTotalPrice" class="text-danger"></span>
+                <div class="form-group" hidden>
+                    <label asp-for="OrderTotalPrice" class="control-label"></label>
+                    <input asp-for="OrderTotalPrice" class="form-control" />
+                    <span asp-validation-for="OrderTotalPrice" class="text-danger"></span>
+                </div>
+                <hr class="my-4">
+                <h4 class="mb-3" style="color: #06bbcc">Hình thức thanh toán</h4>
+                <div class="my-3">
+                    <div class="form-check">
+                        <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
+                        <label class="form-check-label" for="credit">Ví Momo</label>
                     </div>
-                    <hr class="my-4">
-                    <h4 class="mb-3">Payment</h4>
-                    <div class="my-3">
-                        <div class="form-check">
-                            <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
-                            <label class="form-check-label" for="credit">momo</label>
-                        </div>
-                    </div>
+                </div>
 
-                    <hr class="my-4">
+                <hr class="my-4">
 
-               
-                    <button class="w-100 btn btn-lg" type="submit" style="background-color: #06bbcc; border-color: #06bbcc; color: white;">Continue to checkout</button>
-                  
-                </form>
-            </div>
+
+                <button class="btn btn-lg" type="submit" style="background-color: #06bbcc; border-color: #06bbcc; color: white; align-items: center; width: 500px">Đi đến thanh toán</button>
+
+            </form>
         </div>
+
     </main>
 </body>
 
 
-
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
