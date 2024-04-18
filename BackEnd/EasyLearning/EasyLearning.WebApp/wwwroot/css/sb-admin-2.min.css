@@ -9,6 +9,11 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 
+.main-container {
+    padding: 1rem;
+    max-width: 100%; 
+   overflow-x: auto;
+}
 :root {
     --blue: #4e73df;
     --indigo: #6610f2;

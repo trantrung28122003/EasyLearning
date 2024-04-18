@@ -257,14 +257,14 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="course-item bg-light">
                         <div class="position-relative overflow-hidden">
-                            <img class="img-fluid" src="~/img/course-1.jpg" alt="">
+                                <img class="img-fluid" src="@itemCourse.ImageUrl" alt="" >
                             <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
                                     @if (User.Identity.IsAuthenticated)
                                     {
                                         <a asp-controller="CustomerCourses" asp-action="DetailCourse" asp-route-courseId="@itemCourse.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Xem Thêm</a>
                                         @if (Model.OrderDetails.Any(itemOrderDetail => itemOrderDetail.CoursesId == itemCourse.Id))
                                         {
-                                            <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-courseId="@itemCourse.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Đi đến lịch học</a>
+                                            <a asp-controller="ShoppingCart" asp-action="GetshoppingCart" asp-route-courseId="@itemCourse.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Đi đến lịch học</a>
                                         }
                                         else
                                         {
@@ -274,7 +274,7 @@
                                             }
                                             else if (Model.ShoppingCartItems.Any(shoppingCartItem => shoppingCartItem.CoursesId == itemCourse.Id))
                                             {
-                                                <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-courseId="@itemCourse.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Đi đến giỏ hàng</a>
+                                                <a asp-controller="ShoppingCart" asp-action="GetshoppingCart" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Đi đến giỏ hàng</a>
                                             }
                                         }
                                     } 
@@ -388,27 +388,4 @@
     </div>
 </div>
 
-<script>
-    function addToCart(courseId) {
-        $.ajax({
-            url: '/ShoppingCart/AddToCart',
-            type: 'POST',
-            data: { courseId: courseId },
-            success: function () {
-                // Xử lý khi thêm vào giỏ hàng thành công (nếu cần)
-                alert('Đã thêm vào giỏ hàng thành công!');
-                updateCartItemCount(data);
-            },
-            error: function (xhr, status, error) {
-                // Xử lý khi có lỗi xảy ra (nếu cần)
-                console.error(error);
-            }
-        });
-    }
-    function updateCartItemCount(itemCount) {
-        var cartItemCountSpan = document.getElementById('cartItemCount');
-        if (cartItemCountSpan) {
-            cartItemCountSpan.textContent = itemCount;
-        }
-    }
-</script>
+<script src="~/js/home.js"></script>

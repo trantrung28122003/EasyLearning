@@ -54,6 +54,7 @@ namespace EasyLearning.WebApp.Controllers
            
             var order = new Order
             {
+                UserId = _userRepository.getCurrrentUser(),
                 OrderPaymentMethod = orderViewModel.OrderPaymentMethod,
                 OrderNotes = orderViewModel.OrderNotes,
                 DateCreate = DateTime.Now,
