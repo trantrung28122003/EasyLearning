@@ -17,7 +17,7 @@ namespace EasyLearning.Application.Services
             string partnerCode = "MOMOOJOI20210710";
             string accessKey = "iPXneGmrJH0G8FOP";
             string serectkey = "sFcbSGRSJjwGxwhhcEktCHWYUuTuPNDB";
-            string returnUrl = "http://localhost:5138/Payment/ConfirmPaymentClient";
+            string returnUrl = "https://https://app-easy-learning-dev.azurewebsites.net/Payment/ConfirmPaymentClient";
             string notifyurl = "https://4c8d-2001-ee0-5045-50-58c1-b2ec-3123-740d.ap.ngrok.io/Home/SavePayment"; 
             string orderid = DateTime.Now.Ticks.ToString(); //mã đơn hàng
             string requestId = DateTime.Now.Ticks.ToString();
