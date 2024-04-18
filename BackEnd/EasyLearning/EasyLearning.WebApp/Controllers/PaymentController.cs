@@ -13,7 +13,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         public async Task<IActionResult> Index()
         {
             int amount = 100000;
-            var url = await _paymentService.doPayment(amount.ToString(),"test");
+            var url = await _paymentService.doPayment(amount.ToString(),"Cảm ơn quý khách");
             return Redirect(url);
         }
 
@@ -23,7 +23,14 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             string rMessage = result.message;
             string rOrderId = result.orderId;
             string rErrorCode = result.errorCode; // = 0: thanh toán thành công
-            return View();
+            if (rErrorCode == "0")
+            {
+                return View("SuccessPayment");
+            }
+            else
+            {
+                return View("FailurePayment");
+            }
         }
     }
 }

@@ -10,20 +10,20 @@
         <div class="logindiv">
             <form id="formAuthentication" class="mb-3" action="index.html">
                 <div class="form-floating form-floating-outline mb-3">
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Nhập Email" asp-for="Email" />
-                    <label style=" color: #1fc2d1;"for="email">Email</label>
+                    <input style =" border-color: #06BBCC;" type="text" class="form-control" id="email" name="email" placeholder="Nhập Email" asp-for="Email" />
+                    <label style=" color: #06BBCC;" for="email">Email</label>
                     @Html.ValidationMessageFor(m => m.Email)
                     <span asp-validation-for="@Model.Email" class="text-danger"></span>
                 </div>
                 <div class="form-floating form-floating-outline mb-3">
-                    <input type="password"
+                    <input style=" border-color: #06BBCC;"type="password"
                            id="password"
                            class="form-control"
                            name="password"
                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                            aria-describedby="password"
                            asp-for="Password" />
-                    <label for="password">Mật Khẩu</label>
+                    <label style=" color: #06BBCC;"for="password">Mật Khẩu</label>
                     @Html.ValidationMessageFor(m => m.Password)
                     <span asp-validation-for="@Model.Password" class="text-danger"></span>
                 </div>
@@ -33,16 +33,16 @@
                         <label class="form-check-label" for="terms-conditions">Lưu Đăng Nhập</label>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary d-grid w-100">Đăng Nhập</button>
+                <button style=" background-color: #06BBCC; border-color: #06BBCC;" type="submit" class="btn btn-primary d-grid w-100">Đăng Nhập</button>
                 <p class="text-center">
                     <span>Chưa có tài khoản ?</span>
                     <a asp-action="register" asp-controller="account">
-                        <span> Đăng ký </span>
+                        <span style=" color: #06BBCC;"> Đăng ký </span>
                     </a>
                 </p>
             </form>
         </div>
     </form>
 
-    <a class="btn btn-info" asp-action="GoogleLogin" asp-controller="Account">Log In With Google</a>
+    <a style=" background-color: #06BBCC; border-color: #06BBCC;" class="btn btn-primary d-grid w-100" asp-action="GoogleLogin" asp-controller="Account">Log In With Google</a>
 </div>  

@@ -50,11 +50,11 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" scope="col">Date</th>
-                                            <th scope="col">Speakers</th>
-                                            <th scope="col">Session</th>
-                                            <th scope="col">Venue</th>
-                                            <th class="text-center" scope="col">Venue</th>
+                                            <th class="text-center" scope="col">Ngày</th>
+                                            <th scope="col">Giảng viên</th>
+                                            <th scope="col">Nội dung buổi học</th>
+                                            <th scope="col">Lớp học</th>
+                                            <th class="text-center" scope="col">Thông tin chi tiết</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -89,7 +89,11 @@
                                                                 <div class="categories">
                                                                     <a href="#">Inspire</a>
                                                                 </div>
-                                                                
+                                                                @{
+                                                                    bool hasEventData = false;
+                                                                }
+                                                         
+                                                    
                                                                 @foreach(var itemCourseEvent in Model.CourseEvents)
                                                                 {
                                                                     if(itemCourseEvent.Id == itemTraningPart.EventId)
@@ -110,18 +114,34 @@
                                                                             }
                                                                             <span>@startTimeFormatted - @endTimeFormatted @durationFormatted</span>
                                                                     </div>
+                                                                        hasEventData = true;
+                                                                       
                                                                     }
-                                                                }
+                                                                    if (hasEventData)
+                                                                    {
+                                                                        break;
+                                                                    }
+                                                                    }
+                                                                
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="r-no">
+                                                            @{
+                                                                bool hasEventData1 = false;
+                                                            }
                                                             @foreach (var itemCourseEvent in Model.CourseEvents)
                                                             {
                                                                 if (itemCourseEvent.Id == itemTraningPart.EventId)
                                                                 {
                                                                     <span>@itemCourseEvent.Location</span>
+                                                                    hasEventData1 = true;
+                                                                }
+                                                               
+                                                                if (hasEventData1)
+                                                                {
+                                                                    break;
                                                                 }
                                                             }
                                                         </div>
