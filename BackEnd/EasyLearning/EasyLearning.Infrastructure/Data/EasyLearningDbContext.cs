@@ -43,10 +43,10 @@ namespace EasyLearning.Infrastructure.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Data Source=TRANTRUNG\\SQLEXPRESS; Initial Catalog=EasyLearning; Trusted_Connection=True; TrustServerCertificate=True");
+            //optionsBuilder.UseSqlServer("Data Source=TRANTRUNG\\SQLEXPRESS; Initial Catalog=EasyLearning; Trusted_Connection=True; TrustServerCertificate=True");
             //optionsBuilder.UseSqlServer("Data Source=LAPTOP-061GCJC2\\NHP28102810; Initial Catalog=EasyLearning; Trusted_Connection=True; TrustServerCertificate=True");
             //optionsBuilder.UseSqlServer("Data Source=localhost; Initial Catalog=EasyLearning; User Id = sa; pwd = Password@1234; Trusted_Connection=True; TrustServerCertificate=True");
-            //optionsBuilder.UseSqlServer("Server=tcp:easy-learning-dev.database.windows.net,1433;Initial Catalog=EasyLearning;Persist Security Info=False;User ID=supper-admin;Password=Password@1234;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            optionsBuilder.UseSqlServer("Server=tcp:easy-learning-dev.database.windows.net,1433;Initial Catalog=easy-learning;Persist Security Info=False;User ID=supper-admin;Password=Password@1234;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
         }
     }
