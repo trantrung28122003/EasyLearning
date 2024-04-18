@@ -133,7 +133,7 @@ namespace EasyLearning.WebApp.Controllers
             var orders = await _orderService.GetOrdersByUser();
             foreach(var order in orders) 
             {
-                listOrderDetail = await _orderDetailService.GetOrderDetailByOrder(order.Id);
+                listOrderDetail.AddRange( await _orderDetailService.GetOrderDetailByOrder(order.Id));
             }
             foreach (var itemOrderDetail in listOrderDetail)
             {
