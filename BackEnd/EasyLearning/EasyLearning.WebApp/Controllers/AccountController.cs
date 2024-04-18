@@ -62,7 +62,7 @@ namespace EasyLearning.WebApp.Controllers
                         PhoneNumber = request.PhoneNumber,
                         EmailConfirmed = true,
                         PhoneNumberConfirmed = true,
-                        ImageUrl = "https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg",
+                        UserImageUrl = "https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg",
                     };
                     var result = await userManager.CreateAsync(user, request.Password);
                     if (result.Succeeded)

@@ -21,10 +21,10 @@ namespace EasyLearning.Infrastructure.Data.Entities
         [Column("Courses_Content")]
         public string? CoureseContent {  get; set; }
 
-        [Column("Courese_ImageUrl")]
+        [Column("Courses_ImageUrl")]
         public string? ImageUrl { get; set; }
 
-        [Column("Courese_Instructor")]
+        [Column("Courses_Instructor")]
         public string? Instructor { get; set; }
 
         [Column("Courses_StartDate")]
@@ -34,7 +34,7 @@ namespace EasyLearning.Infrastructure.Data.Entities
        
         public DateTime EndDate { get; set; }
 
-        [Column("Courese_RegistrationDeadline")]
+        [Column("Courses_RegistrationDeadline")]
         public DateTime RegistrationDeadline { get; set; }
 
         [Column("Courses_MaxAttendees")]
