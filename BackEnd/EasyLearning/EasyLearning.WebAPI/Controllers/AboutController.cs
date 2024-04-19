@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EasyLearning.WebApp.Controllers
+namespace EasyLearning.WebAPI.Controllers
 {
     public class AboutController : Controller
     {
