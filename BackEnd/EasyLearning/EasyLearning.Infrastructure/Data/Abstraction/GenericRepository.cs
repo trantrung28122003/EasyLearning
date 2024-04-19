@@ -94,6 +94,7 @@ namespace EasyLearning.Infrastructure.Data.Abstraction
                 }
             }
         }
+
         public async Task SoftDelete(string id)
         {
             TEntity? item = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
