@@ -1,11 +1,11 @@
 ﻿using EasyLearning.Infrastructure.Data.Entities;
-using EasyLearning.WebApp.Areas.admin.Models;
+using EasyLearning.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace EasyLearning.WebAPI.Controllers
+namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
     [Area("admin")]
     [Authorize(Roles = "Admin")]

@@ -2,7 +2,7 @@
 using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Repostiory;
+using EasyLearning.Infrastructure.Data.Repository;
 using EasyLearning.WebApp.Areas.admin.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,19 +17,19 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         private readonly ICourseService _courseService;
         private readonly ICategoryService _categoryService;
         private readonly ICourseDetailService _courseDetailService;
-        private readonly ITrannerDetailService _trannerDetailService;
+        private readonly ITrainerDetailService _trainerDetailService;
         private readonly IFileService _fileService;
         private readonly IMapper _mapper;
         private readonly UserRepository _userRepository;
      
         public CourseController(ICourseService courseService, ICategoryService categoryService,
         ICourseDetailService courseDetailService, IMapper mapper, IFileService fileService,
-        UserRepository userRepository, ITrannerDetailService trannerDetailService)
+        UserRepository userRepository, ITrainerDetailService trainerDetailService)
         {
             _courseService = courseService;
             _categoryService = categoryService;
             _courseDetailService = courseDetailService;
-            _trannerDetailService = trannerDetailService;
+            _trainerDetailService = trainerDetailService;
             _mapper = mapper;
             _fileService = fileService;
             _userRepository = userRepository;
@@ -82,12 +82,12 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     await _courseDetailService.CreateCourseDetail(courDetail);
                 }
 
-               /* var trannerDetail = new TrainerDetail()
+               /* var trainerDetail = new TrainerDetail()
                 {
                     CoursesId = course.Id,
                     UserId = _userRepository.getCurrrentUser(),
                 };
-                await _trannerDetailService.CreateTranerDetail(trannerDetail);*/
+                await _trainerDetailService.CreateTrainerDetail(trainerDetail);*/
                 return RedirectToAction("Index");
             }
             var categories = await _categoryService.GetAllCategories();

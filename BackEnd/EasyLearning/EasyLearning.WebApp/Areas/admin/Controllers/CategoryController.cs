@@ -1,5 +1,5 @@
-﻿using EasyLearing.Infrastructure.Data.Entities;
-using EasyLearning.Application.Services;
+﻿using EasyLearning.Application.Services;
+using EasyLearning.Infrastructure.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

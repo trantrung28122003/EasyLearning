@@ -20,8 +20,8 @@ namespace EasyLearning.WebAPI.Controllers
         public async Task<ActionResult> GetShoppingCart()
         {
             var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
-            var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
-            //var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart("7367c551 - 5ba0 - 4a28 - 9268 - 218caeae9759");
+            var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShoppingCart(shoppingCart.Id);
+            //var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShoppingCart("7367c551 - 5ba0 - 4a28 - 9268 - 218caeae9759");
             if (shoppingCartItem == null)
             {
                 return NotFound("Shopping cart not found.");
@@ -56,7 +56,7 @@ namespace EasyLearning.WebAPI.Controllers
         public async Task<IActionResult> GetCartItemCount()
         {
 /*            var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
-            var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);*/
+            var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShoppingCart(shoppingCart.Id);*/
           
   
             return View(4);

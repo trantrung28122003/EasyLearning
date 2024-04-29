@@ -1,7 +1,7 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Repostiory;
+using EasyLearning.Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +14,7 @@ namespace EasyLearning.WebAPI.Controllers
         private readonly ICategoryService _categoryService;
         private readonly ICourseDetailService _courseDetailService;
         private readonly ICourseEventService _courseEventService;
-        private readonly ITranningPartService _tranningPartService;
+        private readonly ITrainingPartService _TrainingPartService;
         private readonly IOrderService _orderService;
         private readonly IOrderDetailService _orderDetailService;
         private readonly IFileService _fileService;
@@ -27,7 +27,7 @@ namespace EasyLearning.WebAPI.Controllers
 
         public HomeController(ICourseService courseService, ICategoryService categoryService,
         ICourseDetailService courseDetailService, IOrderService orderService, IOrderDetailService orderDetailService,
-        ICourseEventService courseEventService, ITranningPartService tranningPartService,
+        ICourseEventService courseEventService, ITrainingPartService TrainingPartService,
         IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService,
         IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService,
          RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
@@ -36,7 +36,7 @@ namespace EasyLearning.WebAPI.Controllers
             _categoryService = categoryService;
             _courseDetailService = courseDetailService;
             _courseEventService = courseEventService;
-            _tranningPartService = tranningPartService;
+            _TrainingPartService = TrainingPartService;
             _orderService = orderService;
             _orderDetailService = orderDetailService;
             _fileService = fileService;
@@ -67,7 +67,7 @@ namespace EasyLearning.WebAPI.Controllers
             {
                
                 var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
-                shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
+                shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShoppingCart(shoppingCart.Id);
                 var orders = await _orderService.GetOrdersByUser();
                 
                 foreach (var order in orders)

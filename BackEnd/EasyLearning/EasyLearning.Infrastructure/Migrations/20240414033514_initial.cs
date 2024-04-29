@@ -187,16 +187,16 @@ namespace EasyLearning.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TranningParts",
+                name: "TrainingParts",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Tranning_Part_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Tranning_Part_StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Tranning_Part_EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Tranning_Part_Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Tranning_Part_Event_Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Tranning_Part_Courese_Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Training_Part_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Training_Part_StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Training_Part_EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Training_Part_Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Training_Part_Event_Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Training_Part_Courese_Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateChange = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ChangedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -204,15 +204,15 @@ namespace EasyLearning.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TranningParts", x => x.Id);
+                    table.PrimaryKey("PK_TrainingParts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TranningParts_CourseEvents_Tranning_Part_Event_Id",
-                        column: x => x.Tranning_Part_Event_Id,
+                        name: "FK_TrainingParts_CourseEvents_Training_Part_Event_Id",
+                        column: x => x.Training_Part_Event_Id,
                         principalTable: "CourseEvents",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_TranningParts_Courses_Tranning_Part_Courese_Id",
-                        column: x => x.Tranning_Part_Courese_Id,
+                        name: "FK_TrainingParts_Courses_Training_Part_Courese_Id",
+                        column: x => x.Training_Part_Courese_Id,
                         principalTable: "Courses",
                         principalColumn: "Id");
                 });
@@ -286,7 +286,7 @@ namespace EasyLearning.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TrannerDetails",
+                name: "trainerDetails",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -299,14 +299,14 @@ namespace EasyLearning.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TrannerDetails", x => x.Id);
+                    table.PrimaryKey("PK_trainerDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TrannerDetails_Courses_Courses_Id",
+                        name: "FK_trainerDetails_Courses_Courses_Id",
                         column: x => x.Courses_Id,
                         principalTable: "Courses",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_TrannerDetails_Users_User_Id",
+                        name: "FK_trainerDetails_Users_User_Id",
                         column: x => x.User_Id,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -516,24 +516,24 @@ namespace EasyLearning.Infrastructure.Migrations
                 column: "Shopping_Cart_User_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrannerDetails_Courses_Id",
-                table: "TrannerDetails",
+                name: "IX_trainerDetails_Courses_Id",
+                table: "trainerDetails",
                 column: "Courses_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrannerDetails_User_Id",
-                table: "TrannerDetails",
+                name: "IX_trainerDetails_User_Id",
+                table: "trainerDetails",
                 column: "User_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TranningParts_Tranning_Part_Courese_Id",
-                table: "TranningParts",
-                column: "Tranning_Part_Courese_Id");
+                name: "IX_TrainingParts_Training_Part_Courese_Id",
+                table: "TrainingParts",
+                column: "Training_Part_Courese_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TranningParts_Tranning_Part_Event_Id",
-                table: "TranningParts",
-                column: "Tranning_Part_Event_Id");
+                name: "IX_TrainingParts_Training_Part_Event_Id",
+                table: "TrainingParts",
+                column: "Training_Part_Event_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
@@ -584,10 +584,10 @@ namespace EasyLearning.Infrastructure.Migrations
                 name: "ShoppingCartItems");
 
             migrationBuilder.DropTable(
-                name: "TrannerDetails");
+                name: "trainerDetails");
 
             migrationBuilder.DropTable(
-                name: "TranningParts");
+                name: "TrainingParts");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");

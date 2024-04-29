@@ -1,6 +1,7 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
-using EasyLearning.Infrastructure.Data.Repostiory;
+using EasyLearning.Infrastructure.Data.Repository;
+using EasyLearning.WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyLearning.WebAPI.Controllers
@@ -27,7 +28,7 @@ namespace EasyLearning.WebAPI.Controllers
         public async Task<IActionResult> Create()
         {
             var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
-            var getShoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
+            var getShoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShoppingCart(shoppingCart.Id);
             decimal totalPrice = 0;
             foreach (var item in getShoppingCartItem)
             {
@@ -45,7 +46,7 @@ namespace EasyLearning.WebAPI.Controllers
         public async Task<IActionResult> Create(OrderViewModel orderViewModel)
         {
             var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
-             var getShoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
+             var getShoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShoppingCart(shoppingCart.Id);
            
             var order = new Order
             {

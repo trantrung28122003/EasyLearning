@@ -1,10 +1,8 @@
-﻿using EasyLearing.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Abstraction;
+﻿using EasyLearning.Infrastructure.Data.Abstraction;
 using EasyLearning.Infrastructure.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
 
-namespace EasyLearning.Infrastructure.Data.Repostiory
+namespace EasyLearning.Infrastructure.Data.Repository
 {
     public class CourseRepository : GenericRepository<Course>
     {

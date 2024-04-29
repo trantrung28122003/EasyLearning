@@ -1,4 +1,5 @@
 ﻿using EasyLearning.Application.Services;
+using EasyLearning.WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyLearning.WebAPI.Controllers

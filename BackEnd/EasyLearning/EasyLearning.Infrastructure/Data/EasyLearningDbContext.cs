@@ -11,10 +11,10 @@ namespace EasyLearning.Infrastructure.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CourseDetail> CourseDetails { get; set; }
-        public DbSet<TrainerDetail> TrannerDetails { get; set; }
+        public DbSet<TrainerDetail> trainerDetails { get; set; }
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
-        public DbSet<TranningPart> TranningParts { get; set; }
+        public DbSet<TrainingPart> TrainingParts { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }

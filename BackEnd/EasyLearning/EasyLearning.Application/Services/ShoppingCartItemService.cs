@@ -1,10 +1,5 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Repostiory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EasyLearning.Infrastructure.Data.Repository;
 
 namespace EasyLearning.Application.Services
 {
@@ -12,7 +7,7 @@ namespace EasyLearning.Application.Services
     {
         Task<List<ShoppingCartItem>> GetAllShoppingCartItems();
         Task<ShoppingCartItem> GetShoppingCartItemById(string id);
-        Task<List<ShoppingCartItem>> GetShoppingCartItemByShopingCart(string shopingCartId);
+        Task<List<ShoppingCartItem>> GetShoppingCartItemByShoppingCart(string ShoppingCartId);
         Task CreateShoppingCartItem(ShoppingCartItem shoppingCartItem);
         Task UpdateShoppingCartItem(ShoppingCartItem shoppingCartItem);
         Task DeleteShoppingCartItem(ShoppingCartItem shoppingCartItem);
@@ -28,7 +23,7 @@ namespace EasyLearning.Application.Services
 
         public async Task<List<ShoppingCartItem>> GetAllShoppingCartItems() => await _shoppingCartItemRepository.GetAll();
         public async Task<ShoppingCartItem> GetShoppingCartItemById(string id) => await _shoppingCartItemRepository.GetById(id);
-        public async Task<List<ShoppingCartItem>> GetShoppingCartItemByShopingCart(string shoppingCartId) => await _shoppingCartItemRepository.GetByCondition(s=> s.ShoppingCartId == shoppingCartId);
+        public async Task<List<ShoppingCartItem>> GetShoppingCartItemByShoppingCart(string shoppingCartId) => await _shoppingCartItemRepository.GetByCondition(s=> s.ShoppingCartId == shoppingCartId);
         public async Task CreateShoppingCartItem(ShoppingCartItem shoppingCartItem) => await _shoppingCartItemRepository.Create(shoppingCartItem);
         public async Task UpdateShoppingCartItem(ShoppingCartItem shoppingCartItem) => await _shoppingCartItemRepository.Update(shoppingCartItem);
         public async Task DeleteShoppingCartItem(ShoppingCartItem shoppingCartItem) => await _shoppingCartItemRepository.Delete(shoppingCartItem);

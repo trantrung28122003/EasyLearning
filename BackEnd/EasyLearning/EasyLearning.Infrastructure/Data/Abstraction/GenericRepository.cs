@@ -1,5 +1,4 @@
-﻿using EasyLearning.Infrastructure.Data.Repostiory;
-using Microsoft.AspNetCore.Http;
+﻿using EasyLearning.Infrastructure.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 

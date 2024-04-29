@@ -13,15 +13,15 @@ namespace EasyLearning.Infrastructure.Migrations
                 table: "ShoppingCarts");
 
             migrationBuilder.AddColumn<string>(
-                name: "TrannerDetailId",
+                name: "trainerDetailId",
                 table: "Users",
                 type: "nvarchar(450)",
                 nullable: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_TrannerDetailId",
+                name: "IX_Users_trainerDetailId",
                 table: "Users",
-                column: "TrannerDetailId");
+                column: "trainerDetailId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShoppingCarts_Shopping_Cart_User_Id",
@@ -31,21 +31,21 @@ namespace EasyLearning.Infrastructure.Migrations
                 filter: "[Shopping_Cart_User_Id] IS NOT NULL");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Users_TrannerDetails_TrannerDetailId",
+                name: "FK_Users_trainerDetails_trainerDetailId",
                 table: "Users",
-                column: "TrannerDetailId",
-                principalTable: "TrannerDetails",
+                column: "trainerDetailId",
+                principalTable: "trainerDetails",
                 principalColumn: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Users_TrannerDetails_TrannerDetailId",
+                name: "FK_Users_trainerDetails_trainerDetailId",
                 table: "Users");
 
             migrationBuilder.DropIndex(
-                name: "IX_Users_TrannerDetailId",
+                name: "IX_Users_trainerDetailId",
                 table: "Users");
 
             migrationBuilder.DropIndex(
@@ -53,7 +53,7 @@ namespace EasyLearning.Infrastructure.Migrations
                 table: "ShoppingCarts");
 
             migrationBuilder.DropColumn(
-                name: "TrannerDetailId",
+                name: "trainerDetailId",
                 table: "Users");
 
             migrationBuilder.CreateIndex(

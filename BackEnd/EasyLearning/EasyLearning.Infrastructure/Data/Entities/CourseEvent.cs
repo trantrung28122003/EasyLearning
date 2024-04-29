@@ -26,6 +26,6 @@ namespace EasyLearing.Infrastructure.Data.Entities
         [Column("Course_Event_Date_End")]
         public DateTime DateEnd { get; set; }
 
-        public ICollection<TranningPart>? TranningParts { get; set; }
+        public ICollection<TrainingPart>? TrainingParts { get; set; }
     }
 }

@@ -13,10 +13,10 @@ namespace EasyLearning.Application
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICourseDetailService, CourseDetailService>();
             services.AddScoped<ICourseEventService, CourseEventService>();
-            services.AddScoped<ITranningPartService, TranningPartService>();
+            services.AddScoped<ITrainingPartService, TrainingPartService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IShoppingCartItemService, ShoppingCartItemService>();
-            services.AddScoped<ITrannerDetailService, TrainerDetailService>();
+            services.AddScoped<ITrainerDetailService, TrainerDetailService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderDetailService, OrderDetailService>();
             services.AddScoped<IFeedbackService, FeedbackService>();

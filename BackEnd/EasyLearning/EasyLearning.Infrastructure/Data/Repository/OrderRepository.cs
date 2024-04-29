@@ -2,7 +2,7 @@
 using EasyLearning.Infrastructure.Data.Abstraction;
 using Microsoft.EntityFrameworkCore;
 
-namespace EasyLearning.Infrastructure.Data.Repostiory
+namespace EasyLearning.Infrastructure.Data.Repository
 {
     public class OrderRepository : GenericRepository<Order>
     {

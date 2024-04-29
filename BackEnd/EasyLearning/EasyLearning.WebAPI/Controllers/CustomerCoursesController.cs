@@ -2,7 +2,8 @@
 using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data;
 using EasyLearning.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Repostiory;
+using EasyLearning.Infrastructure.Data.Repository;
+using EasyLearning.WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyLearning.WebAPI.Controllers
@@ -13,7 +14,7 @@ namespace EasyLearning.WebAPI.Controllers
         private readonly ICategoryService _categoryService;
         private readonly ICourseDetailService _courseDetailService;
         private readonly ICourseEventService _courseEventService;
-        private readonly ITranningPartService _tranningPartService;
+        private readonly ITrainingPartService _TrainingPartService;
         private readonly IOrderService _orderService;
         private readonly IOrderDetailService _orderDetailService;
         private readonly IFileService _fileService;
@@ -24,14 +25,14 @@ namespace EasyLearning.WebAPI.Controllers
         private readonly IShoppingCartService _shoppingCartService;
         public CustomerCoursesController(ICourseService courseService, ICategoryService categoryService,
         ICourseDetailService courseDetailService, IOrderService orderService, IOrderDetailService orderDetailService,
-        ICourseEventService courseEventService, ITranningPartService tranningPartService,
-        IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService, EasyLearningDbContext easyLearningDbContext, IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService)
+        ICourseEventService courseEventService, ITrainingPartService TrainingPartService,
+        IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService, EasyLearningDbContext easyLearningDbContext, IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService)
         {
             _courseService = courseService;
             _categoryService = categoryService;
             _courseDetailService = courseDetailService;
             _courseEventService = courseEventService;
-            _tranningPartService = tranningPartService;
+            _TrainingPartService = TrainingPartService;
             _orderService = orderService;
             _orderDetailService = orderDetailService;
             _fileService = fileService;
@@ -76,9 +77,9 @@ namespace EasyLearning.WebAPI.Controllers
         {
             List<OrderDetail> listOrderDetail = new List<OrderDetail>();
             var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
-            var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
+            var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShoppingCart(shoppingCart.Id);
             var course = await _courseService.GetCourseById(courseId);
-            var tranningParts = await _tranningPartService.GetTranningPartByCourse(courseId);
+            var TrainingParts = await _TrainingPartService.GetTrainingPartByCourse(courseId);
             var getFeedbackbyCourse = await _feedbackService.GetFeedbacksByCourseId(courseId);
             var getUsers = await _userRepository.GetUsersAsync();
             var orders = await _orderService.GetOrdersByUser();
@@ -90,7 +91,7 @@ namespace EasyLearning.WebAPI.Controllers
             {
                 Course = course,
                 ShoppingCartItems = shoppingCartItem,
-                TranningParts = tranningParts,
+                TrainingParts = TrainingParts,
                 Feedbacks = getFeedbackbyCourse,
                 Users = getUsers,
                 OrderDetails = listOrderDetail,
@@ -123,7 +124,7 @@ namespace EasyLearning.WebAPI.Controllers
         {
             List<Course> courses = new List<Course>();
             List<CourseEvent> listCourseEvent = new List<CourseEvent>();
-            List<TranningPart> listTranningPart = new List<TranningPart>();
+            List<TrainingPart> listTrainingPart = new List<TrainingPart>();
             List<OrderDetail> listOrderDetail = new List<OrderDetail>();
   
             var orders = await _orderService.GetOrdersByUser();
@@ -133,17 +134,17 @@ namespace EasyLearning.WebAPI.Controllers
             }
             foreach (var itemOrderDetail in listOrderDetail)
             {
-                var tranningParts = await _tranningPartService.GetTranningPartByCourse(itemOrderDetail.CoursesId);
+                var TrainingParts = await _TrainingPartService.GetTrainingPartByCourse(itemOrderDetail.CoursesId);
                 var courseEvents = await _courseEventService.GetEventByCourse(itemOrderDetail.CoursesId);
                 listCourseEvent.AddRange(courseEvents.ToList());
-                listTranningPart.AddRange(tranningParts.ToList());
+                listTrainingPart.AddRange(TrainingParts.ToList());
                 courses.AddRange(await _courseService.GetCourseByOrderDetail(itemOrderDetail.Id));
             }
             var customerCourseViewModel = new CustomerCourseViewModel
             {
                 Courses = courses,
                 CourseEvents = listCourseEvent,
-                TranningParts = listTranningPart,
+                TrainingParts = listTrainingPart,
             };
             return View(customerCourseViewModel);
         }

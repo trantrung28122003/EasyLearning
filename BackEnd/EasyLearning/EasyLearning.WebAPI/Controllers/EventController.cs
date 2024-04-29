@@ -1,5 +1,6 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
+using EasyLearning.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,12 +13,12 @@ namespace EasyLearning.WebAPI.Controllers
     {
         private readonly ICourseService _courseService;
         private readonly ICourseEventService _courseEventService;
-        private readonly ITranningPartService _tranningPartService;
-        public EventController(ICourseService courseService, ICourseEventService courseEventService, ITranningPartService tranningPartService)
+        private readonly ITrainingPartService _TrainingPartService;
+        public EventController(ICourseService courseService, ICourseEventService courseEventService, ITrainingPartService TrainingPartService)
         {
             _courseService = courseService;
             _courseEventService = courseEventService;
-            _tranningPartService = tranningPartService;
+            _TrainingPartService = TrainingPartService;
         }
 
         public async Task<IActionResult> Index(string courseId)
@@ -37,9 +38,9 @@ namespace EasyLearning.WebAPI.Controllers
             {
                 return NotFound();
             }
-            var tranningParts = await _tranningPartService.GetTranningPartWithoutEventIdAndCourse(courseId);
+            var TrainingParts = await _TrainingPartService.GetTrainingPartWithoutEventIdAndCourse(courseId);
             ViewBag.CourseId = courseId;
-            ViewBag.TranningParts = new SelectList(tranningParts, "Id", "TranningPartName");
+            ViewBag.TrainingParts = new SelectList(TrainingParts, "Id", "TrainingPartName");
             return View();
         }
 
@@ -60,7 +61,7 @@ namespace EasyLearning.WebAPI.Controllers
                     ChangedBy = "user",
                 };
                 await _courseEventService.CreateEvent(courseEvent);
-                await _tranningPartService.UpdateTranningPartWithEvent(eventViewModel.TranningPartId, courseEvent.Id);
+                await _TrainingPartService.UpdateTrainingPartWithEvent(eventViewModel.TrainingPartId, courseEvent.Id);
                 return RedirectToAction("Index", "Event", new { courseId = eventViewModel.CourseId});
             }
             return View(eventViewModel);
@@ -74,13 +75,13 @@ namespace EasyLearning.WebAPI.Controllers
             {
                 return NotFound();
             }
-            var tranningPartIds = await _tranningPartService.GetTranningPartByEvent(id);
+            var TrainingPartIds = await _TrainingPartService.GetTrainingPartByEvent(id);
 
-            var tranningParts = await _tranningPartService.GetTranningPartByCourse(courseId);
+            var TrainingParts = await _TrainingPartService.GetTrainingPartByCourse(courseId);
 
             ViewBag.CourseId = courseId;
 
-            ViewBag.TranningParts = new SelectList(tranningParts, "Id", "TranningPartName", tranningPartIds);
+            ViewBag.TrainingParts = new SelectList(TrainingParts, "Id", "TrainingPartName", TrainingPartIds);
 
             var eventViewModel = new EventViewModel
             {
@@ -165,7 +166,7 @@ namespace EasyLearning.WebAPI.Controllers
             {
                 return NotFound();
             }
-            await _tranningPartService.UpdateCourseEventIdToNull(id);
+            await _TrainingPartService.UpdateCourseEventIdToNull(id);
             await _courseEventService.DeleteEvent(courseEvent);
             return RedirectToAction("Index", "Course");
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EasyLearing.Infrastructure.Data.Entities.TranningPart>
+﻿@model IEnumerable<EasyLearing.Infrastructure.Data.Entities.TrainingPart>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,7 +8,7 @@
 <h1>Trang Chính</h1>
 
 <p>
-    <a asp-action="Create" asp-controller="TranningPart" asp-route-CourseId="@ViewBag.CourseId" class="btn btn-outline-primary">Tạo</a>
+    <a asp-action="Create" asp-controller="TrainingPart" asp-route-CourseId="@ViewBag.CourseId" class="btn btn-outline-primary">Tạo</a>
     <a asp-action="Index" asp-controller="Course" class="btn btn-outline-danger" >Quay lại</a>
 
 </p>
@@ -18,7 +18,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TranningPartName)
+                @Html.DisplayNameFor(model => model.TrainingPartName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.StartTime)
@@ -60,7 +60,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TranningPartName)
+                        @Html.DisplayFor(modelItem => item.TrainingPartName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.StartTime)

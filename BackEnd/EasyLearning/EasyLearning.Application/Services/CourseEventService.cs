@@ -1,12 +1,5 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Repostiory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+using EasyLearning.Infrastructure.Data.Repository;
 
 namespace EasyLearning.Application.Services
 {
@@ -23,18 +16,18 @@ namespace EasyLearning.Application.Services
     }
     public class CourseEventService : ICourseEventService
     {
-        private readonly CourseEventRepository _coursseEventRepository;
+        private readonly CourseEventRepository _courseEventRepository;
         public CourseEventService(CourseEventRepository eventRepository)
         {
-            _coursseEventRepository = eventRepository;
+            _courseEventRepository = eventRepository;
         }
-        public async Task<List<CourseEvent>> GetEventByCourse(string id) => await _coursseEventRepository.GetEventByCourse(id);
-        public async Task<CourseEvent> GetCourseEventById(string id) => await _coursseEventRepository.GetById(id);
-        public async Task<List<CourseEvent>> GetAllCourseEvents() =>  await _coursseEventRepository.GetAll();
+        public async Task<List<CourseEvent>> GetEventByCourse(string id) => await _courseEventRepository.GetEventByCourse(id);
+        public async Task<CourseEvent> GetCourseEventById(string id) => await _courseEventRepository.GetById(id);
+        public async Task<List<CourseEvent>> GetAllCourseEvents() =>  await _courseEventRepository.GetAll();
 
-        public async Task CreateEvent(CourseEvent courseEvent) => await _coursseEventRepository.Create(courseEvent);
-        public async Task UpdateEvent(CourseEvent courseEvent) => await _coursseEventRepository.Update(courseEvent);
-        public async Task DeleteEvent(CourseEvent courseEvent) => await _coursseEventRepository.Delete(courseEvent);
-        public async Task SoftDeleteEvent(string id) => await _coursseEventRepository.SoftDelete(id);
+        public async Task CreateEvent(CourseEvent courseEvent) => await _courseEventRepository.Create(courseEvent);
+        public async Task UpdateEvent(CourseEvent courseEvent) => await _courseEventRepository.Update(courseEvent);
+        public async Task DeleteEvent(CourseEvent courseEvent) => await _courseEventRepository.Delete(courseEvent);
+        public async Task SoftDeleteEvent(string id) => await _courseEventRepository.SoftDelete(id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EasyLearning.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Repostiory;
+using EasyLearning.Infrastructure.Data.Repository;
+using EasyLearning.Infrastructure.Data.Repository;
 
 namespace EasyLearning.Application.Services
 {

@@ -19,4 +19,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EasyLearning.Application\EasyLearning.Application.csproj" />
+  </ItemGroup>
+
 </Project>

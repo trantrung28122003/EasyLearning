@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
-using EasyLearning.Infrastructure.Data.Repostiory;
+using EasyLearning.Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyLearning.WebApp.Controllers

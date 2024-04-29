@@ -1,7 +1,7 @@
 ﻿using EasyLearning.Infrastructure.Data.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace EasyLearning.WebApp.Areas.admin.Models
+namespace EasyLearning.WebAPI.Models
 {
     public class UpdateRoleViewModel
     {

@@ -1,12 +1,6 @@
-﻿using EasyLearing.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Repostiory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EasyLearning.Infrastructure.Data.Entities;
+using EasyLearning.Infrastructure.Data.Repository;
+using EasyLearning.Infrastructure.Data.Repository;
 
 namespace EasyLearning.Application.Services
 {

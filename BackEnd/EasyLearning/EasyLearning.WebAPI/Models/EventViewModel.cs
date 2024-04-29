@@ -1,9 +1,4 @@
-﻿using EasyLearing.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Abstraction;
-using EasyLearning.Infrastructure.Data.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace EasyLearning.WebApp.Models
+﻿namespace EasyLearning.WebAPI.Models
 {
     public class EventViewModel
     {

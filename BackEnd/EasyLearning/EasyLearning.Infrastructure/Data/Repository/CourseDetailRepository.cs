@@ -1,7 +1,7 @@
 ﻿using EasyLearning.Infrastructure.Data.Abstraction;
 using EasyLearning.Infrastructure.Data.Entities;
 
-namespace EasyLearning.Infrastructure.Data.Repostiory
+namespace EasyLearning.Infrastructure.Data.Repository
 {
     public class CourseDetailRepository : GenericRepository<CourseDetail>
     {

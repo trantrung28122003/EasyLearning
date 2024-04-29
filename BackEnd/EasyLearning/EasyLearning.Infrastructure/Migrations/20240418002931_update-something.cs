@@ -9,16 +9,16 @@ namespace EasyLearning.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Users_TrannerDetails_TrannerDetailId",
+                name: "FK_Users_trainerDetails_trainerDetailId",
                 table: "Users");
 
             migrationBuilder.RenameColumn(
-                name: "TrannerDetailId",
+                name: "trainerDetailId",
                 table: "Users",
                 newName: "TrainnerDetailId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_Users_TrannerDetailId",
+                name: "IX_Users_trainerDetailId",
                 table: "Users",
                 newName: "IX_Users_TrainnerDetailId");
 
@@ -44,17 +44,17 @@ namespace EasyLearning.Infrastructure.Migrations
                 nullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Users_TrannerDetails_TrainnerDetailId",
+                name: "FK_Users_trainerDetails_TrainnerDetailId",
                 table: "Users",
                 column: "TrainnerDetailId",
-                principalTable: "TrannerDetails",
+                principalTable: "trainerDetails",
                 principalColumn: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Users_TrannerDetails_TrainnerDetailId",
+                name: "FK_Users_trainerDetails_TrainnerDetailId",
                 table: "Users");
 
             migrationBuilder.DropColumn(
@@ -64,12 +64,12 @@ namespace EasyLearning.Infrastructure.Migrations
             migrationBuilder.RenameColumn(
                 name: "TrainnerDetailId",
                 table: "Users",
-                newName: "TrannerDetailId");
+                newName: "trainerDetailId");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Users_TrainnerDetailId",
                 table: "Users",
-                newName: "IX_Users_TrannerDetailId");
+                newName: "IX_Users_trainerDetailId");
 
             migrationBuilder.RenameColumn(
                 name: "Courses_RegistrationDeadline",
@@ -87,10 +87,10 @@ namespace EasyLearning.Infrastructure.Migrations
                 newName: "Courese_ImageUrl");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Users_TrannerDetails_TrannerDetailId",
+                name: "FK_Users_trainerDetails_trainerDetailId",
                 table: "Users",
-                column: "TrannerDetailId",
-                principalTable: "TrannerDetails",
+                column: "trainerDetailId",
+                principalTable: "trainerDetails",
                 principalColumn: "Id");
         }
     }

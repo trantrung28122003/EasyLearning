@@ -1,11 +1,12 @@
-﻿using EasyLearing.Infrastructure.Data.Entities;
+﻿using System.Security.Claims;
+using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Repostiory;
+using EasyLearning.Infrastructure.Data.Repository;
+using EasyLearning.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace EasyLearning.WebAPI.Controllers
 {

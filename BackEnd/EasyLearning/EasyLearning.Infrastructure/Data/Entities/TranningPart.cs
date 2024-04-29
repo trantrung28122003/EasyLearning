@@ -5,26 +5,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyLearing.Infrastructure.Data.Entities
 {
-    public class TranningPart : GenericEntity
+    public class TrainingPart : GenericEntity
     {
-        [Column("Tranning_Part_Name")]
-        public string? TranningPartName { get; set; }
+        [Column("Training_Part_Name")]
+        public string? TrainingPartName { get; set; }
 
-        [Column("Tranning_Part_StartTime")]
+        [Column("Training_Part_StartTime")]
         public DateTime StartTime { get; set; }
 
-        [Column("Tranning_Part_EndTime")]
+        [Column("Training_Part_EndTime")]
         public DateTime EndTime { get; set; }
 
-        [Column("Tranning_Part_Description")]
+        [Column("Training_Part_Description")]
         public string? Description { get; set; }
 
-        [Column("Tranning_Part_Event_Id")]
+        [Column("Training_Part_Event_Id")]
         public string? EventId { get; set; }
         [ForeignKey("EventId")]
         public CourseEvent? CourseEvent { get; set; }
 
-        [Column("Tranning_Part_Courese_Id")]
+        [Column("Training_Part_Courese_Id")]
         public string? CoursesId { get; set; }
         [ForeignKey("CoursesId")]
         public Course? Courses { get; set; }

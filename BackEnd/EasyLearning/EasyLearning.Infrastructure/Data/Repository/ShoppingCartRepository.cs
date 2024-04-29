@@ -1,8 +1,9 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Abstraction;
+using EasyLearning.Infrastructure.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace EasyLearning.Infrastructure.Data.Repostiory
+namespace EasyLearning.Infrastructure.Data.Repository
 {
     public class ShoppingCartRepository: GenericRepository<ShoppingCart>
     {

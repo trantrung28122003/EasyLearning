@@ -1,4 +1,4 @@
-﻿@model EasyLearing.Infrastructure.Data.Entities.TranningPart
+﻿@model EasyLearing.Infrastructure.Data.Entities.TrainingPart
 
 @{
     ViewData["Title"] = "Update";
@@ -15,9 +15,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CoursesId"/>
             <div class="form-group">
-                <label asp-for="TranningPartName" class="control-label">Tên nội dung</label>
-                <input asp-for="TranningPartName" class="form-control" />
-                <span asp-validation-for="TranningPartName" class="text-danger"></span>
+                <label asp-for="TrainingPartName" class="control-label">Tên nội dung</label>
+                <input asp-for="TrainingPartName" class="form-control" />
+                <span asp-validation-for="TrainingPartName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartTime" class="control-label">Ngày bắt đầu</label>

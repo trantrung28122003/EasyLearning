@@ -1,9 +1,8 @@
 ﻿using EasyLearning.Infrastructure.Data.Abstraction;
-using EasyLearning.Infrastructure.Data.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EasyLearing.Infrastructure.Data.Entities
+namespace EasyLearning.Infrastructure.Data.Entities
 {
     public class Category : GenericEntity
     {

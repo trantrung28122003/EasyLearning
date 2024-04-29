@@ -1,29 +1,30 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Repostiory;
+using EasyLearning.Infrastructure.Data.Repository;
+using EasyLearning.Infrastructure.Data.Repository;
 
 namespace EasyLearning.Application.Services
 {
-    public interface ITrannerDetailService
+    public interface ITrainerDetailService
     {
-        Task<TrainerDetail> GetTranerDetailById(string id);
-        Task<List<TrainerDetail>> GetAllTranerDetails();
-        Task CreateTranerDetail(TrainerDetail trannerDetail);
-        Task UpdateTranerDetail(TrainerDetail trannerDetail);
-        Task DeleteTranerDetail(TrainerDetail trannerDetail);
-        Task SoftDeleteTranerDetail(string id);
+        Task<TrainerDetail> GetTrainerDetailById(string id);
+        Task<List<TrainerDetail>> GetAllTrainerDetails();
+        Task CreateTrainerDetail(TrainerDetail trainerDetail);
+        Task UpdateTrainerDetail(TrainerDetail trainerDetail);
+        Task DeleteTrainerDetail(TrainerDetail trainerDetail);
+        Task SoftDeleteTrainerDetail(string id);
     }
-    public class TrainerDetailService : ITrannerDetailService
+    public class TrainerDetailService : ITrainerDetailService
     {
         private readonly TrainerDetailRepository _TrainerDetailRepository;
-        public TrainerDetailService(TrainerDetailRepository trannerDetailRepository)
+        public TrainerDetailService(TrainerDetailRepository trainerDetailRepository)
         {
-            _TrainerDetailRepository = trannerDetailRepository;
+            _TrainerDetailRepository = trainerDetailRepository;
         }
-        public async Task<List<TrainerDetail>> GetAllTranerDetails() => await _TrainerDetailRepository.GetAll();
-        public async Task<TrainerDetail> GetTranerDetailById(string id) => await _TrainerDetailRepository.GetById(id);
-        public async Task CreateTranerDetail(TrainerDetail trannerDetail) => await _TrainerDetailRepository.Create(trannerDetail);
-        public async Task UpdateTranerDetail(TrainerDetail trannerDetail) => await _TrainerDetailRepository.Update(trannerDetail);
-        public async Task DeleteTranerDetail(TrainerDetail trannerDetail) => await _TrainerDetailRepository.Delete(trannerDetail);
-        public async Task SoftDeleteTranerDetail(string id) => await _TrainerDetailRepository.SoftDelete(id);
+        public async Task<List<TrainerDetail>> GetAllTrainerDetails() => await _TrainerDetailRepository.GetAll();
+        public async Task<TrainerDetail> GetTrainerDetailById(string id) => await _TrainerDetailRepository.GetById(id);
+        public async Task CreateTrainerDetail(TrainerDetail trainerDetail) => await _TrainerDetailRepository.Create(trainerDetail);
+        public async Task UpdateTrainerDetail(TrainerDetail trainerDetail) => await _TrainerDetailRepository.Update(trainerDetail);
+        public async Task DeleteTrainerDetail(TrainerDetail trainerDetail) => await _TrainerDetailRepository.Delete(trainerDetail);
+        public async Task SoftDeleteTrainerDetail(string id) => await _TrainerDetailRepository.SoftDelete(id);
     }
 }

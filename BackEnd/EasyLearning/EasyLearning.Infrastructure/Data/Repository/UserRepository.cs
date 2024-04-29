@@ -1,8 +1,7 @@
 ﻿using EasyLearning.Infrastructure.Data.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace EasyLearning.Infrastructure.Data.Repostiory
+namespace EasyLearning.Infrastructure.Data.Repository
 {
     public class UserRepository
     {

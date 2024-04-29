@@ -1,4 +1,4 @@
-﻿namespace EasyLearning.WebApp.Areas.admin.Models
+﻿namespace EasyLearning.WebAPI.Models
 {
     public class CourseViewModel
     {

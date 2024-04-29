@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using EasyLearing.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Repostiory;
+﻿using EasyLearning.Infrastructure.Data.Entities;
+using EasyLearning.Infrastructure.Data.Repository;
 namespace EasyLearning.Application.Services
 {
     public interface ICategoryService

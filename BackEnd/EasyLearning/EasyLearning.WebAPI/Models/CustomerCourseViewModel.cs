@@ -1,7 +1,7 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Entities;
 
-namespace EasyLearning.WebApp.Models
+namespace EasyLearning.WebAPI.Models
 {
     public class CustomerCourseViewModel
     {

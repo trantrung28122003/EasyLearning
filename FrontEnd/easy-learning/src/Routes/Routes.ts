@@ -1,1 +1,1 @@
-export default const Routes = [];
+export const routes = [];
