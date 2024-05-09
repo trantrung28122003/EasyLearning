@@ -17,14 +17,14 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         private readonly ICourseService _courseService;
         private readonly ICategoryService _categoryService;
         private readonly ICourseDetailService _courseDetailService;
-        private readonly ITrannerDetailService _trannerDetailService;
+        private readonly ITrainerDetailService _trannerDetailService;
         private readonly IFileService _fileService;
         private readonly IMapper _mapper;
         private readonly UserRepository _userRepository;
      
         public CourseController(ICourseService courseService, ICategoryService categoryService,
         ICourseDetailService courseDetailService, IMapper mapper, IFileService fileService,
-        UserRepository userRepository, ITrannerDetailService trannerDetailService)
+        UserRepository userRepository, ITrainerDetailService trannerDetailService)
         {
             _courseService = courseService;
             _categoryService = categoryService;
@@ -53,11 +53,10 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         public async Task<IActionResult> Create(CourseViewModel courseViewModel, List<string> selectedCategories)
         {
             if (ModelState.IsValid)
-            {
-                var imgLink = await _fileService.SaveFile(courseViewModel.Image);
+            { 
+                //var imgLink = await _fileService.SaveFile(courseViewModel.Image);
                 Course course = new Course()
                 {
-                    
                     CoursesName = courseViewModel.CoursesName,
                     CoursesDescription = courseViewModel.CoursesDescription,
                     CoursesPrice = courseViewModel.CoursesPrice,
@@ -67,8 +66,8 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     EndDate = courseViewModel.StartEnd,
                     RegistrationDeadline = courseViewModel.RegistrationDeadline,
                     MaxAttdendees = courseViewModel.MaxAttdendees,
-                    Instructor = courseViewModel.Instructor,
-                    ImageUrl = imgLink,
+                    Instructor = await _userRepository.getCurrrentUserFullNameAsync(),
+                    /*ImageUrl = imgLink,*/
                     DateCreate = DateTime.Now
                 };
                 await _courseService.CreateCourse(course);
@@ -82,12 +81,12 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     await _courseDetailService.CreateCourseDetail(courDetail);
                 }
 
-               /* var trannerDetail = new TrainerDetail()
+                var trannerDetail = new TrainerDetail()
                 {
                     CoursesId = course.Id,
                     UserId = _userRepository.getCurrrentUser(),
                 };
-                await _trannerDetailService.CreateTranerDetail(trannerDetail);*/
+                await _trannerDetailService.CreateTranerDetail(trannerDetail);
                 return RedirectToAction("Index");
             }
             var categories = await _categoryService.GetAllCategories();
@@ -198,6 +197,14 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     await _courseDetailService.DeleteCourseDetail(courDetail);
                 }
             }
+            var trainnerDetails = await _trannerDetailService.GetAllTranerDetails();
+            foreach(var trannerDetail in trainnerDetails)
+            {
+                if(trannerDetail.CoursesId == course.Id)
+                {
+                    await _trannerDetailService.DeleteTranerDetail(trannerDetail);
+                }    
+            }    
             await _courseService.DeleteCourse(course);
             return RedirectToAction(nameof(Index)); // Chuyển hướng về trang danh sách khóa học sau khi xóa thành công
         }

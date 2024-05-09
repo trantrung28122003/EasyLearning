@@ -56,6 +56,7 @@ namespace EasyLearning.WebApp.Controllers
                 {
                     var user = new ApplicationUser
                     {
+                        FullName = request.Name,
                         UserName = request.Email,
                         NormalizedUserName = request.Email,
                         Email = request.Email,
@@ -124,20 +125,11 @@ namespace EasyLearning.WebApp.Controllers
                     return View(model);
 
                 }
-
-
-
                 var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
                 if (result.Succeeded)
                 {
                     _userRepository.setUser(user.Id);
-              
-             
-  
-       
                     return RedirectToAction("Index" , "Home");
-
-                   
                 }
                 else if (result.IsLockedOut)
                 {

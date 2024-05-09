@@ -13,9 +13,9 @@
             <p>Mã khóa học: @ViewBag.CourseId</p>
             <input type="hidden" id="CourseId" name="CourseId" value="@ViewBag.CourseId" />
             <div class="form-group">
-                <label asp-for="TranningPartId" class="control-label">Mã nội dung</label>
-                <select asp-for="TranningPartId" class="form-control" asp-items="@ViewBag.TranningParts"></select>
-                <span asp-validation-for="TranningPartId" class="text-danger"></span>
+                <label asp-for="TrainingPartId" class="control-label">Mã nội dung</label>
+                <select asp-for="TrainingPartId" class="form-control" asp-items="@ViewBag.TrainingParts"></select>
+                <span asp-validation-for="TrainingPartId" class="text-danger"></span>
             </div> 
             <div class="form-group">
                 <label asp-for="EventName" class="control-label">Tên lớp</label>

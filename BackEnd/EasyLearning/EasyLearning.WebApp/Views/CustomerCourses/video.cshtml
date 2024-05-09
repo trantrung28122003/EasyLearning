@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "video";
+}
+
+<h2>Video Player</h2>
+
+<video id="videoPlayer" controls>
+    <source src="~/video/test1.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<div id="percentageWatched"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var video = document.getElementById('videoPlayer');
+        var duration = 0;
+
+        video.addEventListener('loadedmetadata', function () {
+            duration = video.duration;
+        });
+
+        video.addEventListener('timeupdate', function () {
+            var currentTime = video.currentTime;
+            var percentageWatched = (currentTime / duration) * 100;
+            sendEventToServer('progress', percentageWatched);
+        });
+
+        function sendEventToServer(eventName, percentage) {
+            $.ajax({
+                url: '/CustomerCourses/TrackVideoEvent',
+                method: 'POST',
+                data: {
+                    videoName: '@ViewBag.VideoName',
+                    percentageWatched: percentage
+                },
+                success: function (response) {
+                    // Xử lý phản hồi từ server nếu cần
+                },
+                error: function (xhr, status, error) {
+                    console.error('Lỗi khi gửi phần trăm đã xem lên server:', error);
+                }
+            });
+        }
+    });
+</script>
+

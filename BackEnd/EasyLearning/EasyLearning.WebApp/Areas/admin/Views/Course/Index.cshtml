@@ -51,7 +51,7 @@
                             @Html.ActionLink("Sửa", "Update","Course", new { id = item.Id }, new { @class = "btn btn-info", @role = "button" })
                             @Html.ActionLink("Chi tiết", "Details", "Course", new { id = item.Id }, new { @class = "btn btn-warning", @role = "button" })
                             @Html.ActionLink("Xóa", "Delete", "Course", new { id = item.Id }, new { @class = "btn btn-danger", @role = "button" })
-                            @Html.ActionLink("Thêm phần của khóa", "Index", "TranningPart", new { courseId = item.Id }, new { @class = "btn btn-info", @role = "button" })
+                            @Html.ActionLink("Thêm phần của khóa", "Index", "TrainingPart", new { courseId = item.Id }, new { @class = "btn btn-info", @role = "button" })
                             @Html.ActionLink("Thêm lớp", "Index", "Event", new { courseId = item.Id }, new { @class = "btn btn-info", @role = "button" })
                         
                         </td>

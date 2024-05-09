@@ -6,13 +6,11 @@ namespace EasyLearning.Infrastructure.Data.Entities
 {
     public class ApplicationUser : IdentityUser
     {
+        public string? FullName { get; set; }
         public string? UserImageUrl { get; set; }
-
         public ShoppingCart? ShoppingCart { get; set; }
-
-        public string? TrainnerDetailId { get; set; }
-        [ForeignKey("TrainnerDetailId")]
-        public TrainerDetail? TrainnerDetail { get; set; }
+        public ICollection<TrainerDetail>? TrainerDetails { get; set; }
         public ICollection<Order>? Orders { get; set; }
+        public ICollection<UserTrainingProgress>? UserTrainingProgresss { get; set; }
     }
 }

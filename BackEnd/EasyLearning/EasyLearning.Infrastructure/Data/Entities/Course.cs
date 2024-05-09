@@ -42,8 +42,8 @@ namespace EasyLearning.Infrastructure.Data.Entities
         
 
         public ICollection<CourseDetail>? CoursesDetails {  get; set; } 
-        public ICollection<TrainerDetail>? TrannerDetails { get; set; }
-        public ICollection<TranningPart>? TranningParts { get; set; }
+        public ICollection<TrainerDetail>? TrainerDetails { get; set; }
+        public ICollection<TrainingPart>? TrainingParts { get; set; }
         public ICollection<ShoppingCartItem>? ShoppingCartItems { get; set; }
         public ICollection<OrderDetail>? OrderDetails { get; set; }
         public ICollection<Feedback>? FeedBacks { get; set; }

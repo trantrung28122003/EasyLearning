@@ -16,7 +16,7 @@ namespace EasyLearning.Infrastructure
             services.AddScoped<CategoryRepository, CategoryRepository>();
             services.AddScoped<CourseDetailRepository, CourseDetailRepository>();
             services.AddScoped<CourseEventRepository, CourseEventRepository>();
-            services.AddScoped<TranningPartRepository, TranningPartRepository>();
+            services.AddScoped<TrainingPartRepository, TrainingPartRepository>();
             services.AddScoped<ShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<ShoppingCartItemRepository, ShoppingCartItemRepository>();
             services.AddScoped<TrainerDetailRepository, TrainerDetailRepository>();

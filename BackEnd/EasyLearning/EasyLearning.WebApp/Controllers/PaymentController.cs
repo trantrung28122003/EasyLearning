@@ -25,6 +25,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             string rErrorCode = result.errorCode; // = 0: thanh toán thành công
             if (rErrorCode == "0")
             {
+
                 return View("SuccessPayment");
             }
             else

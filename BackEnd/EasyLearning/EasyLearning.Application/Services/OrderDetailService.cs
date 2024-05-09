@@ -15,6 +15,7 @@ namespace EasyLearning.Application.Services
         Task<List<OrderDetail>> GetAllOrderDetails();   
         Task<OrderDetail> GetOrderDetailById(string id);
         Task<List<OrderDetail>> GetOrderDetailByOrder(string OrderId);
+        Task<bool> CheckIfUserHasBoughtCourse(string userId, string courseId);
         Task CreateOrderDetail(OrderDetail orderDetail);
         Task UpdateOrderDetail(OrderDetail orderDetail);
         Task DeleteOrderDetail(OrderDetail orderDetail);
@@ -30,6 +31,7 @@ namespace EasyLearning.Application.Services
         public async Task<List<OrderDetail>> GetAllOrderDetails() => await _orderDetailRepository.GetAll();
         public async Task<OrderDetail>GetOrderDetailById(string id) => await _orderDetailRepository.GetById(id);
         public async Task<List<OrderDetail>> GetOrderDetailByOrder(string orderId) => await _orderDetailRepository.GetByCondition(s=>s.OrderId == orderId);
+        public async Task<bool> CheckIfUserHasBoughtCourse(string userId, string courseId) => await _orderDetailRepository.CheckIfUserHasBoughtCourse(userId,courseId);
         public async Task CreateOrderDetail(OrderDetail orderDetail) => await _orderDetailRepository.Create(orderDetail);
         public async Task UpdateOrderDetail(OrderDetail orderDetail) => await _orderDetailRepository.Update(orderDetail);
         public async Task DeleteOrderDetail(OrderDetail orderDetail) => await _orderDetailRepository.Delete(orderDetail);

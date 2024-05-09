@@ -19,7 +19,7 @@ namespace EasyLearning.WebApp.Controllers
         private readonly ICategoryService _categoryService;
         private readonly ICourseDetailService _courseDetailService;
         private readonly ICourseEventService _courseEventService;
-        private readonly ITranningPartService _tranningPartService;
+        private readonly ITrainingPartService _tranningPartService;
         private readonly IOrderService _orderService;
         private readonly IOrderDetailService _orderDetailService;
         private readonly IFileService _fileService;
@@ -32,7 +32,7 @@ namespace EasyLearning.WebApp.Controllers
 
         public HomeController(ICourseService courseService, ICategoryService categoryService,
         ICourseDetailService courseDetailService, IOrderService orderService, IOrderDetailService orderDetailService,
-        ICourseEventService courseEventService, ITranningPartService tranningPartService,
+        ICourseEventService courseEventService, ITrainingPartService tranningPartService,
         IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService,
         IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService,
          RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
@@ -57,9 +57,8 @@ namespace EasyLearning.WebApp.Controllers
         public async Task<IActionResult> Index()
         {
             List<OrderDetail> listOrderDetail = new List<OrderDetail>();
-            List<ShoppingCartItem> shoppingCartItem = new List<ShoppingCartItem>();
+            List<ShoppingCartItem> listShoppingCartItem = new List<ShoppingCartItem>();
            
-
             var courses = await _courseService.GetAllCourses();
             var categories = await _categoryService.GetAllCategories();
             var courDetails = await _courseDetailService.GetAllCourseDetail();
@@ -72,7 +71,7 @@ namespace EasyLearning.WebApp.Controllers
             {
                
                 var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
-                shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
+                listShoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
                 var orders = await _orderService.GetOrdersByUser();
                 
                 foreach (var order in orders)
@@ -90,7 +89,7 @@ namespace EasyLearning.WebApp.Controllers
                 Categories = categories,
                 CourseDetails = courDetails,
                 Feedbacks = feedbacks,
-                ShoppingCartItems = shoppingCartItem,
+                ShoppingCartItems = listShoppingCartItem,
                 OrderDetails = listOrderDetail,
                 Users = users,
                 UsersAdmin = usersAdmin

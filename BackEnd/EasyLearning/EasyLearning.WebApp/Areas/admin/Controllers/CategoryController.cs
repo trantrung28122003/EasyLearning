@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
     [Area("admin")]
-    [Authorize(Roles = "User")]
+    [Authorize(Roles = "Admin")]
     public class CategoryController : Controller
     {
         private readonly ICourseService _courseService;
@@ -27,8 +27,6 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             var category = await _categoryService.GetAllCategories();
             return View(category);
         }
-
-
         public IActionResult Create()
         {
             return View();
@@ -44,8 +42,6 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             }
             return View(category);
         }
-
-
         public async Task<IActionResult> Update(string id)
         {
             var category = await _categoryService.GetCategoryById(id);

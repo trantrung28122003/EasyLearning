@@ -340,10 +340,10 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TrannerDetails");
+                    b.ToTable("TrainerDetails");
                 });
 
-            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TranningPart", b =>
+            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TrainingPart", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -354,7 +354,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Property<string>("CoursesId")
                         .HasColumnType("nvarchar(450)")
-                        .HasColumnName("Tranning_Part_Courese_Id");
+                        .HasColumnName("Training_Part_Courese_Id");
 
                     b.Property<DateTime?>("DateChange")
                         .HasColumnType("datetime2");
@@ -364,26 +364,30 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Tranning_Part_Description");
+                        .HasColumnName("Training_Part_Description");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2")
-                        .HasColumnName("Tranning_Part_EndTime");
+                        .HasColumnName("Training_Part_EndTime");
 
                     b.Property<string>("EventId")
                         .HasColumnType("nvarchar(450)")
-                        .HasColumnName("Tranning_Part_Event_Id");
+                        .HasColumnName("Training_Part_Event_Id");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Training_Part_ImageUrl");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2")
-                        .HasColumnName("Tranning_Part_StartTime");
+                        .HasColumnName("Training_Part_StartTime");
 
-                    b.Property<string>("TranningPartName")
+                    b.Property<string>("TrainingPartName")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Tranning_Part_Name");
+                        .HasColumnName("Training_Part_Name");
 
                     b.HasKey("Id");
 
@@ -391,7 +395,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("TranningParts");
+                    b.ToTable("TrainingParts");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.AddOn", b =>
@@ -483,6 +487,9 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -509,9 +516,6 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TrainnerDetailId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -531,8 +535,6 @@ namespace EasyLearning.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("TrainnerDetailId");
 
                     b.ToTable("Users", (string)null);
                 });
@@ -637,6 +639,49 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("CourseDetails");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserTrainingProgress", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsCompleted");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<double?>("PercentageWatched")
+                        .HasColumnType("float")
+                        .HasColumnName("Percentage_Watched");
+
+                    b.Property<string>("TrainingPartId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("Training_Part_Id");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("User_Id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrainingPartId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTrainingProgress");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -805,11 +850,11 @@ namespace EasyLearning.Infrastructure.Migrations
             modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TrainerDetail", b =>
                 {
                     b.HasOne("EasyLearning.Infrastructure.Data.Entities.Course", "Courses")
-                        .WithMany("TrannerDetails")
+                        .WithMany("TrainerDetails")
                         .HasForeignKey("CoursesId");
 
                     b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("TrainerDetails")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Courses");
@@ -817,14 +862,14 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TranningPart", b =>
+            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TrainingPart", b =>
                 {
                     b.HasOne("EasyLearning.Infrastructure.Data.Entities.Course", "Courses")
-                        .WithMany("TranningParts")
+                        .WithMany("TrainingParts")
                         .HasForeignKey("CoursesId");
 
                     b.HasOne("EasyLearing.Infrastructure.Data.Entities.CourseEvent", "CourseEvent")
-                        .WithMany("TranningParts")
+                        .WithMany("TrainingParts")
                         .HasForeignKey("EventId");
 
                     b.Navigation("CourseEvent");
@@ -841,15 +886,6 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("EasyLearing.Infrastructure.Data.Entities.TrainerDetail", "TrainnerDetail")
-                        .WithMany()
-                        .HasForeignKey("TrainnerDetailId");
-
-                    b.Navigation("TrainnerDetail");
-                });
-
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.CourseDetail", b =>
                 {
                     b.HasOne("EasyLearing.Infrastructure.Data.Entities.Category", "Category")
@@ -863,6 +899,21 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserTrainingProgress", b =>
+                {
+                    b.HasOne("EasyLearing.Infrastructure.Data.Entities.TrainingPart", "TrainingPart")
+                        .WithMany("UserTrainingProgresss")
+                        .HasForeignKey("TrainingPartId");
+
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", "User")
+                        .WithMany("UserTrainingProgresss")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("TrainingPart");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -923,7 +974,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
             modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.CourseEvent", b =>
                 {
-                    b.Navigation("TranningParts");
+                    b.Navigation("TrainingParts");
                 });
 
             modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.Order", b =>
@@ -936,11 +987,20 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("ShoppingCartItem");
                 });
 
+            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TrainingPart", b =>
+                {
+                    b.Navigation("UserTrainingProgresss");
+                });
+
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Orders");
 
                     b.Navigation("ShoppingCart");
+
+                    b.Navigation("TrainerDetails");
+
+                    b.Navigation("UserTrainingProgresss");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Course", b =>
@@ -955,9 +1015,9 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Navigation("ShoppingCartItems");
 
-                    b.Navigation("TrannerDetails");
+                    b.Navigation("TrainerDetails");
 
-                    b.Navigation("TranningParts");
+                    b.Navigation("TrainingParts");
                 });
 #pragma warning restore 612, 618
         }
