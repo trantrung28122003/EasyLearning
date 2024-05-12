@@ -20,7 +20,6 @@ namespace EasyLearning.WebAPI.Controllers
         private readonly IFileService _fileService;
         private readonly UserRepository _userRepository;
         private readonly IFeedbackService _feedbackService;
-        private readonly EasyLearningDbContext _easyLearningDbContext;
         private readonly IShoppingCartItemService _shoppingCartItemService;
         private readonly IShoppingCartService _shoppingCartService;
         public CustomerCoursesController(ICourseService courseService, ICategoryService categoryService,
@@ -38,7 +37,6 @@ namespace EasyLearning.WebAPI.Controllers
             _fileService = fileService;
             _userRepository = userRepository;
             _feedbackService = feedbackService;
-            _easyLearningDbContext = easyLearningDbContext;
             _shoppingCartItemService = shoppingCartItemService;
             _shoppingCartService = shoppingCartService;
         }

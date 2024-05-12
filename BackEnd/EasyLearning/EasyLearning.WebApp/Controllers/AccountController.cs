@@ -2,13 +2,11 @@
 using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repository;
-using EasyLearning.WebApp.Areas.admin.Models;
 using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using static System.Net.WebRequestMethods;
 
 namespace EasyLearning.WebApp.Controllers
 {

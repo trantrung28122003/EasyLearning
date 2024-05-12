@@ -1,5 +1,4 @@
-﻿using EasyLearing.Infrastructure.Data.Entities;
-using EasyLearning.Infrastructure.Data.Entities;
+﻿using EasyLearning.Infrastructure.Data.Entities;
 
 namespace EasyLearning.WebAPI.Models
 {

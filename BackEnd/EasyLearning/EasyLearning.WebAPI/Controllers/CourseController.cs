@@ -58,11 +58,11 @@ namespace EasyLearning.WebAPI.Controllers
                     CoursesDescription = courseViewModel.CoursesDescription,
                     CoursesPrice = courseViewModel.CoursesPrice,
                     Requirements = courseViewModel.Requirements,
-                    CoureseContent = courseViewModel.CoureseContent,
+                    CoureseContent = courseViewModel.CourseContent,
                     StartDate = courseViewModel.StartDate,
                     EndDate = courseViewModel.StartEnd,
                     RegistrationDeadline = courseViewModel.RegistrationDeadline,
-                    MaxAttdendees = courseViewModel.MaxAttdendees,
+                    MaxAttdendees = courseViewModel.MaxAttenders,
                     Instructor = courseViewModel.Instructor,
                     ImageUrl = imgLink,
                     DateCreate = DateTime.Now
@@ -77,13 +77,6 @@ namespace EasyLearning.WebAPI.Controllers
                     };
                     await _courseDetailService.CreateCourseDetail(courDetail);
                 }
-
-               /* var trainerDetail = new TrainerDetail()
-                {
-                    CoursesId = course.Id,
-                    UserId = _userRepository.getCurrrentUser(),
-                };
-                await _trainerDetailService.CreateTrainerDetail(trainerDetail);*/
                 return RedirectToAction("Index");
             }
             var categories = await _categoryService.GetAllCategories();
@@ -94,7 +87,7 @@ namespace EasyLearning.WebAPI.Controllers
         public async Task<IActionResult> Update(string id)
         {
             var course = await _courseService.GetCourseById(id);
-            if (course == null)
+            if (course is null)
             {
                 return NotFound();
             }

@@ -10,7 +10,7 @@
 
         public string? Requirements { get; set; }
 
-        public string? CoureseContent { get; set; }
+        public string? CourseContent { get; set; }
 
         public IFormFile? Image { get; set; }
 
@@ -23,8 +23,7 @@
 
         public string? Instructor { get; set; }
 
-        public int MaxAttdendees { get; set; }
-
+        public int MaxAttenders { get; set; }
 
     }
 }

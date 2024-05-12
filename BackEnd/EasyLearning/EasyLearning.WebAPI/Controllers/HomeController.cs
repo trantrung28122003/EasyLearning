@@ -2,6 +2,7 @@
 using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repository;
+using EasyLearning.WebAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,39 +14,30 @@ namespace EasyLearning.WebAPI.Controllers
         private readonly ICourseService _courseService;
         private readonly ICategoryService _categoryService;
         private readonly ICourseDetailService _courseDetailService;
-        private readonly ICourseEventService _courseEventService;
-        private readonly ITrainingPartService _TrainingPartService;
         private readonly IOrderService _orderService;
         private readonly IOrderDetailService _orderDetailService;
-        private readonly IFileService _fileService;
         private readonly UserRepository _userRepository;
         private readonly IFeedbackService _feedbackService;
         private readonly IShoppingCartItemService _shoppingCartItemService;
         private readonly IShoppingCartService _shoppingCartService;
-        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public HomeController(ICourseService courseService, ICategoryService categoryService,
-        ICourseDetailService courseDetailService, IOrderService orderService, IOrderDetailService orderDetailService,
-        ICourseEventService courseEventService, ITrainingPartService TrainingPartService,
-        IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService,
-        IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService,
-         RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
+        ICourseDetailService courseDetailService, IOrderService orderService, IOrderDetailService orderDetailService, UserRepository userRepository,
+        IFeedbackService feedbackService, IShoppingCartItemService shoppingCartItemService, ILogger<HomeController> logger,
+        IShoppingCartService shoppingCartService, UserManager<ApplicationUser> userManager)
         {
             _courseService = courseService;
             _categoryService = categoryService;
             _courseDetailService = courseDetailService;
-            _courseEventService = courseEventService;
-            _TrainingPartService = TrainingPartService;
             _orderService = orderService;
             _orderDetailService = orderDetailService;
-            _fileService = fileService;
             _userRepository = userRepository;
             _feedbackService = feedbackService;
             _shoppingCartItemService = shoppingCartItemService;
             _shoppingCartService = shoppingCartService;
-            _roleManager = roleManager;
             _userManager = userManager;
+            _logger = logger;   
         }
 
 

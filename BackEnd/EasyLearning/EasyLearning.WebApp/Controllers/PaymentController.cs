@@ -1,7 +1,7 @@
 ﻿using EasyLearning.Application.Services;
 using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-namespace EasyLearning.WebApp.Areas.admin.Controllers
+namespace EasyLearning.WebApp.Controllers
 {
     public class PaymentController : Controller
     {

@@ -31,11 +31,11 @@ namespace EasyLearning.WebApp.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
 
         public HomeController(ICourseService courseService, ICategoryService categoryService,
-        ICourseDetailService courseDetailService, IOrderService orderService, IOrderDetailService orderDetailService,
-        ICourseEventService courseEventService, ITrainingPartService TrainingPartService,
-        IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService,
-        IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService,
-         RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
+            ICourseDetailService courseDetailService, IOrderService orderService, IOrderDetailService orderDetailService,
+            ICourseEventService courseEventService, ITrainingPartService TrainingPartService,
+            IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService,
+            IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService,
+             RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _courseService = courseService;
             _categoryService = categoryService;
@@ -62,7 +62,7 @@ namespace EasyLearning.WebApp.Controllers
 
             var courses = await _courseService.GetAllCourses();
             var categories = await _categoryService.GetAllCategories();
-            var courDetails = await _courseDetailService.GetAllCourseDetail();
+            var courseDetails = await _courseDetailService.GetAllCourseDetail();
             var feedbacks = await _feedbackService.GetAllFeedbacks();
 
 
@@ -88,7 +88,7 @@ namespace EasyLearning.WebApp.Controllers
             {
                 Courses = courses,
                 Categories = categories,
-                CourseDetails = courDetails,
+                CourseDetails = courseDetails,
                 Feedbacks = feedbacks,
                 ShoppingCartItems = shoppingCartItem,
                 OrderDetails = listOrderDetail,
