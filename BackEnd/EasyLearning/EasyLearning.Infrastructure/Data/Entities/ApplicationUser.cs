@@ -12,5 +12,6 @@ namespace EasyLearning.Infrastructure.Data.Entities
         public ICollection<TrainerDetail>? TrainerDetails { get; set; }
         public ICollection<Order>? Orders { get; set; }
         public ICollection<UserTrainingProgress>? UserTrainingProgresss { get; set; }
+       
     }
 }

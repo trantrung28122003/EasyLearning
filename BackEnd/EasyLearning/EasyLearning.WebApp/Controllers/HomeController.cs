@@ -63,9 +63,8 @@ namespace EasyLearning.WebApp.Controllers
             var categories = await _categoryService.GetAllCategories();
             var courDetails = await _courseDetailService.GetAllCourseDetail();
             var feedbacks = await _feedbackService.GetAllFeedbacks();
-
-
             var users = await _userRepository.GetUsersAsync();
+
             List<ApplicationUser> usersAdmin = (List<ApplicationUser>)await _userManager.GetUsersInRoleAsync("Admin");
             if (!string.IsNullOrEmpty(_userRepository.getCurrrentUser()))
             {
@@ -76,7 +75,8 @@ namespace EasyLearning.WebApp.Controllers
                 
                 foreach (var order in orders)
                 {
-                    listOrderDetail = await _orderDetailService.GetOrderDetailByOrder(order.Id);
+           
+                    listOrderDetail.AddRange(await _orderDetailService.GetOrderDetailByOrder(order.Id));
                 }
             }
             else

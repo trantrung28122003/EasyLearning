@@ -16,8 +16,10 @@ namespace EasyLearning.WebApp.Models
             public DateTime? DateChange { get; set; }
             public string? ChangedBy { get; set; }
             public bool IsDeleted { get; set; }
-            public string TrainingPartId { get; set; }
-            public string CourseId { get; set; }
+            public string? TrainingPartId { get; set; }
+            public TrainingPart? TrainingPart { get; set; }
+
+            public string? CourseId { get; set; }
     }
 }
 

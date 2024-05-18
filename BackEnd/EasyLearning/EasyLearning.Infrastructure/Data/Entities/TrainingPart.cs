@@ -5,6 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyLearing.Infrastructure.Data.Entities
 {
+    public enum TraininpartType
+    {
+        Lesson = 5,
+        Exercise = 10,
+    }
     public class TrainingPart : GenericEntity
     {
         [Column("Training_Part_Name")]
@@ -18,8 +23,15 @@ namespace EasyLearing.Infrastructure.Data.Entities
 
         [Column("Training_Part_Description")]
         public string? Description { get; set; }
+
+        [Column("Training_Part_Type")]
+        public TraininpartType TraininpartType { get; set; }
+
         [Column("Training_Part_ImageUrl")]
         public string? ImageUrl { get; set; }
+
+        [Column("Training_Part_VideoUrl")]
+        public string? VideoUrl { get; set; }
 
         [Column("Training_Part_Event_Id")]
         public string? EventId { get; set; }
@@ -31,7 +43,7 @@ namespace EasyLearing.Infrastructure.Data.Entities
         public string? CoursesId { get; set; }
         [ForeignKey("CoursesId")]
         public Course? Courses { get; set; }
-
         public ICollection<UserTrainingProgress>? UserTrainingProgresss { get; set; }
+        public ICollection<ExerciseQuestion>? ExerciseQuestions { get; set; }
     }
 }

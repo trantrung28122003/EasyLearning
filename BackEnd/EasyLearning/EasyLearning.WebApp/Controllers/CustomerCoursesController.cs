@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EasyLearning.WebApp.Controllers
 {
+  
     public class CustomerCoursesController : Controller
     {
         private readonly ICourseService _courseService;
@@ -28,10 +29,18 @@ namespace EasyLearning.WebApp.Controllers
         private readonly EasyLearningDbContext _easyLearningDbContext;
         private readonly IShoppingCartItemService _shoppingCartItemService;
         private readonly IShoppingCartService _shoppingCartService;
+        private readonly IExerciseQuestionService _exerciseQuestionService;
+        private readonly IAnswerService _answerService;
+
+
+        private readonly IUserTrainingProgressService _userTrainingProgressService;
+
         public CustomerCoursesController(ICourseService courseService, ICategoryService categoryService,
         ICourseDetailService courseDetailService, IOrderService orderService, IOrderDetailService orderDetailService,
         ICourseEventService courseEventService, ITrainingPartService trainingPartService,
-        IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService, EasyLearningDbContext easyLearningDbContext, IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService)
+        IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService,
+        EasyLearningDbContext easyLearningDbContext, IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService,
+        IUserTrainingProgressService userTrainingProgressService, IExerciseQuestionService exerciseQuestionService, IAnswerService answerService)
         {
             _courseService = courseService;
             _categoryService = categoryService;
@@ -46,8 +55,12 @@ namespace EasyLearning.WebApp.Controllers
             _easyLearningDbContext = easyLearningDbContext;
             _shoppingCartItemService = shoppingCartItemService;
             _shoppingCartService = shoppingCartService;
+            _userTrainingProgressService = userTrainingProgressService;
+            _exerciseQuestionService = exerciseQuestionService;
+            _answerService = answerService;
         }
 
+       
         public async Task<IActionResult> ListCourse(string searchString)
         {
             List<OrderDetail> listOrderDetail = new List<OrderDetail>();
@@ -66,7 +79,7 @@ namespace EasyLearning.WebApp.Controllers
 
                 foreach (var order in orders)
                 {
-                    listOrderDetail = await _orderDetailService.GetOrderDetailByOrder(order.Id);
+                    listOrderDetail.AddRange(await _orderDetailService.GetOrderDetailByOrder(order.Id));
                 }
             }
             else
@@ -192,6 +205,7 @@ namespace EasyLearning.WebApp.Controllers
                 listTrainingPart.AddRange(trainingParts.ToList());
                 courses.AddRange(await _courseService.GetCourseByOrderDetail(itemOrderDetail.Id));
             }
+            listTrainingPart = listTrainingPart.OrderBy(x => x.StartTime).ToList();
             var customerCourseViewModel = new CustomerCourseViewModel
             {
                 currentUserId = currentUserId,
@@ -202,47 +216,89 @@ namespace EasyLearning.WebApp.Controllers
             };
             return View(customerCourseViewModel);
         }
+        //[HttpGet("GetQuizData")]
 
-        public async Task<IActionResult> OnlineEventSchedule()
+        public async Task<IActionResult> OnlineEventSchedule(string courseId)
         {
-            List<Course> courses = new List<Course>();
-            List<TrainingPart> listTrainingPart = new List<TrainingPart>();
-            List<OrderDetail> listOrderDetail = new List<OrderDetail>();
-            var currentUserId = _userRepository.getCurrrentUser();
-            var orders = await _orderService.GetAllOrders();
-            var ordersByUser = await _orderService.GetOrdersByUser();
-            foreach (var order in ordersByUser)
-            {
-                listOrderDetail.AddRange(await _orderDetailService.GetOrderDetailByOrder(order.Id));
-            }
-            foreach (var itemOrderDetail in listOrderDetail)
-            {
-                var trainingParts = await _trainingPartService.GetTrainingPartByCourse(itemOrderDetail.CoursesId);
-                var courseEvents = await _courseEventService.GetEventByCourse(itemOrderDetail.CoursesId);
 
-                listTrainingPart.AddRange(trainingParts.ToList());
-                courses.AddRange(await _courseService.GetCourseByOrderDetail(itemOrderDetail.Id));
+            List<UserTrainingProgress> listUserTrainingProgress = new List<UserTrainingProgress>();
+            List<ExerciseQuestion> exerciseQuestionsByCourse = new List<ExerciseQuestion>();
+            var ListCorrectPercentage = new List<(string userTrainingPartProgressId, int correctPercentage)>();
+            var course = await _courseService.GetCourseById(courseId);
+            var listCourseEvent = await _courseEventService.GetEventByCourse(courseId);
+            var listTrainingPart = await _trainingPartService.GetTrainingPartByCourse(courseId);
+            var currentUserId = _userRepository.getCurrrentUser();
+           
+            listTrainingPart = listTrainingPart.OrderBy(x => x.StartTime).ToList();
+            listCourseEvent = listCourseEvent.OrderBy(x => x.DateStart).ToList();
+
+            foreach (var itemTrainingPart in listTrainingPart)
+            {
+
+                var userTrainingPartProgress = await _userTrainingProgressService.GetUserTrainingProgressByTrainingPartIdAndUserId(itemTrainingPart.Id, currentUserId);
+                var listExerciseQuestion = await _exerciseQuestionService.GetExerciseQuestionByTraningPartId(itemTrainingPart.Id);
+                listUserTrainingProgress.Add(userTrainingPartProgress);
+                exerciseQuestionsByCourse.AddRange(listExerciseQuestion);
             }
+
+            foreach (var itemTrainingPart in listTrainingPart)
+            {
+                foreach(var itemTrainingPartProgress in listUserTrainingProgress)
+                {
+                    if(itemTrainingPart.Id == itemTrainingPartProgress.TrainingPartId && itemTrainingPartProgress.IsCompleted && itemTrainingPart.TraininpartType == TraininpartType.Exercise)
+                    {
+                        var listQuestionByTrainingPartId = await _exerciseQuestionService.GetExerciseQuestionByTraningPartId(itemTrainingPart.Id);
+                        var questionCountByTrainingPartId = listQuestionByTrainingPartId.Count;
+                        var correctPercentage = (int)Math.Round(((double)itemTrainingPartProgress.CorrectAnswersCount / questionCountByTrainingPartId) * 100);
+                        ListCorrectPercentage.Add((itemTrainingPartProgress.Id, correctPercentage));
+                    }
+                }    
+                
+            }
+            ViewData["ListCorrectPercentage"] = ListCorrectPercentage;
+
             var customerCourseViewModel = new CustomerCourseViewModel
             {
+                Course = course,
                 currentUserId = currentUserId,
-                Courses = courses,
+                CourseEvents = listCourseEvent,
                 TrainingParts = listTrainingPart,
-                Orders = orders,
+                UserTrainingProgresss = listUserTrainingProgress,
+                ExerciseQuestionsByCourse = exerciseQuestionsByCourse,
             };
             return View(customerCourseViewModel);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> GetQuizData(string trainingPartId)
+        {
+            var listQuestion = await _exerciseQuestionService.GetAllQuestionsAndAnswer(trainingPartId); 
+
+            var quizData = listQuestion.Select(x => new
+            {
+                question = x.Question,
+                options = x.Answers.Select(p => p.Text).ToList(),
+                correct = x.Answers.FirstOrDefault(a => a.IsCorrect == true)?.Text
+            });
+            return Ok(quizData);
+        }
+
         [HttpPost]
-        public async Task<IActionResult> TrackVideoEvent(string videoName, string percentageWatched)
+        public async Task<IActionResult> TrackVideoEvent(string videoName, string percentageWatched, string trainingPartId, bool trainingPartIsComplete)
         {
             try
             {
                 double percentage = double.Parse(percentageWatched);
-                if (percentage >= 80)
+                if (percentage >= 90)
                 {
-                    var videoname1 = videoName;
+                    var userTrainingPartProgress = await _userTrainingProgressService.GetUserTrainingProgressByTrainingPartIdAndUserId(trainingPartId, _userRepository.getCurrrentUser());
+                    if (userTrainingPartProgress != null)
+                    {
+                        userTrainingPartProgress.IsCompleted = true;
+                        await _userTrainingProgressService.UpdateUserTrainingProgress(userTrainingPartProgress);
 
+                    }
                     return RedirectToAction("Index", "Home");
                 }
                 return Ok();
@@ -252,6 +308,82 @@ namespace EasyLearning.WebApp.Controllers
 
                 return StatusCode(500, $"Lỗi: {ex.Message}");
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitQuizResults(string trainingPartId, string[] correctQuestionIds, bool isCompleted)
+        {
+            try
+            {
+                var trainingPart = await _trainingPartService.GetTrainingPartById(trainingPartId);
+                var userTrainingPartProgress = await _userTrainingProgressService.GetUserTrainingProgressByTrainingPartIdAndUserId(trainingPartId, _userRepository.getCurrrentUser());
+                if (!isCompleted)
+                {
+                    if (userTrainingPartProgress != null)
+                    {
+                        userTrainingPartProgress.IsCompleted = true;
+                        userTrainingPartProgress.DateChange = DateTime.Now;
+                        userTrainingPartProgress.CorrectAnswersCount = correctQuestionIds.Length;
+                        await _userTrainingProgressService.UpdateUserTrainingProgress(userTrainingPartProgress);
+                    }
+                }
+                else
+                {
+                    if (userTrainingPartProgress != null)
+                    {
+                        userTrainingPartProgress.DateChange = DateTime.Now;
+                        await _userTrainingProgressService.UpdateUserTrainingProgress(userTrainingPartProgress);
+                    }
+                }
+
+                return Ok();
+                
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"Lỗi: {ex.Message}");
+            }
+        }
+
+        public async Task<IActionResult> ListCourseOnlineByUser()
+        {
+            List<Course> courses = new List<Course>();
+            List<CourseEvent> listCourseEvent = new List<CourseEvent>();
+            List<TrainingPart> listTrainingPart = new List<TrainingPart>();
+            List<OrderDetail> listOrderDetail = new List<OrderDetail>();
+            var currentUserId = _userRepository.getCurrrentUser();
+            var orders = await _orderService.GetAllOrders();
+            var ordersByUser = await _orderService.GetOrdersByUser();
+            var listUserTrainingProgress = await _userTrainingProgressService.GetUserTrainingProgressByUserId(currentUserId);
+            foreach (var order in ordersByUser)
+            {
+                listOrderDetail.AddRange(await _orderDetailService.GetOrderDetailByOrder(order.Id));
+            }
+            foreach (var itemOrderDetail in listOrderDetail)
+            {
+                var trainingParts = await _trainingPartService.GetTrainingPartByCourse(itemOrderDetail.CoursesId);
+                var courseEvents = await _courseEventService.GetEventByCourse(itemOrderDetail.CoursesId);
+                listCourseEvent.AddRange(courseEvents.ToList());
+                listTrainingPart.AddRange(trainingParts.ToList());
+                courses.AddRange(await _courseService.GetCourseByOrderDetail(itemOrderDetail.Id));
+            }
+            listTrainingPart = listTrainingPart.OrderBy(x => x.StartTime).ToList();
+            var customerCourseViewModel = new CustomerCourseViewModel
+            {
+                currentUserId = currentUserId,
+                Courses = courses,
+                CourseEvents = listCourseEvent,
+                TrainingParts = listTrainingPart,
+                Orders = orders,
+                UserTrainingProgresss = listUserTrainingProgress,
+            };
+            return View(customerCourseViewModel);
+        }
+
+        public async Task<IActionResult> test()
+        {
+            return View();
         }
     }
 }

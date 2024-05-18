@@ -1,10 +1,11 @@
-﻿using EasyLearning.Infrastructure.Data.Abstraction;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+using EasyLearning.Infrastructure.Data.Abstraction;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyLearing.Infrastructure.Data.Entities
 {
-    public enum EnventType
+    public enum CourseEventType
     {
         Online = 5,
         Offline = 10,
@@ -15,7 +16,7 @@ namespace EasyLearing.Infrastructure.Data.Entities
         public string? EventName { get; set; }
 
         [Column("Course_Event_Type")]
-        public EnventType EventType { get; set; }
+        public CourseEventType EventType { get; set; }
 
         [Column("Course_Event_Location")]
         public string? Location { get; set; }

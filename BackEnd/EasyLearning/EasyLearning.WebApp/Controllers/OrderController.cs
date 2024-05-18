@@ -1,6 +1,7 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Repostiory;
+
 using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +18,11 @@ namespace EasyLearning.WebApp.Controllers
         private readonly IShoppingCartItemService _shoppingCartItemService;
         private readonly IOrderService _orderService;
         private readonly IOrderDetailService _orderDetailService;
+        private readonly IPaymentService _paymentService;
         private readonly UserRepository _userRepository;
         public OrderController(ICourseService courseService, IShoppingCartService shoppingCartService,
             IShoppingCartItemService shoppingCartItemService, IOrderService orderService, 
-            IOrderDetailService orderDetailService, UserRepository userRepository)
+            IOrderDetailService orderDetailService, UserRepository userRepository, IPaymentService paymentService)
         {
             _shoppingCartService = shoppingCartService;
             _shoppingCartItemService = shoppingCartItemService;
@@ -28,6 +30,7 @@ namespace EasyLearning.WebApp.Controllers
             _orderService = orderService;
             _orderDetailService = orderDetailService;
             _userRepository = userRepository;
+            _paymentService = paymentService;
         }
         public async Task<IActionResult> Create()
         {
@@ -46,37 +49,11 @@ namespace EasyLearning.WebApp.Controllers
             };
             return View(orderViewModel);
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(OrderViewModel orderViewModel)
         {
-            var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
-             var getShoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
-           
-            var order = new Order
-            {
-                UserId = _userRepository.getCurrrentUser(),
-                OrderPaymentMethod = orderViewModel.OrderPaymentMethod,
-                OrderNotes = orderViewModel.OrderNotes,
-                DateCreate = DateTime.Now,
-                IsDeleted = false,
-            };
-            await _orderService.CreateOrder(order);
-
-            foreach (var itemShoppingCart in getShoppingCartItem)
-            {
-                var orderDetail = new OrderDetail
-                {
-                    OrderId = order.Id,
-                    CoursesId = itemShoppingCart.CoursesId,
-                    DateCreate = DateTime.Now,
-                    IsDeleted = false
-                };
-                await _orderDetailService.CreateOrderDetail(orderDetail);
-            }
-            foreach(var itemCart in getShoppingCartItem)
-            {
-                await _shoppingCartItemService.DeleteShoppingCartItem(itemCart);
-            }    
+            TempData["OrderViewModelJson"] = JsonConvert.SerializeObject(orderViewModel);
             return RedirectToAction("Index", "Payment");
         }
     }

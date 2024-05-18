@@ -17,7 +17,7 @@ namespace EasyLearing.Infrastructure.Data.Entities
         [Column("Shopping_Cart_Item_ImageUrl")]
         public string? ImageUrl { get; set; }
 
-        [Column("Shopping_Cart_Item_Price")]
+        [Column("Shopping_Cart_Item_Price", TypeName = "decimal(10,3)")]
         public decimal? CartItemPrice { get; set; }
        
         [Column("Shopping_Cart_Id")]

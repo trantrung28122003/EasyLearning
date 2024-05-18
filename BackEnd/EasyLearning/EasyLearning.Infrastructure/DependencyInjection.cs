@@ -1,5 +1,6 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data;
+using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repostiory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,10 @@ namespace EasyLearning.Infrastructure
             services.AddScoped<OrderRepository, OrderRepository>();
             services.AddScoped<OrderDetailRepository, OrderDetailRepository>();
             services.AddScoped<FeedbackRepository, FeedbackRepository>();
+            services.AddScoped<UserTrainingProgressRepository, UserTrainingProgressRepository>();
+            services.AddScoped<ExerciseQuestionRepository, ExerciseQuestionRepository>();
+            services.AddScoped<AnswerRepository, AnswerRepository>();
+          
             services.AddDbContext<EasyLearningDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetSection("Database:ConectionString").Value);

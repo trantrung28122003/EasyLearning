@@ -20,7 +20,10 @@ namespace EasyLearning.Infrastructure.Data
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<CourseEvent> CourseEvents { get; set; }
         public DbSet<AddOn> AddOns { get; set; }
-        public DbSet<UserTrainingProgress> UserTrainingProgress { get; set; }
+        public DbSet<UserTrainingProgress> UserTrainingProgresss { get; set; }
+        public DbSet<ExerciseQuestion> ExerciseQuestions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+     
         public EasyLearningDbContext()
         {
         }

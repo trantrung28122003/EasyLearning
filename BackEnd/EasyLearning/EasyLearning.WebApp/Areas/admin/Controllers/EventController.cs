@@ -38,9 +38,8 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             {
                 return NotFound();
             }
-            var TrainingParts = await _TrainingPartService.GetTrainingPartWithoutEventIdAndCourse(courseId);
             ViewBag.CourseId = courseId;
-            ViewBag.TrainingParts = new SelectList(TrainingParts, "Id", "TrainingPartName");
+            
             return View();
         }
 
@@ -50,10 +49,10 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var courseEvent = new CourseEvent
+                var courseEvent = new CourseEvent()
                 {
                     EventName = eventViewModel.EventName,
-                    EventType = (EnventType)eventViewModel.EventType,
+                    EventType = (CourseEventType)eventViewModel.EventType,
                     Location = eventViewModel.Location,
                     DateStart = eventViewModel.DateStart,
                     DateEnd = eventViewModel.DateEnd,
@@ -61,7 +60,17 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     ChangedBy = "user",
                 };
                 await _courseEventService.CreateEvent(courseEvent);
-                await _TrainingPartService.UpdateTrainingPartWithEvent(eventViewModel.TrainingPartId, courseEvent.Id);
+                var trainingPart = new TrainingPart()
+                {
+                    TrainingPartName = eventViewModel.TrainingPart.TrainingPartName,
+                    StartTime = eventViewModel.TrainingPart.StartTime,
+                    EndTime = eventViewModel.TrainingPart.EndTime,
+                    DateCreate = DateTime.Now,
+                    DateChange = DateTime.Now,
+                    EventId = courseEvent.Id,
+                    CoursesId = eventViewModel.CourseId,
+                };
+                await _TrainingPartService.CreateTrainingPart(trainingPart);
                 return RedirectToAction("Index", "Event", new { courseId = eventViewModel.CourseId});
             }
             return View(eventViewModel);
@@ -110,7 +119,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     return NotFound();
                 }
                 courseEvent.EventName = eventViewModel.EventName;
-                courseEvent.EventType = (EnventType)eventViewModel.EventType;
+                courseEvent.EventType = (CourseEventType)eventViewModel.EventType;
                 courseEvent.Location = eventViewModel.Location;
                 courseEvent.DateStart = eventViewModel.DateStart;
                 courseEvent.DateEnd = eventViewModel.DateEnd;

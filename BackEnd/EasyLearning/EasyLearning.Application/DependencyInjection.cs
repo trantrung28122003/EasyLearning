@@ -21,6 +21,10 @@ namespace EasyLearning.Application
             services.AddScoped<IOrderDetailService, OrderDetailService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IUserTrainingProgressService, UserTrainingProgressService>();
+            services.AddScoped<IExerciseQuestionService, ExerciseQuestionService>();
+            services.AddScoped<IAnswerService, AnswerService>();
+           
         }
     }
 }

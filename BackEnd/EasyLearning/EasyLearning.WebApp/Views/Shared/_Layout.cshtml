@@ -52,13 +52,17 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto p-4 p-lg-0">
                     <a asp-controller="Home" asp-action="Index" class="nav-item nav-link active">Trang Chủ</a>
-                    <a asp-controller="CustomerCourses" asp-action="OnlineEventSchedule" class="nav-item nav-link active">video</a>
+                    @{
+                        var courseId = "18f5ca3a-cf97-4ad0-a7b7-440c1c7228ec";
+                    }
+                    <a asp-controller="CustomerCourses" asp-action="OnlineEventSchedule" asp-route-courseId="@courseId" class="nav-item nav-link active">video</a>
                     <a asp-controller="About" asp-action="IndexAbout" class="nav-item nav-link">Thông Tin Về Chúng Tôi</a>
                     <a asp-controller="CustomerCourses" asp-action="ListCourse" class="nav-item nav-link">Các Khóa Học</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Mục Lục</a>
                         <div class="dropdown-menu fade-down m-0">
                             <a asp-controller="CustomerCourses" asp-action="EventSchedule" class="dropdown-item">Thời khóa biểu</a>
+                            <a asp-controller="CustomerCourses" asp-action="ListCourseOnlineByUser" class="dropdown-item">Danh sách khóa học của bạn</a>
                             <a asp-controller="admin" asp-action="course" class="dropdown-item">Dash Board</a>
                         </div>
                     </div>

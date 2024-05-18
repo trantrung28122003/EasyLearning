@@ -16,7 +16,7 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
             return _user;
         }
 
-        public async Task<string> getCurrrentUserFullNameAsync()
+        public async Task<string?> getCurrrentUserFullNameAsync()
         {
             using (var context = new EasyLearningDbContext())
             {

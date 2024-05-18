@@ -2,6 +2,7 @@
 using EasyLearning.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EasyLearning.WebApp.Areas.admin.Controllers
 {
@@ -10,10 +11,12 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
     public class TrainingPartController : Controller
     {
         private readonly ITrainingPartService _TrainingPartService;
+        private readonly ICourseEventService _courseEventService;
 
-        public TrainingPartController(ITrainingPartService TrainingPartService)
+        public TrainingPartController(ITrainingPartService TrainingPartService, ICourseEventService courseEventService)
         {
             _TrainingPartService = TrainingPartService;
+            _courseEventService = courseEventService;
         }
 
         public async Task<IActionResult> Index(string courseId)
@@ -24,12 +27,16 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             }
             var TrainingParts = await _TrainingPartService.GetTrainingPartByCourse(courseId);
             ViewBag.CourseId = courseId;
+           
             return View(TrainingParts);
         }
 
         public async Task<IActionResult> Create(string courseId)
         {
+           
+            var courseEventbyCourse = await _courseEventService.GetEventByCourse(courseId);
             ViewBag.CourseId = courseId;
+            ViewBag.CourseEvent = new SelectList(courseEventbyCourse, "Id", "EventName");
             return View();
         }
 
@@ -39,9 +46,10 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                TrainingPart.DateChange = DateTime.Now;
                 TrainingPart.DateCreate = DateTime.Now;
                 TrainingPart.ChangedBy = "User";
-
+                
                 await _TrainingPartService.CreateTrainingPart(TrainingPart);
                 return RedirectToAction("Index", "TrainingPart", new { courseId = TrainingPart.CoursesId });
             }

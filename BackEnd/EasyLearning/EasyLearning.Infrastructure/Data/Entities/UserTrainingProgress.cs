@@ -14,7 +14,7 @@ namespace EasyLearning.Infrastructure.Data.Entities
         [Column("User_Id")]
         public string? UserId { get; set; }
         [ForeignKey("UserId")]
-        public ApplicationUser? User { get; set; }
+        public virtual ApplicationUser? User { get; set; }
 
         [Column("Training_Part_Id")]
         public string? TrainingPartId { get; set; }
@@ -23,6 +23,10 @@ namespace EasyLearning.Infrastructure.Data.Entities
 
         [Column("Percentage_Watched")]
         public double? PercentageWatched { get; set; }
+
+
+        [Column("Correct_Answers")]
+        public int? CorrectAnswersCount { get; set; }
 
         [Column("IsCompleted")]
         public bool IsCompleted { get; set; }

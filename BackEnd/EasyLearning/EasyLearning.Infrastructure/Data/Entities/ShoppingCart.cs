@@ -7,7 +7,7 @@ namespace EasyLearing.Infrastructure.Data.Entities
 {
     public class ShoppingCart : GenericEntity
     {
-        [Column("Shopping_Cart_TotalPrice")]
+        [Column("Shopping_Cart_TotalPrice", TypeName = "decimal(10,3)")]
         public decimal? TotalPrice { get; set; }
 
         [Column("Shopping_Cart_PaymentMethod")]

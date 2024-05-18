@@ -28,8 +28,8 @@
             <div class="form-group">
                 <label asp-for="EventType">Hình thức:</label>
                 <select asp-for="EventType" class="form-control">
-                    <option value="@((int)EasyLearing.Infrastructure.Data.Entities.EnventType.Online)">Online</option>
-                    <option value="@((int)EasyLearing.Infrastructure.Data.Entities.EnventType.Offline)">Offline</option>
+                    <option value="@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Online)">Online</option>
+                    <option value="@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Offline)">Offline</option>
                 </select>
                 <span asp-validation-for="EventType" class="text-danger"></span>
             </div>

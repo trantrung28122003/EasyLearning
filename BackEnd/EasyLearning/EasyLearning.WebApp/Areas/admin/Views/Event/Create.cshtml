@@ -12,11 +12,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <p>Mã khóa học: @ViewBag.CourseId</p>
             <input type="hidden" id="CourseId" name="CourseId" value="@ViewBag.CourseId" />
-            <div class="form-group">
-                <label asp-for="TrainingPartId" class="control-label">Mã nội dung</label>
-                <select asp-for="TrainingPartId" class="form-control" asp-items="@ViewBag.TrainingParts"></select>
-                <span asp-validation-for="TrainingPartId" class="text-danger"></span>
-            </div> 
+           
             <div class="form-group">
                 <label asp-for="EventName" class="control-label">Tên lớp</label>
                 <input asp-for="EventName" class="form-control" />
@@ -25,8 +21,8 @@
             <div class="form-group">
                 <label asp-for="EventType">Hình thức:</label>
                 <select asp-for="EventType" class="form-control">
-                    <option value="@((int)EasyLearing.Infrastructure.Data.Entities.EnventType.Online)">Online</option>
-                    <option value="@((int)EasyLearing.Infrastructure.Data.Entities.EnventType.Offline)">Offline</option>
+                <option value="@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Online)">Online</option>
+                <option value="@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Offline)">Offline</option>
                 </select>
                 <span asp-validation-for="EventType" class="text-danger"></span>
             </div>
@@ -45,13 +41,34 @@
                 <input asp-for="DateEnd" class="form-control" />
                 <span asp-validation-for="DateEnd" class="text-danger"></span>
             </div>
-         
+            <h1 class="text-center ">Thêm nội dung phần học</h1>
+            <hr />
+            <div class="container">
+                <div class="form-group">
+                    <label asp-for="TrainingPart.TrainingPartName" class="control-label">Tên nội dung</label>
+                    <input asp-for="TrainingPart.TrainingPartName" class="form-control" />
+                    <span asp-validation-for="TrainingPart.TrainingPartName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TrainingPart.StartTime" class="control-label">Thời gian bắt đầu</label>
+                    <input asp-for="TrainingPart.StartTime" class="form-control" />
+                    <span asp-validation-for="TrainingPart.StartTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TrainingPart.EndTime" class="control-label">thời gian kết thúc</label>
+                    <input asp-for="TrainingPart.EndTime" class="form-control" />
+                    <span asp-validation-for="TrainingPart.EndTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TrainingPart.Description" class="control-label">Chi tiết</label>
+                    <input asp-for="TrainingPart.Description" class="form-control" />
+                    <span asp-validation-for="TrainingPart.Description" class="text-danger"></span>
+                </div>
             <div class="form-group">
                 <input type="submit" value="Tạo" class="btn btn-outline-primary" />
             </div>
         </form>
     </div>
-
 <div>
     <a asp-action="Index" asp-controller="course" class="btn btn-outline-danger">Quay lại</a>
 </div>

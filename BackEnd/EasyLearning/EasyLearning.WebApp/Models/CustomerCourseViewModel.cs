@@ -20,8 +20,12 @@ namespace EasyLearning.WebApp.Models
         public List<Order>? Orders { get; set; }
         public List<OrderDetail>? OrderDetails { get; set; }
 
+        public List<UserTrainingProgress>? UserTrainingProgresss { get; set; }
+        public List<ExerciseQuestion>? ExerciseQuestionsByCourse { get; set; }
         public bool IsSearchResult { get; set; }
         public bool HasBoughtCourse { get; set; }
+
+        
     }
 
 }

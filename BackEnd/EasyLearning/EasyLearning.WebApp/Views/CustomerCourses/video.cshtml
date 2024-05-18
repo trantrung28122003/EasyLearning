@@ -33,7 +33,7 @@
                 url: '/CustomerCourses/TrackVideoEvent',
                 method: 'POST',
                 data: {
-                    videoName: '@ViewBag.VideoName',
+                    videoName: VideoName,
                     percentageWatched: percentage
                 },
                 success: function (response) {
@@ -47,3 +47,59 @@
     });
 </script>
 
+
+
+@foreach (var trainingPart in Model.TrainingParts)
+{
+    <div>
+        <div>@trainingPart.TrainingPartName</div>
+        <video class="videoPlayer" data-video-name="@trainingPart.ImageUrl" controls>
+            <source src="@trainingPart.ImageUrl" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <div class="percentageWatched"></div>
+    </div>
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Lặp qua mỗi video và thêm sự kiện cho từng video
+        $('.videoPlayer').each(function () {
+            var video = this;
+            var duration = 0;
+            var parentDiv = $(this).closest('div');
+
+            video.addEventListener('loadedmetadata', function () {
+                duration = video.duration;
+            });
+
+            video.addEventListener('timeupdate', function () {
+                var currentTime = video.currentTime;
+                var percentageWatched = (currentTime / duration) * 100;
+                var videoName = $(video).data('video-name');
+                var percentageDiv = $(parentDiv).find('.percentageWatched');
+                $(percentageDiv).text('Percentage watched: ' + percentageWatched.toFixed(2) + '%');
+                sendEventToServer(videoName, percentageWatched);
+            });
+        });
+
+        function sendEventToServer(videoName, percentage) {
+            $.ajax({
+                url: '/CustomerCourses/TrackVideoEvent',
+                method: 'POST',
+                data: {
+                    videoName: videoName,
+                    percentageWatched: percentage
+                },
+                success: function (response) {
+                    // Xử lý phản hồi từ server nếu cần
+                },
+                error: function (xhr, status, error) {
+                    console.error('Lỗi khi gửi phần trăm đã xem lên server:', error);
+                }
+            });
+        }
+    });
+</script>

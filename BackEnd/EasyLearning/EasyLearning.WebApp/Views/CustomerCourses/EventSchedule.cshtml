@@ -55,12 +55,14 @@
                     }
            
                 </ul>
+
                 @{
                     bool isFirstCourse1 = true;
                 }
                 <div class="tab-content" id="myTabContent">
                      @foreach (var itemCourse in Model.Courses)
-                    {
+                     {
+
                         <div class="tab-pane fade @(isFirstCourse1 ? "show active" : "")" id="@itemCourse.Id" role="tabpanel" aria-labelledby="@("tab-" + itemCourse.Id)">
                             <div class="table-responsive">
                                 <table class="table">
@@ -74,100 +76,79 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var itemTraningPart in Model.TrainingParts)
+                                        @{
+                                            var listCourseEventsId = Model.TrainingParts
+                                            .Where(tp => tp.CoursesId == itemCourse.Id) // Lọc các bản ghi TrainingPart có CoursesId phù hợp
+                                            .Select(tp => tp.EventId) // Chọn thuộc tính CourseEvent từ các bản ghi TrainingPart
+                                            .Distinct() // Loại bỏ các sự kiện trùng lặp
+                                            .ToList();
+                                        }
+
+                                        @foreach (var itemCourseEventId in listCourseEventsId)
                                         {
-                                            @if (itemTraningPart.CoursesId == itemCourse.Id)
+                                            @foreach (var itemCourseEvent in Model.CourseEvents)
                                             {
-                                                <tr class="inner-box">
-                                                    <th scope="row">
-                                                        <div class="event-date">
-                                                            <span>@itemTraningPart.StartTime.Day</span>
-                                                            @{
-                                                                @using System.Globalization
-                                                                // Lấy tên của tháng từ số tháng
-                                                                string monthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(itemTraningPart.StartTime.Month);
-                                                            }
-                                                            <p>@monthName</p>
-                                                        </div>
-                                                    </th>
-                                                    <td>
-                                                        <div class="event-img">
-                                                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="event-wrap">
-                                                            <h3><a href="#">@itemTraningPart.TrainingPartName</a></h3>
-                                                            <div class="meta">
-                                                                <div class="organizers">
-                                                                    <a href="#">@itemCourse.Instructor</a>
-                                                                </div>
-                                                                <div class="categories">
-                                                                    <a href="#">Tài liệu</a>
-                                                                </div>
+                                                if (itemCourseEvent.Id == itemCourseEventId)
+                                                {
+                                                    <tr class="inner-box">
+                                                        <th scope="row">
+                                                            <div class="event-date">
+                                                                <span> @itemCourseEvent.DateStart.Day </span>
                                                                 @{
-                                                                    bool hasEventData = false;
+                                                                    @using System.Globalization
+
+                                                                    string monthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(itemCourseEvent.DateStart.Month);
                                                                 }
-                                                         
-                                                    
-                                                                @foreach(var itemCourseEvent in Model.CourseEvents)
-                                                                {
-                                                                    if(itemCourseEvent.Id == itemTraningPart.EventId)
-                                                                    {
-                                                                    <div class="time">
-                                                                            @{
-                                                                                // Lấy giờ bắt đầu và kết thúc từ các thuộc tính DateStart và DateEnd
-                                                                                DateTime startTime = itemCourseEvent.DateStart;
-                                                                                DateTime endTime = itemCourseEvent.DateEnd;
-
-                                                                                // Định dạng thời gian theo AM/PM và chuỗi dạng hh:mm tt
-                                                                                string startTimeFormatted = startTime.ToString("hh:mm tt", CultureInfo.InvariantCulture);
-                                                                                string endTimeFormatted = endTime.ToString("hh:mm tt", CultureInfo.InvariantCulture);
-
-                                                                                // Tính khoảng thời gian giữa hai thời điểm
-                                                                                TimeSpan duration = endTime - startTime;
-                                                                                string durationFormatted = duration.ToString(@"h\h\ m\m", CultureInfo.InvariantCulture);
-                                                                            }
-                                                                            <span>@startTimeFormatted - @endTimeFormatted @durationFormatted</span>
-                                                                    </div>
-                                                                        hasEventData = true;
-                                                                       
-                                                                    }
-                                                                    if (hasEventData)
-                                                                    {
-                                                                        break;
-                                                                    }
-                                                                    }
-                                                                
+                                                                <p>@monthName</p>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="r-no">
-                                                            @{
-                                                                bool hasEventData1 = false;
-                                                            }
-                                                            @foreach (var itemCourseEvent in Model.CourseEvents)
-                                                            {
-                                                                if (itemCourseEvent.Id == itemTraningPart.EventId)
-                                                                {
-                                                                    <span>@itemCourseEvent.Location</span>
-                                                                    hasEventData1 = true;
-                                                                }
-                                                               
-                                                                if (hasEventData1)
-                                                                {
-                                                                    break;
-                                                                }
-                                                            }
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="primary-btn">
-                                                            <a class="btn btn-primary" href="#">Read More</a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                        </th>
+                                                        <td>
+                                                            <div class="event-img">
+                                                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="event-wrap">
+                                                                <h3><a href="#">@itemCourseEvent.EventName</a></h3>
+                                                                <div class="meta">
+                                                                    <div class="organizers">
+                                                                        <a href="#">@itemCourse.Instructor</a>
+                                                                    </div>
+                                                                    <div class="categories">
+                                                                        <a href="#">Tài liệu</a>
+                                                                    </div>
+                                                                    <div class="time">
+                                                                        @{
+                                                                            // Lấy giờ bắt đầu và kết thúc từ các thuộc tính DateStart và DateEnd
+                                                                            DateTime startTime = itemCourseEvent.DateStart;
+                                                                            DateTime endTime = itemCourseEvent.DateEnd;
+
+                                                                            // Định dạng thời gian theo AM/PM và chuỗi dạng hh:mm tt
+                                                                            string startTimeFormatted = startTime.ToString("hh:mm tt", CultureInfo.InvariantCulture);
+                                                                            string endTimeFormatted = endTime.ToString("hh:mm tt", CultureInfo.InvariantCulture);
+
+                                                                            // Tính khoảng thời gian giữa hai thời điểm
+                                                                            TimeSpan duration = endTime - startTime;
+                                                                            string durationFormatted = duration.ToString(@"h\h\ m\m", CultureInfo.InvariantCulture);
+                                                                        }
+                                                                        <span>@startTimeFormatted - @endTimeFormatted @durationFormatted</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="r-no">
+                                                                <span>@itemCourseEvent.Location</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="primary-btn">
+                                                                <a class="btn btn-primary" href="#">Read More</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+
                                             }
                                         }
                                     </tbody>

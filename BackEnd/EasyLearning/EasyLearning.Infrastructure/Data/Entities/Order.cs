@@ -8,7 +8,7 @@ namespace EasyLearing.Infrastructure.Data.Entities
 {
     public class Order : GenericEntity
     {
-        [Column("Order_TotalPrice")]
+        [Column("Order_TotalPrice", TypeName = "decimal(10,3)")]
         public decimal OrderTotalPrice { get ; set; }   
 
         [Column("Order_PaymentMethod")]

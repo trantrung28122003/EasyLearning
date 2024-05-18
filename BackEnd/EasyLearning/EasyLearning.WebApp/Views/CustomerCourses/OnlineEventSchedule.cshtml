@@ -1,26 +1,66 @@
-﻿@model EasyLearning.WebApp.Models.CustomerCourseViewModel
+﻿@using EasyLearing.Infrastructure.Data.Entities;
+@model EasyLearning.WebApp.Models.CustomerCourseViewModel
 @{
     ViewData["Title"] = "OnlineEventSchedule";
     Layout = null;
 }
 
+<link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css" />
+<script src="https://cdn.plyr.io/3.6.8/plyr.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
 <link href="~/css/OnlineEventSchedule.css" rel="stylesheet" />
+<link href="~/css/test3.css" rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-
 <div class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+        @{
+            var countTrainingPartByCourse = Model.TrainingParts
+            .Where(tp => tp.CoursesId == Model.Course.Id)
+            .Count();
+
+            var listTrainingPartsByCourse = Model.TrainingParts
+            .Where(tp => tp.CoursesId == Model.Course.Id)
+            .ToList();
+
+            int countCompletedTrainningPartByCourse = 0;
+                @foreach (var itemTrainingPartsByCourseEventId in listTrainingPartsByCourse)
+            {
+                foreach (var itemUserTrainingPartProgress in Model.UserTrainingProgresss)
+                {
+                    if (itemTrainingPartsByCourseEventId.Id == itemUserTrainingPartProgress.TrainingPartId
+                    && itemUserTrainingPartProgress.IsCompleted == true)
+                    {
+                        countCompletedTrainningPartByCourse = countCompletedTrainningPartByCourse + 1;
+                    }
+                }
+            }
+            double percentCompletedByCourse = (double)countCompletedTrainningPartByCourse / countTrainingPartByCourse * 100;
+        }
+        <div class="navbar-brand ps-3" style="padding-top: 6px">
+            <div class="container-circular-progress">
+                <div style="display: flex;">
+                    <div class="circular-progress" id="progress-@Model.Course.Id">
+                        <span class="progress-value" data-percent="@percentCompletedByCourse"> 0%</span>
+                    </div>
+                    <div class="complete-course" style="margin-top: 8px">
+                        <h6 class="title" style="margin-left: 8px; font-size: 14px; color: #38c9d6"> @countCompletedTrainningPartByCourse/@countTrainingPartByCourse bài học</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
-        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+        
+            <div class="input-group d-flex justify-content-center">
+                <p class="navbar-brand ps-3" style=" color: white; margin-right: 60px ">@Model.Course.CoursesName</p>
             </div>
-        </form>
+      
+
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
@@ -37,745 +77,408 @@
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
+                <div class="sb-sidenav-menu" >
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link" href="index.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Interface</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Layouts
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                            </nav>
-                        </div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                            Pages
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                    Authentication
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="login.html">Login</a>
-                                        <a class="nav-link" href="register.html">Register</a>
-                                        <a class="nav-link" href="password.html">Forgot Password</a>
-                                    </nav>
-                                </div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                    Error
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="401.html">401 Page</a>
-                                        <a class="nav-link" href="404.html">404 Page</a>
-                                        <a class="nav-link" href="500.html">500 Page</a>
-                                    </nav>
-                                </div>
-                            </nav>
-                        </div>
-                        <div class="sb-sidenav-menu-heading">Addons</div>
-                        <a class="nav-link" href="charts.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                            Charts
-                        </a>
-                        <a class="nav-link" href="tables.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Tables
-                        </a>
+
+                        <div class="sb-sidenav-menu-heading">Nội dung khóa học</div>
+                        @{
+                            var listCourseEventsId = Model.TrainingParts
+                            .Where(tp => tp.CoursesId == Model.Course.Id) // Lọc các bản ghi TrainingPart có CoursesId phù hợp
+                            .Select(tp => tp.EventId) // Chọn thuộc tính CourseEvent từ các bản ghi TrainingPart
+                            .Distinct() // Loại bỏ các sự kiện trùng lặp
+                            .ToList();
+                        }
+                        @{
+                            bool isFirstTrainingPart = true;
+                            var previousItemTrainingPart = Model.TrainingParts.FirstOrDefault();
+                        }
+                        @foreach (var itemCourseEventId in listCourseEventsId)
+                        {
+                            @foreach (var itemCourseEvent in Model.CourseEvents)
+                            {
+                                if (itemCourseEvent.Id == itemCourseEventId)
+                                {
+                                    <a class="nav-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseLayouts_@itemCourseEventId" aria-expanded="false" aria-controls="collapseLayouts_@itemCourseEventId">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                        @itemCourseEvent.EventName
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+
+                                    @foreach (var itemTrainingPart in Model.TrainingParts)
+                                    {
+                                        if (itemTrainingPart.EventId == itemCourseEventId)
+                                        {
+                                            var matchingUserTrainingPartProgress = Model.UserTrainingProgresss.FirstOrDefault(x => x.TrainingPartId == previousItemTrainingPart.Id);
+                                            <div class="collapse collapseContainer" id="collapseLayouts_@itemCourseEventId" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                                <nav class="sb-sidenav-menu-nested nav">
+
+                                                    <a class="nav-link" @(isFirstTrainingPart ? "active" : "")" id="@("tab-" + itemTrainingPart.Id)" data-toggle="tab" href="#@(itemTrainingPart.Id)" role="tab" aria-controls="@itemTrainingPart.Id" aria-selected="@(isFirstTrainingPart ? "true" : "false")" ">
+                                                        <div id="@("icon-container-" + itemTrainingPart.Id)" class="icon-container-@itemTrainingPart.Id" style="margin-right: 8px">
+                                                            @foreach(var userTrainingPartProgress in Model.UserTrainingProgresss)
+                                                            {
+                                                                if (userTrainingPartProgress.TrainingPartId == itemTrainingPart.Id)
+                                                                {
+                                                                    @if (matchingUserTrainingPartProgress != null && matchingUserTrainingPartProgress.IsCompleted && !userTrainingPartProgress.IsCompleted)
+                                                                    {
+                                                                        <i class="fa-solid fa-lock" style="display: none;"></i>
+                                                                        <i class="fa-solid fa-square-check" style="display: none;"></i>
+                                                                        <i class="fa-solid fa-square"></i>
+                                                                    }
+                                                                    else if (userTrainingPartProgress.IsCompleted == false)
+                                                                    {
+                                                                        <i class="fa-solid fa-lock" style="pointer-events: none;"></i>
+                                                                        <i class="fa-solid fa-square-check" style="display: none;"></i>
+                                                                        <i class="fa-solid fa-square" style="display: none;"></i>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="fa-solid fa-lock" style="display: none;"></i>
+                                                                        <i class="fa-solid fa-square-check"></i>
+                                                                        <i class="fa-solid fa-square" style="display: none;"></i>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </div>
+                                                        <span>@itemTrainingPart.TrainingPartName</span>
+                                                    </a>
+                                                </nav>
+                                            </div>
+                                        }
+                                        previousItemTrainingPart = @itemTrainingPart;
+                                        isFirstTrainingPart = false;
+                                    }
+                                }
+                            }
+                        } 
                     </div>
                 </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as:</div>
-                    Start Bootstrap
-                </div>
-            </nav>
+            </nav>               
         </div>
+        @{
+            bool isFirstTab = true;
+        }
         <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Dashboard</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-primary text-white mb-4">
-                                <div class="card-body">Primary Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            @foreach(var itemTrainingPart in Model.TrainingParts)
+            {
+                if (itemTrainingPart.TraininpartType == TraininpartType.Lesson)
+                {
+                    <div class="tab-pane fade @(isFirstTab  ? "show active" : "")" id="@itemTrainingPart.Id" role="tabpanel" aria-labelledby="@("tab-" + itemTrainingPart.Id)" >
+                        <div class="plyr__video-embed" >
+                            <video controls crossorigin playsinline class="videoPlayer" data-video-name="@itemTrainingPart.VideoUrl" data-trainingpart-id="@itemTrainingPart.Id" data-trainingpart-iscomplete="@itemTrainingPart.IsDeleted.ToString()" class="icon-container-@itemTrainingPart.Id">
+                                <source src="@itemTrainingPart.VideoUrl" type="video/mp4" />
+                            </video>
+                            <div class="card mb-4" style="margin-top: 280px ; margin-left: 28px; margin-right: 28px; border-color: #06BBCC">
+                                <div class="card-body" style="margin-left: 80px;">
+                                    <h2>@itemTrainingPart.TrainingPartName</h2>
+                                    <small style="color:#06BBCC ">Cập nhập tháng @itemTrainingPart.DateChange.Value.Month năm @itemTrainingPart.DateChange.Value.Year </small>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-warning text-white mb-4">
-                                <div class="card-body">Warning Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-success text-white mb-4">
-                                <div class="card-body">Success Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-danger text-white mb-4">
-                                <div class="card-body">Danger Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
+                        </div> 
                     </div>
-                    <div class="row">
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-area me-1"></i>
-                                    Area Chart Example
+                }
+                else
+                {
+                    <div class="tab-pane fade @(isFirstTab  ? "show active" : "")" id="@itemTrainingPart.Id" role="tabpanel" aria-labelledby="@("tab-" + itemTrainingPart.Id)">
+                        
+                        <section class="p-3 p-md-4 p-xl-5">
+                            <div class="container">
+                                <div class="card border-light-subtle shadow-sm">
+                                    <div class="row g-0" >
+                                        <div class="col-12 col-md-4">
+                                            <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy" src="~/img/about.jpg" alt="BootstrapBrain Logo">
+                                        </div>
+                                        @foreach (var itemUserTrainingPartProgress in Model.UserTrainingProgresss)
+                                        {
+                                            if (itemUserTrainingPartProgress.TrainingPartId == itemTrainingPart.Id && !itemUserTrainingPartProgress.IsCompleted)
+                                            {
+                                                <div class="Notification col-12 col-md-8">
+                                                    <div class="card-body p-3 p-md-4 p-xl-5">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-5">
+
+                                                                    <div style="display: flex; justify-content: center; align-items: center;">
+                                                                        <!-- Đây là phần tử cha -->
+                                                                        <i style="font-size: 100px; color: #06BBCC; font-weight: 700;" class="far fa-check-circle"></i> <!-- Đây là biểu tượng -->
+                                                                    </div>
+
+                                                                    <h2 class="h1 text-center" style="margin-top: 12px;">Bạn đã sẵn sàng làm bài kiểm tra!</h2>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row gy-3 gy-md-4 overflow-hidden " style="margin-top: 20px;">
+                                                            <div class="col-12">
+                                                                <p class="text-center">Hãy nhấn nút "Bắt Đầu" để bắt đầu làm bài kiểm tra bài vừa học. Chúc bạn ôn tập hiệu quả!</p>
+                                                            </div> 
+                                                            <div class="col-12">
+                                                                <div class="exercise-start-screen d-grid">
+                                                                    <button class="exercise-start-button btn bsb-btn-xl btn-primary" style="background-color: #06BBCC; border-color: #06BBCC" type="submit" data-trainingpart-id="@itemTrainingPart.Id" data-trainingpart-iscomplete="@itemTrainingPart.IsDeleted">Bắt đầu</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <p class="mt-5 mb-4">Thông tin của bạn về bài tập</p>
+                                                                <div class="d-flex gap-3 flex-column flex-xl-row">
+                                                                    <a href="#!" class="btn bsb-btn-xl btn-outline-primary">
+                                                                   
+                                                                        <span class="ms-2 fs-6">Nhật kí hoạt động</span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                               
+                                                <div class="NoticeOfRework ol-12 col-md-8 d-none">
+                                                    <div class="card-body p-3 p-md-4 p-xl-5">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-5">
+                                                                    @{
+                                                                        var questionCountByTrainingPartId = Model.ExerciseQuestionsByCourse
+                                                                        .Where(x => x.TrainingPartId == itemTrainingPart.Id)
+                                                                        .Count();
+                                                                     
+                                                                        }
+                                                                    <div style="display: flex; justify-content: center; align-items: center;">
+                                                                      
+                                                                        <i style="font-size: 100px; color: #06BBCC; font-weight: 700;" class="far fa-check-circle"></i> <!-- Đây là biểu tượng -->
+                                                                    </div>
+
+                                                                    <h2 class="h1 text-center" style="margin-top: 12px;">Bạn đã hoàn thành bài kiểm tra này!</h2>
+                                                                    <div style="display: flex; justify-content: center; align-items: center; padding-top: 20px">
+                                                                        <progress id="resultProgress_@itemTrainingPart.Id" value="100" max="100" style="--value: 100; --max: 100; max-width: 400px;"></progress>
+                                                                    </div>
+                                                                    <p class="text-center" style="margin-top: 10px; font-size: 16px; font-weight: bold;" id="resultText_@itemTrainingPart.Id"></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row gy-3 gy-md-4 overflow-hidden">
+                                                            <div class="col-12">
+
+                                                                <p class="text-center">Nếu bạn muốn ôn lại kiến thức trong buổi này ! Hãy nhấn nút làm lại để bắt đầu làm bài. Chúc bạn ôn tập hiệu quả</p>
+
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="exercise-restart-screen d-grid">
+                                                                    <button class="exercise-restart-button btn bsb-btn-xl btn-primary" style="background-color: #06BBCC; border-color: #06BBCC" type="submit" data-trainingpart-id="@itemTrainingPart.Id">Làm lại</button>
+                                                                    <small style="text-align: center; margin-top : 12px">khi làm lại thì điểm số của bạn sẽ không được lưu!</small>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                    
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <p class="mb-4" style="padding-top: 5px">Thông tin của bạn về bài tập</p>
+                                                                <div class="d-flex gap-2 flex-column flex-xl-row">
+                                                                    <a href="#!" class="btn bsb-btn-xl btn-outline-primary">
+                                                                        <span class="ms-2 fs-6" id="recentAttemptDate_@itemTrainingPart.Id">
+                                                                            Lần làm gần đây nhất vào ngày @itemTrainingPart.DateChange.Value.Day tháng @itemTrainingPart.DateChange.Value.Month năm @itemTrainingPart.DateChange.Value.Year
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            }
+                                            else if (itemUserTrainingPartProgress.TrainingPartId == itemTrainingPart.Id && itemUserTrainingPartProgress.IsCompleted)
+                                            {
+                                                <div class="Notification col-12 col-md-8  d-none">
+                                                    <div class="card-body p-3 p-md-4 p-xl-5">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-5">
+
+                                                                    <div style="display: flex; justify-content: center; align-items: center;">
+                                                                        <!-- Đây là phần tử cha -->
+                                                                        <i style="font-size: 100px; color: #06BBCC; font-weight: 700;" class="far fa-check-circle"></i> <!-- Đây là biểu tượng -->
+                                                                    </div>
+
+                                                                    <h2 class="h1 text-center" style="margin-top: 12px;">Bạn đã sẵn sàng làm bài kiểm tra!</h2>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row gy-3 gy-md-4 overflow-hidden " style="margin-top: 20px;">
+                                                            <div class="col-12">
+                                                                <p class="text-center">Hãy nhấn nút "Bắt Đầu" để bắt đầu làm bài kiểm tra bài vừa học. Chúc bạn ôn tập hiệu quả!</p>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="exercise-start-screen d-grid">
+                                                                    <button class="exercise-start-button btn bsb-btn-xl btn-primary" style="background-color: #06BBCC; border-color: #06BBCC" type="submit" data-trainingpart-id="@itemTrainingPart.Id" data-trainingpart-iscomplete="@itemTrainingPart.IsDeleted">Bắt đầu</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <p class="mt-5 mb-4">Or sign in with</p>
+                                                                <div class="d-flex gap-3 flex-column flex-xl-row">
+                                                                    <a href="#!" class="btn bsb-btn-xl btn-outline-primary">
+
+                                                                        <span class="ms-2 fs-6">Điểm</span>
+                                                                    </a>
+                                                                    <a href="#!" class="btn bsb-btn-xl btn-outline-primary">
+
+                                                                        <span class="ms-2 fs-6">Hoạt động</span>
+                                                                    </a>
+                                                                    <a href="#!" class="btn bsb-btn-xl btn-outline-primary">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="NoticeOfRework ol-12 col-md-8">
+                                                    <div class="card-body p-3 p-md-4 p-xl-5">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-5">
+                                                                    @{
+                                                                        var questionCountByTrainingPartId = Model.ExerciseQuestionsByCourse
+                                                                        .Where(x => x.TrainingPartId == itemTrainingPart.Id)
+                                                                        .Count();
+                                                                        var ListCorrectPercentage = ViewData["ListCorrectPercentage"] as List<(string userTrainingPartProgressId, int correctPercentage)>;
+                                                                       }
+                                                                    <div style="display: flex; justify-content: center; align-items: center;">
+                                                                      
+                                                                        <i style="font-size: 100px; color: #06BBCC; font-weight: 700;" class="far fa-check-circle"></i> <!-- Đây là biểu tượng -->
+                                                                    </div>
+
+                                                                    <h2 class="h1 text-center" style="margin-top: 12px;">Bạn đã hoàn thành bài kiểm tra này!</h2>
+                                                                    @foreach (var itemCorrectPercentage in ListCorrectPercentage)
+                                                                    {
+                                                                        if (itemCorrectPercentage.userTrainingPartProgressId == itemUserTrainingPartProgress.Id)
+                                                                        {
+                                                                            <div style="display: flex; justify-content: center; align-items: center; padding-top: 20px">
+                                                                                <progress id="resultProgress_@itemTrainingPart.Id" value="100" max="100" style="--value: @itemCorrectPercentage.correctPercentage; --max: 100; max-width: 400px;"></progress>
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                    <p class="text-center" style="margin-top: 10px; font-size: 16px; font-weight: bold;" id="resultText_@itemTrainingPart.Id">@itemUserTrainingPartProgress.CorrectAnswersCount / @questionCountByTrainingPartId câu trả lời đúng</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row gy-3 gy-md-4 overflow-hidden">
+                                                            <div class="col-12">
+
+                                                                <p class="text-center">Nếu bạn muốn ôn lại kiến thức trong buổi này ! Hãy nhấn nút làm lại để bắt đầu làm bài. Chúc bạn ôn tập hiệu quả</p>
+
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="exercise-restart-screen d-grid">
+                                                                    <button class="exercise-restart-button btn bsb-btn-xl btn-primary" style="background-color: #06BBCC; border-color: #06BBCC" type="submit" data-trainingpart-id="@itemTrainingPart.Id">Làm lại</button>
+                                                                    <small style="text-align: center; margin-top : 12px">khi làm lại thì điểm số của bạn sẽ không được lưu!</small>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                    
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <p class="mb-4" style="padding-top: 5px">Thông tin của bạn về bài tập</p>
+                                                                <div class="d-flex gap-2 flex-column flex-xl-row">
+                                                                    <a href="#!" class="btn bsb-btn-xl btn-outline-primary">
+                                                                        <span class="ms-2 fs-6" id="recentAttemptDate_@itemTrainingPart.Id">
+                                                                            Lần làm gần đây nhất vào ngày @itemUserTrainingPartProgress.DateChange.Value.Day tháng @itemUserTrainingPartProgress.DateChange.Value.Month năm @itemUserTrainingPartProgress.DateChange.Value.Year
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+
+
+                                        <div class="quiz col-12 col-md-8 d-none">
+
+                                            <div class="col-12">
+                                                <div class="mb-5">
+                                                    <h2 class="h1 text-center">Bài tập trắc nghiệm ôn tập</h2>
+                                                </div>
+                                            </div>
+                                            <div class="exercise-content">
+                                                <div class="exercise-display-container hide">
+                                                    <div class="exercise-header">
+                                                        <div class="number-of-count" style="margin-left: 12px;">
+                                                            <span class="number-of-question "></span>
+                                                        </div>
+                                                        <div class="timer-div" style="margin-left: 12px;">
+                                                            <img src="https://uxwing.com/wp-content/themes/uxwing/download/time-and-date/stopwatch-icon.png" width="20px" />
+                                                            <span class="time-left"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="exercise-container">
+                                                    </div>
+                                                    <div class="col-12" >
+                                                        <button class="next-button btn bsb-btn-xl btn-primary" type="submit" style="margin-left: 25%; width: 50%; margin-top: 50px; margin-bottom: 50px;" >Tiếp theo</button>
+                                                    </div>
+                                                   
+                                                </div>
+                                                <div class="score-container hide">
+                                                    <div class="user-score"></div>
+                                                    <button class="restart"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
                             </div>
-                        </div>
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-bar me-1"></i>
-                                    Bar Chart Example
-                                </div>
-                                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
-                            </div>
-                        </div>
+                        </section>
                     </div>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            DataTable Example
-                        </div>
-                        <div class="card-body">
-                            <table id="datatablesSimple">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Garrett Winters</td>
-                                        <td>Accountant</td>
-                                        <td>Tokyo</td>
-                                        <td>63</td>
-                                        <td>2011/07/25</td>
-                                        <td>$170,750</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ashton Cox</td>
-                                        <td>Junior Technical Author</td>
-                                        <td>San Francisco</td>
-                                        <td>66</td>
-                                        <td>2009/01/12</td>
-                                        <td>$86,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cedric Kelly</td>
-                                        <td>Senior Javascript Developer</td>
-                                        <td>Edinburgh</td>
-                                        <td>22</td>
-                                        <td>2012/03/29</td>
-                                        <td>$433,060</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Airi Satou</td>
-                                        <td>Accountant</td>
-                                        <td>Tokyo</td>
-                                        <td>33</td>
-                                        <td>2008/11/28</td>
-                                        <td>$162,700</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Brielle Williamson</td>
-                                        <td>Integration Specialist</td>
-                                        <td>New York</td>
-                                        <td>61</td>
-                                        <td>2012/12/02</td>
-                                        <td>$372,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Herrod Chandler</td>
-                                        <td>Sales Assistant</td>
-                                        <td>San Francisco</td>
-                                        <td>59</td>
-                                        <td>2012/08/06</td>
-                                        <td>$137,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Rhona Davidson</td>
-                                        <td>Integration Specialist</td>
-                                        <td>Tokyo</td>
-                                        <td>55</td>
-                                        <td>2010/10/14</td>
-                                        <td>$327,900</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Colleen Hurst</td>
-                                        <td>Javascript Developer</td>
-                                        <td>San Francisco</td>
-                                        <td>39</td>
-                                        <td>2009/09/15</td>
-                                        <td>$205,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sonya Frost</td>
-                                        <td>Software Engineer</td>
-                                        <td>Edinburgh</td>
-                                        <td>23</td>
-                                        <td>2008/12/13</td>
-                                        <td>$103,600</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jena Gaines</td>
-                                        <td>Office Manager</td>
-                                        <td>London</td>
-                                        <td>30</td>
-                                        <td>2008/12/19</td>
-                                        <td>$90,560</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Quinn Flynn</td>
-                                        <td>Support Lead</td>
-                                        <td>Edinburgh</td>
-                                        <td>22</td>
-                                        <td>2013/03/03</td>
-                                        <td>$342,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Charde Marshall</td>
-                                        <td>Regional Director</td>
-                                        <td>San Francisco</td>
-                                        <td>36</td>
-                                        <td>2008/10/16</td>
-                                        <td>$470,600</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Haley Kennedy</td>
-                                        <td>Senior Marketing Designer</td>
-                                        <td>London</td>
-                                        <td>43</td>
-                                        <td>2012/12/18</td>
-                                        <td>$313,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tatyana Fitzpatrick</td>
-                                        <td>Regional Director</td>
-                                        <td>London</td>
-                                        <td>19</td>
-                                        <td>2010/03/17</td>
-                                        <td>$385,750</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Michael Silva</td>
-                                        <td>Marketing Designer</td>
-                                        <td>London</td>
-                                        <td>66</td>
-                                        <td>2012/11/27</td>
-                                        <td>$198,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Paul Byrd</td>
-                                        <td>Chief Financial Officer (CFO)</td>
-                                        <td>New York</td>
-                                        <td>64</td>
-                                        <td>2010/06/09</td>
-                                        <td>$725,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Gloria Little</td>
-                                        <td>Systems Administrator</td>
-                                        <td>New York</td>
-                                        <td>59</td>
-                                        <td>2009/04/10</td>
-                                        <td>$237,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Bradley Greer</td>
-                                        <td>Software Engineer</td>
-                                        <td>London</td>
-                                        <td>41</td>
-                                        <td>2012/10/13</td>
-                                        <td>$132,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Dai Rios</td>
-                                        <td>Personnel Lead</td>
-                                        <td>Edinburgh</td>
-                                        <td>35</td>
-                                        <td>2012/09/26</td>
-                                        <td>$217,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jenette Caldwell</td>
-                                        <td>Development Lead</td>
-                                        <td>New York</td>
-                                        <td>30</td>
-                                        <td>2011/09/03</td>
-                                        <td>$345,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Yuri Berry</td>
-                                        <td>Chief Marketing Officer (CMO)</td>
-                                        <td>New York</td>
-                                        <td>40</td>
-                                        <td>2009/06/25</td>
-                                        <td>$675,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Caesar Vance</td>
-                                        <td>Pre-Sales Support</td>
-                                        <td>New York</td>
-                                        <td>21</td>
-                                        <td>2011/12/12</td>
-                                        <td>$106,450</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Doris Wilder</td>
-                                        <td>Sales Assistant</td>
-                                        <td>Sidney</td>
-                                        <td>23</td>
-                                        <td>2010/09/20</td>
-                                        <td>$85,600</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Angelica Ramos</td>
-                                        <td>Chief Executive Officer (CEO)</td>
-                                        <td>London</td>
-                                        <td>47</td>
-                                        <td>2009/10/09</td>
-                                        <td>$1,200,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Gavin Joyce</td>
-                                        <td>Developer</td>
-                                        <td>Edinburgh</td>
-                                        <td>42</td>
-                                        <td>2010/12/22</td>
-                                        <td>$92,575</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jennifer Chang</td>
-                                        <td>Regional Director</td>
-                                        <td>Singapore</td>
-                                        <td>28</td>
-                                        <td>2010/11/14</td>
-                                        <td>$357,650</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Brenden Wagner</td>
-                                        <td>Software Engineer</td>
-                                        <td>San Francisco</td>
-                                        <td>28</td>
-                                        <td>2011/06/07</td>
-                                        <td>$206,850</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Fiona Green</td>
-                                        <td>Chief Operating Officer (COO)</td>
-                                        <td>San Francisco</td>
-                                        <td>48</td>
-                                        <td>2010/03/11</td>
-                                        <td>$850,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Shou Itou</td>
-                                        <td>Regional Marketing</td>
-                                        <td>Tokyo</td>
-                                        <td>20</td>
-                                        <td>2011/08/14</td>
-                                        <td>$163,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Michelle House</td>
-                                        <td>Integration Specialist</td>
-                                        <td>Sidney</td>
-                                        <td>37</td>
-                                        <td>2011/06/02</td>
-                                        <td>$95,400</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Suki Burks</td>
-                                        <td>Developer</td>
-                                        <td>London</td>
-                                        <td>53</td>
-                                        <td>2009/10/22</td>
-                                        <td>$114,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Prescott Bartlett</td>
-                                        <td>Technical Author</td>
-                                        <td>London</td>
-                                        <td>27</td>
-                                        <td>2011/05/07</td>
-                                        <td>$145,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Gavin Cortez</td>
-                                        <td>Team Leader</td>
-                                        <td>San Francisco</td>
-                                        <td>22</td>
-                                        <td>2008/10/26</td>
-                                        <td>$235,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Martena Mccray</td>
-                                        <td>Post-Sales support</td>
-                                        <td>Edinburgh</td>
-                                        <td>46</td>
-                                        <td>2011/03/09</td>
-                                        <td>$324,050</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Unity Butler</td>
-                                        <td>Marketing Designer</td>
-                                        <td>San Francisco</td>
-                                        <td>47</td>
-                                        <td>2009/12/09</td>
-                                        <td>$85,675</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Howard Hatfield</td>
-                                        <td>Office Manager</td>
-                                        <td>San Francisco</td>
-                                        <td>51</td>
-                                        <td>2008/12/16</td>
-                                        <td>$164,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Hope Fuentes</td>
-                                        <td>Secretary</td>
-                                        <td>San Francisco</td>
-                                        <td>41</td>
-                                        <td>2010/02/12</td>
-                                        <td>$109,850</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Vivian Harrell</td>
-                                        <td>Financial Controller</td>
-                                        <td>San Francisco</td>
-                                        <td>62</td>
-                                        <td>2009/02/14</td>
-                                        <td>$452,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Timothy Mooney</td>
-                                        <td>Office Manager</td>
-                                        <td>London</td>
-                                        <td>37</td>
-                                        <td>2008/12/11</td>
-                                        <td>$136,200</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jackson Bradshaw</td>
-                                        <td>Director</td>
-                                        <td>New York</td>
-                                        <td>65</td>
-                                        <td>2008/09/26</td>
-                                        <td>$645,750</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Olivia Liang</td>
-                                        <td>Support Engineer</td>
-                                        <td>Singapore</td>
-                                        <td>64</td>
-                                        <td>2011/02/03</td>
-                                        <td>$234,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Bruno Nash</td>
-                                        <td>Software Engineer</td>
-                                        <td>London</td>
-                                        <td>38</td>
-                                        <td>2011/05/03</td>
-                                        <td>$163,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sakura Yamamoto</td>
-                                        <td>Support Engineer</td>
-                                        <td>Tokyo</td>
-                                        <td>37</td>
-                                        <td>2009/08/19</td>
-                                        <td>$139,575</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thor Walton</td>
-                                        <td>Developer</td>
-                                        <td>New York</td>
-                                        <td>61</td>
-                                        <td>2013/08/11</td>
-                                        <td>$98,540</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Finn Camacho</td>
-                                        <td>Support Engineer</td>
-                                        <td>San Francisco</td>
-                                        <td>47</td>
-                                        <td>2009/07/07</td>
-                                        <td>$87,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Serge Baldwin</td>
-                                        <td>Data Coordinator</td>
-                                        <td>Singapore</td>
-                                        <td>64</td>
-                                        <td>2012/04/09</td>
-                                        <td>$138,575</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Zenaida Frank</td>
-                                        <td>Software Engineer</td>
-                                        <td>New York</td>
-                                        <td>63</td>
-                                        <td>2010/01/04</td>
-                                        <td>$125,250</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Zorita Serrano</td>
-                                        <td>Software Engineer</td>
-                                        <td>San Francisco</td>
-                                        <td>56</td>
-                                        <td>2012/06/01</td>
-                                        <td>$115,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jennifer Acosta</td>
-                                        <td>Junior Javascript Developer</td>
-                                        <td>Edinburgh</td>
-                                        <td>43</td>
-                                        <td>2013/02/01</td>
-                                        <td>$75,650</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cara Stevens</td>
-                                        <td>Sales Assistant</td>
-                                        <td>New York</td>
-                                        <td>46</td>
-                                        <td>2011/12/06</td>
-                                        <td>$145,600</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Hermione Butler</td>
-                                        <td>Regional Director</td>
-                                        <td>London</td>
-                                        <td>47</td>
-                                        <td>2011/03/21</td>
-                                        <td>$356,250</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Lael Greer</td>
-                                        <td>Systems Administrator</td>
-                                        <td>London</td>
-                                        <td>21</td>
-                                        <td>2009/02/27</td>
-                                        <td>$103,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jonas Alexander</td>
-                                        <td>Developer</td>
-                                        <td>San Francisco</td>
-                                        <td>30</td>
-                                        <td>2010/07/14</td>
-                                        <td>$86,500</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Shad Decker</td>
-                                        <td>Regional Director</td>
-                                        <td>Edinburgh</td>
-                                        <td>51</td>
-                                        <td>2008/11/13</td>
-                                        <td>$183,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Michael Bruce</td>
-                                        <td>Javascript Developer</td>
-                                        <td>Singapore</td>
-                                        <td>29</td>
-                                        <td>2011/06/27</td>
-                                        <td>$183,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Donna Snider</td>
-                                        <td>Customer Support</td>
-                                        <td>New York</td>
-                                        <td>27</td>
-                                        <td>2011/01/25</td>
-                                        <td>$112,000</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </main>
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+                }
+                isFirstTab = false;
+            }
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="~/js/OnlineEventScheduleScripts.js"></script>
+    <script src="~/js/OnlineEventScheduleScripts.js"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="~/assets/demo/chart-area-demo.js"></script>
-    <script src="~/assets/demo/chart-bar-demo.js"></script>
+    @* <script src="~/assets/demo/chart-area-demo.js"></script>
+    <script src="~/assets/demo/chart-bar-demo.js"></script>  *@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-    <script src="~/js/OnlineEventScheduleDatatablesSimple.js</script>
+    <script src="~/js/OnlineEventScheduleDatatablesSimple.js"></script>
+    <script src="~/js/OnlineVideoYoutube.js"></script> 
+    <script src="~/js/QuizTrainingPart.js"></script>
+    <script src="~/js/TrackVideoEvent.js"></script>
+    <script src="~/js/TabpaneClickShowOrHide.js"></script>
+    <script src="~/js/CircleProgress.js"></script>
 </div>
 
 
 
+<style>
+    /* Đổi màu của nút và văn bản khi di chuột vào */
+    .btn-outline-primary:hover, .btn-outline-primary:hover small {
+        color: #fff;
+        background-color: #06BBCC;
+        border-color: #06BBCC;
+    }
 
+    /* Đổi màu của văn bản trong các nút */
+    .btn-outline-primary {
+        color: #06BBCC;
+        border-color: #06BBCC;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h1>OnlineEventSchedule</h1>
-
-@foreach (var trainingPart in Model.TrainingParts)
-{
-    <div>
-        <div >@trainingPart.TrainingPartName</div>
-        <video class="videoPlayer" data-video-name="@trainingPart.ImageUrl" controls>
-            <source src="@trainingPart.ImageUrl" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        
-        <div class="percentageWatched"></div>
-    </div>
-}
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // Lặp qua mỗi video và thêm sự kiện cho từng video
-        $('.videoPlayer').each(function () {
-            var video = this;
-            var duration = 0;
-            var parentDiv = $(this).closest('div');
-
-            video.addEventListener('loadedmetadata', function () {
-                duration = video.duration;
-            });
-
-            video.addEventListener('timeupdate', function () {
-                var currentTime = video.currentTime;
-                var percentageWatched = (currentTime / duration) * 100;
-                var videoName = $(video).data('video-name');
-                var percentageDiv = $(parentDiv).find('.percentageWatched');
-                $(percentageDiv).text('Percentage watched: ' + percentageWatched.toFixed(2) + '%');
-                sendEventToServer(videoName, percentageWatched);
-            });
-        });
-
-        function sendEventToServer(videoName, percentage) {
-            $.ajax({
-                url: '/CustomerCourses/TrackVideoEvent',
-                method: 'POST',
-                data: {
-                    videoName: videoName,
-                    percentageWatched: percentage
-                },
-                success: function (response) {
-                    // Xử lý phản hồi từ server nếu cần
-                },
-                error: function (xhr, status, error) {
-                    console.error('Lỗi khi gửi phần trăm đã xem lên server:', error);
-                }
-            });
+        /* Đổi màu của văn bản trong các thẻ small */
+        .btn-outline-primary small {
+            color: color();
         }
-    });
-</script>
+</style>
+
+
+
+
+
+

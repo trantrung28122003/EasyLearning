@@ -1,0 +1,169 @@
+﻿@model EasyLearning.WebApp.Models.CustomerCourseViewModel
+@{
+    ViewData["Title"] = "ListCourseOnlineByUser";
+}
+
+<link href="~/css/test.css" rel="stylesheet" />
+<link href="~/css/customerCoursesSchedule.css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<div class="col-lg-12 text-header" style="margin-bottom: 80px">
+    <div class="section-title text-center">
+        <div class="title-text">
+            <h2 class="h2-text-center">Thời khóa biểu cho các khóa học của bạn</h2>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row accordion" id="accordion">
+        <div class="col-xl-12">
+            <div class="row">
+                @foreach (var itemCourse in Model.Courses)
+                {
+                    <div class="col-lg-12">
+                        <div class="card product_list accordion-item">
+                            <div class="card-header accordion-header">
+                                <div class="btn btn-link accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#item_@itemCourse.Id" aria-expanded="false">
+                                    <div class="list_block">
+                                        @{
+                                            var countTrainingPartByCourse = Model.TrainingParts
+                                            .Where(tp => tp.CoursesId == itemCourse.Id)
+                                            .Count();
+
+                                            var listTrainingPartsByCourse = Model.TrainingParts
+                                            .Where(tp => tp.CoursesId == itemCourse.Id)
+                                            .ToList();
+
+                                            int countCompletedTrainningPartByCourse = 0;
+                                            @foreach (var itemTrainingPartsByCourseEventId in listTrainingPartsByCourse)
+                                            {
+                                                foreach (var itemUserTrainingPartProgress in Model.UserTrainingProgresss)
+                                                {
+                                                    if (itemTrainingPartsByCourseEventId.Id == itemUserTrainingPartProgress.TrainingPartId
+                                                    && itemUserTrainingPartProgress.IsCompleted == true)
+                                                    {
+                                                        countCompletedTrainningPartByCourse = countCompletedTrainningPartByCourse + 1;
+                                                    }
+                                                }
+                                            }
+                                            double percentCompletedByCourse = (double)countCompletedTrainningPartByCourse / countTrainingPartByCourse * 100;
+                                        }
+                                        <div class="list_image">
+                                             <a asp-controller="CustomerCourses" asp-action="OnlineEventSchedule" asp-route-courseId="@itemCourse.Id" class="nav-item nav-link active">
+                                                <img src="~/img/course-1.jpg" class="image-fit-contain" alt="img" />
+                                            </a>
+                                        </div>
+                                        <div class="list_text">
+                                            <a asp-controller="CustomerCourses" asp-action="OnlineEventSchedule" asp-route-courseId="@itemCourse.Id" class="nav-item nav-link active">
+                                                <p class="subtitle" style="font-size: 20px">@itemCourse.CoursesName</p>
+                                                <div class="container-circular-progress">
+                                                    <div style="display: flex;">
+                                                        <div class="circular-progress" id="progress-@itemCourse.Id">
+                                                            <span class="progress-value" data-percent="@percentCompletedByCourse"> 0%</span>
+                                                        </div>
+                                                        <div class="complete-course" style="margin-top: 20px">
+                                                            <h6 class="title" style="margin-left: 20px"> <strong>@countCompletedTrainningPartByCourse / @countTrainingPartByCourse</strong> bài học</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div id="item_@itemCourse.Id" class="accordion-collapse collapse" data-bs-parent="#accordion">
+                                <div class="card-body accordion-body">
+                                    <div class="row">
+                                        @{
+                                            var listCourseEventsId = Model.TrainingParts
+                                            .Where(tp => tp.CoursesId == itemCourse.Id) // Lọc các bản ghi TrainingPart có CoursesId phù hợp
+                                            .Select(tp => tp.EventId) // Chọn thuộc tính CourseEvent từ các bản ghi TrainingPart
+                                            .Distinct() // Loại bỏ các sự kiện trùng lặp
+                                            .ToList();
+                                        }
+                                        @foreach (var itemCourseEventId in listCourseEventsId)
+                                        {
+                                            @foreach (var itemCourseEvent in Model.CourseEvents)
+                                            {
+                                                if (itemCourseEvent.Id == itemCourseEventId)
+                                                {
+                                                     
+                                                    <div class="col-sm-4 col-6" >
+                                                        <a asp-controller="CustomerCourses" asp-action="OnlineEventSchedule" asp-route-courseId="@itemCourse.Id" class="nav-item nav-link active">
+                                                        <div class="list_block_item" style="cursor: pointer;">
+                                                           
+                                                                @{
+                                                                    var countTrainingPartByCourseEventId = Model.TrainingParts
+                                                                    .Where(tp => tp.CoursesId == itemCourse.Id && tp.EventId == itemCourseEventId)
+                                                                    .Count();
+
+                                                                    var listTrainingPartsByCourseEventId = Model.TrainingParts
+                                                                    .Where(tp => tp.CoursesId == itemCourse.Id && tp.EventId == itemCourseEventId)
+                                                                    .ToList();
+                                                                    var countCompletetrainingPart = 0;
+
+                                                                    foreach (var itemTrainingPartsByCourseEventId in listTrainingPartsByCourseEventId)
+                                                                    {
+                                                                        foreach (var itemUserTrainingPartProgress in Model.UserTrainingProgresss)
+                                                                        {
+                                                                            if (itemTrainingPartsByCourseEventId.Id == itemUserTrainingPartProgress.TrainingPartId && itemUserTrainingPartProgress.IsCompleted == true)
+                                                                            {
+                                                                                countCompletetrainingPart = countCompletetrainingPart + 1;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                                <p class="category" style="font-size: 16px">@itemCourseEvent.EventName</p>
+                                                                <h6 class="title"> <strong> @countCompletetrainingPart  / @countTrainingPartByCourseEventId </strong> bài học</h6>
+                                                            
+                                                        </div>
+                                                        </a>
+                                                    </div>
+                                                   
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let circularProgressList = document.querySelectorAll(".circular-progress");
+
+        circularProgressList.forEach(circularProgress => {
+            let progressValue = circularProgress.querySelector(".progress-value");
+            let dataPercent = parseInt(progressValue.getAttribute('data-percent'));
+            let progressStartValue = 0;
+            let progressEndValue = dataPercent ; // Nếu dataPercent không phải là 0 thì sử dụng giá trị dataPercent, ngược lại gán 0 cho progressEndValue
+            let speed = 8;
+
+            if (progressEndValue > 0) { // Thêm điều kiện để chỉ hiển thị khi progressEndValue lớn hơn 0
+                let progress = setInterval(() => {
+                    progressStartValue++;
+                    progressValue.textContent = `${progressStartValue}%`;
+                    circularProgress.style.background = `conic-gradient(#38c9d6, ${progressStartValue * 3.6}deg, #808080 0deg)`;
+
+                    if (progressStartValue == progressEndValue) {
+                        clearInterval(progress);
+                    }
+                }, speed);
+            } else {
+                progressValue.textContent = "0%";
+            }
+        });
+    });
+
+
+</script>

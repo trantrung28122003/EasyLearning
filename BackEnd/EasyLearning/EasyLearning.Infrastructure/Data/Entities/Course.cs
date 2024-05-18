@@ -4,6 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyLearning.Infrastructure.Data.Entities
 {
+    public enum CourseType
+    {
+        Online = 5,
+        Offline = 10,
+    }
     public class Course : GenericEntity
     {
         [Column("Courses_Name")]
@@ -12,11 +17,14 @@ namespace EasyLearning.Infrastructure.Data.Entities
         [Column("Courses_Description")]
         public string? CoursesDescription { get; set; }
 
-        [Column("Courses_Price")]
+        [Column("Courses_Price" , TypeName = "decimal(10,3)")]
         public decimal CoursesPrice { get; set; }
 
         [Column("Courses_Requirements")]
         public string? Requirements { get; set; }
+
+        [Column("Course_Type")]
+        public CourseType CourseType { get; set; }
 
         [Column("Courses_Content")]
         public string? CoureseContent {  get; set; }
