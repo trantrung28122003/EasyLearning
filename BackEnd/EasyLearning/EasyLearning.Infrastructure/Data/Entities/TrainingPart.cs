@@ -45,5 +45,6 @@ namespace EasyLearing.Infrastructure.Data.Entities
         public Course? Courses { get; set; }
         public ICollection<UserTrainingProgress>? UserTrainingProgresss { get; set; }
         public ICollection<ExerciseQuestion>? ExerciseQuestions { get; set; }
+        public ICollection<Comment>? Comments { get; set; }
     }
 }

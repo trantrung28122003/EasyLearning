@@ -4,6 +4,7 @@ using EasyLearning.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyLearning.Infrastructure.Migrations
 {
     [DbContext(typeof(EasyLearningDbContext))]
-    partial class EasyLearningDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240520113140_add_table_comment")]
+    partial class add_table_comment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -617,7 +619,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.HasIndex("TrainingPartId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Course", b =>
@@ -768,13 +770,12 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Property<string>("ChangedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CommentId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("Reply_CommentId");
+                    b.Property<string>("CommmentId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ContentReply")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Reply_Content");
+                        .HasColumnName("Comment_Content");
 
                     b.Property<DateTime?>("DateChange")
                         .HasColumnType("datetime2");
@@ -787,60 +788,13 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Reply_UserId");
+                        .HasColumnName("Comment_UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentId");
+                    b.HasIndex("CommmentId");
 
-                    b.ToTable("Replies");
-                });
-
-            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserNote", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ChangedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CourseId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("CoursesId");
-
-                    b.Property<DateTime?>("DateChange")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateCreate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("NoteContent")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("NoteContent ");
-
-                    b.Property<string>("Time")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Time");
-
-                    b.Property<string>("TrainingPartId")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("TrainingPartId");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserNotes");
+                    b.ToTable("Reply");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserTrainingProgress", b =>
@@ -1138,24 +1092,9 @@ namespace EasyLearning.Infrastructure.Migrations
                 {
                     b.HasOne("EasyLearning.Infrastructure.Data.Entities.Comment", "Comment")
                         .WithMany("Replies")
-                        .HasForeignKey("CommentId");
+                        .HasForeignKey("CommmentId");
 
                     b.Navigation("Comment");
-                });
-
-            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserNote", b =>
-                {
-                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.Course", "Course")
-                        .WithMany("UserNotes")
-                        .HasForeignKey("CourseId");
-
-                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", "User")
-                        .WithMany("UserNotes")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserTrainingProgress", b =>
@@ -1261,8 +1200,6 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Navigation("TrainerDetails");
 
-                    b.Navigation("UserNotes");
-
                     b.Navigation("UserTrainingProgresss");
                 });
 
@@ -1286,8 +1223,6 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("TrainerDetails");
 
                     b.Navigation("TrainingParts");
-
-                    b.Navigation("UserNotes");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ExerciseQuestion", b =>

@@ -10,10 +10,10 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Runtime.InteropServices;
 
 namespace EasyLearning.WebApp.Controllers
 {
-  
     public class CustomerCoursesController : Controller
     {
         private readonly ICourseService _courseService;
@@ -31,7 +31,9 @@ namespace EasyLearning.WebApp.Controllers
         private readonly IShoppingCartService _shoppingCartService;
         private readonly IExerciseQuestionService _exerciseQuestionService;
         private readonly IAnswerService _answerService;
-
+        private readonly ICommentService _commentService;
+        private readonly IReplyService _replyService;
+        private readonly IUserNoteService _userNoteService;
 
         private readonly IUserTrainingProgressService _userTrainingProgressService;
 
@@ -40,7 +42,8 @@ namespace EasyLearning.WebApp.Controllers
         ICourseEventService courseEventService, ITrainingPartService trainingPartService,
         IMapper mapper, IFileService fileService, UserRepository userRepository, IFeedbackService feedbackService,
         EasyLearningDbContext easyLearningDbContext, IShoppingCartItemService shoppingCartItemService, IShoppingCartService shoppingCartService,
-        IUserTrainingProgressService userTrainingProgressService, IExerciseQuestionService exerciseQuestionService, IAnswerService answerService)
+        IUserTrainingProgressService userTrainingProgressService, IExerciseQuestionService exerciseQuestionService, IAnswerService answerService,
+        ICommentService commentService, IReplyService replyService, IUserNoteService userNoteService)
         {
             _courseService = courseService;
             _categoryService = categoryService;
@@ -58,9 +61,12 @@ namespace EasyLearning.WebApp.Controllers
             _userTrainingProgressService = userTrainingProgressService;
             _exerciseQuestionService = exerciseQuestionService;
             _answerService = answerService;
+            _commentService = commentService;
+            _replyService = replyService;
+            _userNoteService = userNoteService;
         }
 
-       
+
         public async Task<IActionResult> ListCourse(string searchString)
         {
             List<OrderDetail> listOrderDetail = new List<OrderDetail>();
@@ -129,6 +135,7 @@ namespace EasyLearning.WebApp.Controllers
             var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
             var course = await _courseService.GetCourseById(courseId);
             var trainingParts = await _trainingPartService.GetTrainingPartByCourse(courseId);
+            var courseEvents = await _courseEventService.GetEventByCourse(courseId);
             var getFeedbackbyCourse = await _feedbackService.GetFeedbacksByCourseId(courseId);
             var getUsers = await _userRepository.GetUsersAsync();
             var orders = await _orderService.GetOrdersByUser();
@@ -154,6 +161,7 @@ namespace EasyLearning.WebApp.Controllers
                 Course = course,
                 ShoppingCartItems = shoppingCartItem,
                 TrainingParts = trainingParts,
+                CourseEvents = courseEvents,
                 Feedbacks = getFeedbackbyCourse,
                 Users = getUsers,
                 OrderDetails = listOrderDetail,
@@ -223,37 +231,47 @@ namespace EasyLearning.WebApp.Controllers
 
             List<UserTrainingProgress> listUserTrainingProgress = new List<UserTrainingProgress>();
             List<ExerciseQuestion> exerciseQuestionsByCourse = new List<ExerciseQuestion>();
+            List<Comment> listComment = new List<Comment>();
+            List<Reply> listReply = new List<Reply>();
+
             var ListCorrectPercentage = new List<(string userTrainingPartProgressId, int correctPercentage)>();
             var course = await _courseService.GetCourseById(courseId);
             var listCourseEvent = await _courseEventService.GetEventByCourse(courseId);
             var listTrainingPart = await _trainingPartService.GetTrainingPartByCourse(courseId);
             var currentUserId = _userRepository.getCurrrentUser();
-           
+            var listUser = await _userRepository.GetUsersAsync();
+            var listNote = await _userNoteService.GetUserNoteByCourseIdAndUserId(courseId, currentUserId);
             listTrainingPart = listTrainingPart.OrderBy(x => x.StartTime).ToList();
             listCourseEvent = listCourseEvent.OrderBy(x => x.DateStart).ToList();
 
             foreach (var itemTrainingPart in listTrainingPart)
             {
-
                 var userTrainingPartProgress = await _userTrainingProgressService.GetUserTrainingProgressByTrainingPartIdAndUserId(itemTrainingPart.Id, currentUserId);
                 var listExerciseQuestion = await _exerciseQuestionService.GetExerciseQuestionByTraningPartId(itemTrainingPart.Id);
+                var listCommentByTrainingPartId = await _commentService.GetAllCommentsWithRepliesByTrainingPart(itemTrainingPart.Id);
                 listUserTrainingProgress.Add(userTrainingPartProgress);
                 exerciseQuestionsByCourse.AddRange(listExerciseQuestion);
+                listComment.AddRange(listCommentByTrainingPartId);
+            }
+
+            foreach (var itemComment in listComment)
+            {
+                var listReplyByTrainingPartId = await _replyService.GetReplyByCommentId(itemComment.Id);
+                listReply.AddRange(listReplyByTrainingPartId);
             }
 
             foreach (var itemTrainingPart in listTrainingPart)
             {
-                foreach(var itemTrainingPartProgress in listUserTrainingProgress)
+                foreach (var itemTrainingPartProgress in listUserTrainingProgress)
                 {
-                    if(itemTrainingPart.Id == itemTrainingPartProgress.TrainingPartId && itemTrainingPartProgress.IsCompleted && itemTrainingPart.TraininpartType == TraininpartType.Exercise)
+                    if (itemTrainingPart.Id == itemTrainingPartProgress.TrainingPartId && itemTrainingPartProgress.IsCompleted && itemTrainingPart.TraininpartType == TraininpartType.Exercise)
                     {
                         var listQuestionByTrainingPartId = await _exerciseQuestionService.GetExerciseQuestionByTraningPartId(itemTrainingPart.Id);
                         var questionCountByTrainingPartId = listQuestionByTrainingPartId.Count;
                         var correctPercentage = (int)Math.Round(((double)itemTrainingPartProgress.CorrectAnswersCount / questionCountByTrainingPartId) * 100);
                         ListCorrectPercentage.Add((itemTrainingPartProgress.Id, correctPercentage));
                     }
-                }    
-                
+                }
             }
             ViewData["ListCorrectPercentage"] = ListCorrectPercentage;
 
@@ -261,11 +279,16 @@ namespace EasyLearning.WebApp.Controllers
             {
                 Course = course,
                 currentUserId = currentUserId,
+                Users = listUser,
                 CourseEvents = listCourseEvent,
                 TrainingParts = listTrainingPart,
                 UserTrainingProgresss = listUserTrainingProgress,
                 ExerciseQuestionsByCourse = exerciseQuestionsByCourse,
+                Comments = listComment,
+                Replies = listReply,
+                Notes = listNote,
             };
+            ViewBag.CourseId = courseId;
             return View(customerCourseViewModel);
         }
 
@@ -273,7 +296,7 @@ namespace EasyLearning.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetQuizData(string trainingPartId)
         {
-            var listQuestion = await _exerciseQuestionService.GetAllQuestionsAndAnswer(trainingPartId); 
+            var listQuestion = await _exerciseQuestionService.GetAllQuestionsAndAnswer(trainingPartId);
 
             var quizData = listQuestion.Select(x => new
             {
@@ -337,7 +360,7 @@ namespace EasyLearning.WebApp.Controllers
                 }
 
                 return Ok();
-                
+
             }
             catch (Exception ex)
             {
@@ -379,11 +402,6 @@ namespace EasyLearning.WebApp.Controllers
                 UserTrainingProgresss = listUserTrainingProgress,
             };
             return View(customerCourseViewModel);
-        }
-
-        public async Task<IActionResult> test()
-        {
-            return View();
         }
     }
 }

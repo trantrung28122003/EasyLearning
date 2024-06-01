@@ -75,17 +75,18 @@
                         <div class="tab-pane fade" id="specifications">
                             <br />
                             <dl>
-                                @foreach(var itemTrainingPart in Model.TrainingParts)
+                                @foreach(var itemCourseEvent in Model.CourseEvents)
                                 {
-                                <dt>@itemTrainingPart.TrainingPartName</dt>
-                                <br/>
+                                    <dt>@itemCourseEvent.EventName</dt>
+                                    foreach(var itemtraingPart in Model.TrainingParts)
+                                    {
+                                        if(itemCourseEvent.Id == itemtraingPart.EventId)
+                                        {
+                                            <dd>@itemtraingPart.TrainingPartName</dd>
+                                        }
+                                    }
+                                    <br />
                                 }
-                                @* <dt>Test lists</dt>
-                                <dd>A description list is perfect for defining terms.</dd>
-                                <br />
-
-                                <dt>Altra porta</dt>
-                                <dd>Vestibulum id ligula porta felis euismod semper</dd> *@
                             </dl>
                         </div>
                         <div class="tab-pane fade" id="reviews">

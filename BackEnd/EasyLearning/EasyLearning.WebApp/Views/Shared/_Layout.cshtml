@@ -63,19 +63,15 @@
                         <div class="dropdown-menu fade-down m-0">
                             <a asp-controller="CustomerCourses" asp-action="EventSchedule" class="dropdown-item">Thời khóa biểu</a>
                             <a asp-controller="CustomerCourses" asp-action="ListCourseOnlineByUser" class="dropdown-item">Danh sách khóa học của bạn</a>
-                            <a asp-controller="admin" asp-action="course" class="dropdown-item">Dash Board</a>
+                             @await Component.InvokeAsync("CurrentUser")
+                           @*  <a asp-controller="admin" asp-action="course" class="dropdown-item">Dash Board</a> *@
                         </div>
                     </div>
-                    
-               
                     <a asp-controller="ShoppingCart" asp-action="GetShoppingCart" class="position-relative me-4 my-auto">
-                        <i class="fa fa-shopping-bag fa-2x"></i>
-                        
+                        <i class="fa fa-shopping-bag fa-2x"></i>   
                     </a>
-                   
-
-
                 </div>
+
                 @if (User.Identity.IsAuthenticated)
                 {
                     @* <a class="nav-link text-dark" title="Manage">Xin Chào @User.Identity.Name</a> *@

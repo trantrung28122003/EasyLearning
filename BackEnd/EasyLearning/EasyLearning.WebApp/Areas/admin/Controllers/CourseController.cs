@@ -4,6 +4,7 @@ using EasyLearning.Application.Services;
 using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repostiory;
 using EasyLearning.WebApp.Areas.admin.Models;
+using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -53,11 +54,13 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         public async Task<IActionResult> Create(CourseViewModel courseViewModel, List<string> selectedCategories)
         {
             if (ModelState.IsValid)
-            { 
+            {
+                var getInstructor = courseViewModel.Instructor ?? await _userRepository.getCurrrentUserFullNameAsync();
                 //var imgLink = await _fileService.SaveFile(courseViewModel.Image);
                 Course course = new Course()
                 {
                     CoursesName = courseViewModel.CoursesName,
+                    CourseType = (CourseType)courseViewModel.CourseType,
                     CoursesDescription = courseViewModel.CoursesDescription,
                     CoursesPrice = courseViewModel.CoursesPrice,
                     Requirements = courseViewModel.Requirements,
@@ -66,7 +69,8 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     EndDate = courseViewModel.StartEnd,
                     RegistrationDeadline = courseViewModel.RegistrationDeadline,
                     MaxAttdendees = courseViewModel.MaxAttdendees,
-                    Instructor = await _userRepository.getCurrrentUserFullNameAsync(),
+                    Instructor = getInstructor,
+
                     /*ImageUrl = imgLink,*/
                     DateCreate = DateTime.Now
                 };

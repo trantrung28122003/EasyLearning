@@ -56,5 +56,6 @@ namespace EasyLearning.Infrastructure.Data.Entities
         public ICollection<OrderDetail>? OrderDetails { get; set; }
         public ICollection<Feedback>? FeedBacks { get; set; }
         public ICollection<AddOn>? AddOns { get; set; }  
+        public ICollection<UserNote>? UserNotes { get; set; }
     }
 }

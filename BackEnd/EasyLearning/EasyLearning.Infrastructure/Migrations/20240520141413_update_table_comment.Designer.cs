@@ -4,6 +4,7 @@ using EasyLearning.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyLearning.Infrastructure.Migrations
 {
     [DbContext(typeof(EasyLearningDbContext))]
-    partial class EasyLearningDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240520141413_update_table_comment")]
+    partial class update_table_comment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -796,53 +798,6 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.ToTable("Replies");
                 });
 
-            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserNote", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ChangedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CourseId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("CoursesId");
-
-                    b.Property<DateTime?>("DateChange")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateCreate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("NoteContent")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("NoteContent ");
-
-                    b.Property<string>("Time")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Time");
-
-                    b.Property<string>("TrainingPartId")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("TrainingPartId");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserNotes");
-                });
-
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserTrainingProgress", b =>
                 {
                     b.Property<string>("Id")
@@ -1143,21 +1098,6 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("Comment");
                 });
 
-            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserNote", b =>
-                {
-                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.Course", "Course")
-                        .WithMany("UserNotes")
-                        .HasForeignKey("CourseId");
-
-                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", "User")
-                        .WithMany("UserNotes")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserTrainingProgress", b =>
                 {
                     b.HasOne("EasyLearing.Infrastructure.Data.Entities.TrainingPart", "TrainingPart")
@@ -1261,8 +1201,6 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Navigation("TrainerDetails");
 
-                    b.Navigation("UserNotes");
-
                     b.Navigation("UserTrainingProgresss");
                 });
 
@@ -1286,8 +1224,6 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("TrainerDetails");
 
                     b.Navigation("TrainingParts");
-
-                    b.Navigation("UserNotes");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ExerciseQuestion", b =>

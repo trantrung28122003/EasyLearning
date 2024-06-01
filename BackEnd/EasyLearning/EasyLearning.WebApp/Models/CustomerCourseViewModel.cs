@@ -19,13 +19,13 @@ namespace EasyLearning.WebApp.Models
         public List<ApplicationUser>? UsersAdmin { get; set; }
         public List<Order>? Orders { get; set; }
         public List<OrderDetail>? OrderDetails { get; set; }
-
         public List<UserTrainingProgress>? UserTrainingProgresss { get; set; }
         public List<ExerciseQuestion>? ExerciseQuestionsByCourse { get; set; }
+        public List<Comment>? Comments { get; set; }
+        public List<Reply>? Replies { get; set; }
+        public List<UserNote>? Notes { get; set; }
         public bool IsSearchResult { get; set; }
         public bool HasBoughtCourse { get; set; }
-
-        
     }
 
 }

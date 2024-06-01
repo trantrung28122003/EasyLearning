@@ -23,7 +23,9 @@ namespace EasyLearning.Infrastructure.Data
         public DbSet<UserTrainingProgress> UserTrainingProgresss { get; set; }
         public DbSet<ExerciseQuestion> ExerciseQuestions { get; set; }
         public DbSet<Answer> Answers { get; set; }
-     
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Reply> Replies { get; set; }
+        public DbSet<UserNote> UserNotes { get; set; }
         public EasyLearningDbContext()
         {
         }

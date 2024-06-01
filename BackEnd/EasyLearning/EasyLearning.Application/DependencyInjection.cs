@@ -24,7 +24,9 @@ namespace EasyLearning.Application
             services.AddScoped<IUserTrainingProgressService, UserTrainingProgressService>();
             services.AddScoped<IExerciseQuestionService, ExerciseQuestionService>();
             services.AddScoped<IAnswerService, AnswerService>();
-           
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IReplyService, ReplyService>();
+            services.AddScoped<IUserNoteService, UserNoteService>();
         }
     }
 }

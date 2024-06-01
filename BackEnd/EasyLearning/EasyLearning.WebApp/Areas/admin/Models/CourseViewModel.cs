@@ -1,5 +1,8 @@
-﻿namespace EasyLearning.WebApp.Areas.admin.Models
+﻿using EasyLearning.Infrastructure.Data.Entities;
+
+namespace EasyLearning.WebApp.Areas.admin.Models
 {
+
     public class CourseViewModel
     {
         public string? CoursesName { get; set; }
@@ -12,11 +15,13 @@
 
         public string? CoureseContent { get; set; }
 
+        public CourseType CourseType { get; set; }
+
         public IFormFile? Image { get; set; }
 
         public DateTime StartDate { get; set; }
 
-
+        
         public DateTime StartEnd { get; set; }
 
         public DateTime RegistrationDeadline { get; set; }
