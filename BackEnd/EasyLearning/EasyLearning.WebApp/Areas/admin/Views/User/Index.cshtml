@@ -1,1 +1,43 @@
-﻿
+@model IEnumerable<EasyLearning.Infrastructure.Data.Entities.ApplicationUser>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
+}
+
+<h1>Trang Chính</h1>
+
+<table class="table">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Tên</th>
+                <th scope="col">Id</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+@*                         @Html.ActionLink("Khóa Tài Khoản", "Update","Course", new { id = item.Id }, new { @class = "btn btn-info", @role = "button" }) *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (Model is null)
+    {
+        <div>Đang tải</div>
+    }
+    else
+    {
+    }
+    @* </tbody> *@
+</table>﻿
