@@ -17,6 +17,9 @@ namespace EasyLearing.Infrastructure.Data.Entities
         [Column("Order_Notes")]
         public string? OrderNotes { get; set; }
 
+        [Column("Order_Quantity")]
+        public string? Quantity { get; set; }
+
         [Column("Order_User")]
         public string? UserId { get; set; }
         [ForeignKey("UserId")]

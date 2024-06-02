@@ -1,4 +1,5 @@
-﻿@model EasyLearning.WebApp.Models.CustomerCourseViewModel
+﻿@using EasyLearing.Infrastructure.Data.Entities;
+@model EasyLearning.WebApp.Models.CustomerCourseViewModel
 
 @{
     ViewData["Title"] = "DetailCourse";
@@ -61,34 +62,60 @@
                 <hr />
                 <div class="description description-tabs">
                     <ul class="nav nav-pills">
-                        <li class="nav-item"><a href="#more-information" data-bs-toggle="tab" class="nav-link active no-margin">Chi tiết khóa học</a></li>
-                        <li class="nav-item"><a href="#specifications" data-bs-toggle="tab" class="nav-link">Nội dung khóa học</a></li>
+       
+                        <li class="nav-item"><a href="#specifications" data-bs-toggle="tab" class="nav-link active no-margin">Nội dung khóa học</a></li>
+                        <li class="nav-item"><a href="#more-information" data-bs-toggle="tab" class="nav-link ">Chi tiết khóa học</a></li>
                         <li class="nav-item"><a href="#reviews" data-bs-toggle="tab" class="nav-link">Đánh giá</a></li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane fade show active" id="more-information">
+
+                        <div class="tab-pane fade show active" id="specifications">
+                            <br />
+                            <dl>
+                                @foreach (var itemCourseEvent in Model.CourseEvents)
+                                {
+                                    <dt class="toggle-details">
+                                        @itemCourseEvent.EventName  <span class="icon"><i class="fas fa-chevron-down"></i></span>
+                                    </dt>
+                                    <div class="details" style="display: none;">
+                                        @foreach (var itemtraingPart in Model.TrainingParts)
+                                        {
+                                            if (itemCourseEvent.Id == itemtraingPart.EventId)
+                                            {
+                                                @if (itemtraingPart.TraininpartType == TraininpartType.Lesson)
+                                                {
+                                                    <dd style="@(itemtraingPart.IsFree ? "color: #06BBCC; display: flex; justify-content: space-between; align-items: center; cursor: pointer" : "display: flex; justify-content: space-between; align-items: center;")">
+                                                        <span>
+                                                            <i class="fas fa-tv"></i>
+                                                            <span style="@(itemtraingPart.IsFree ? "text-decoration: underline;" : "")">@itemtraingPart.TrainingPartName</span>
+                                                        </span>
+                                                        @if (itemtraingPart.IsFree)
+                                                        {
+                                                            <span style="margin-left: auto; margin-right:18px; cursor: pointer">Preview</span>
+                                                        }
+                                                    </dd>
+                                                }
+                                                else
+                                                {
+                                                    <dd >
+                                                        <span><i class="far fa-file-alt"></i></span> @itemtraingPart.TrainingPartName
+                                                    </dd>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                    <br />
+                                }
+                            </dl>
+                        </div>
+
+                        <div class="tab-pane fade " id="more-information">
                             <br />
                             <p>
                                 @Model.Course.CoursesDescription
                             </p>
                         </div>
-                        <div class="tab-pane fade" id="specifications">
-                            <br />
-                            <dl>
-                                @foreach(var itemCourseEvent in Model.CourseEvents)
-                                {
-                                    <dt>@itemCourseEvent.EventName</dt>
-                                    foreach(var itemtraingPart in Model.TrainingParts)
-                                    {
-                                        if(itemCourseEvent.Id == itemtraingPart.EventId)
-                                        {
-                                            <dd>@itemtraingPart.TrainingPartName</dd>
-                                        }
-                                    }
-                                    <br />
-                                }
-                            </dl>
-                        </div>
+                        
                         <div class="tab-pane fade" id="reviews">
                             <br />
                          
@@ -200,8 +227,78 @@
 
 <script src="~/js/DetailCourse.js"></script>
 
+<style>
+    .toggle-details {
+        border: 1px solid #ccc; /* Light gray border */
+        background-color: #f9f9f9; /* Light gray background */
+        padding: 10px; /* Padding for spacing */
+        cursor: pointer; /* Pointer cursor on hover */
+        margin-bottom: -1px; /* Adjust margin to overlap borders */
+        position: relative;
+    }
 
+    .icon {
+        position: absolute;
+        top: 50%;
+        right: 10px; /* Adjust as needed */
+        transform: translateY(-50%);
+    }
 
+    dd {
+        display: flex;
+        align-items: center;
+        padding-top: 12px;
+        padding-bottom:12px
+    }
+
+    dd > span > i {
+        width: 30px; /* Đặt chiều rộng bạn muốn */
+        display: inline-block;
+        text-align:center;
+        margin-right: 12px;
+        
+    }
+
+    
+    .details {
+        border: 1px solid #ccc; /* Matching border for the container */
+        border-top: none; /* Remove top border to avoid double border with dt */
+        margin-bottom: 10px; /* Spacing between sections */
+    }
+
+    .training-part {
+        border-top: 1px solid #ccc; /* Border for dd, aligning with dt */
+        /* Padding for spacing */
+        padding: 12px 12px 0px 0px;
+        margin: 0; /* Remove default margin */
+        background-color: #ffffff; /* White background for dd */
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var toggles = document.querySelectorAll('.toggle-details');
+
+        toggles.forEach(function (toggle) {
+            toggle.addEventListener('click', function () {
+                var details = this.nextElementSibling;
+                var icon = this.querySelector('.icon i');
+
+                if (details && details.classList.contains('details')) {
+                    if (details.style.display === 'none' || details.style.display === '') {
+                        details.style.display = 'block';
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    } else {
+                        details.style.display = 'none';
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                }
+            });
+        });
+    });
+
+</script>
 
 
 

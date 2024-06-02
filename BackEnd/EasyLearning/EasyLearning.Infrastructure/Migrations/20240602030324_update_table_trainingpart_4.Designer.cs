@@ -4,6 +4,7 @@ using EasyLearning.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyLearning.Infrastructure.Migrations
 {
     [DbContext(typeof(EasyLearningDbContext))]
-    partial class EasyLearningDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240602030324_update_table_trainingpart_4")]
+    partial class update_table_trainingpart_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,10 +173,6 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Property<decimal>("OrderTotalPrice")
                         .HasColumnType("decimal(10,3)")
                         .HasColumnName("Order_TotalPrice");
-
-                    b.Property<string>("Quantity")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Order_Quantity");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)")

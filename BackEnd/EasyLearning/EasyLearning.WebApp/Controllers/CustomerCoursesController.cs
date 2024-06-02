@@ -131,17 +131,21 @@ namespace EasyLearning.WebApp.Controllers
         public async Task<IActionResult> DetailCourse(string courseId)
         {
             List<OrderDetail> listOrderDetail = new List<OrderDetail>();
+            List<TrainingPart> listTrainingPart = new List<TrainingPart>();
+            List<CourseEvent> listCourseEvent = new List<CourseEvent>();
             var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
             var shoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
             var course = await _courseService.GetCourseById(courseId);
-            var trainingParts = await _trainingPartService.GetTrainingPartByCourse(courseId);
-            var courseEvents = await _courseEventService.GetEventByCourse(courseId);
+            listTrainingPart = await _trainingPartService.GetTrainingPartByCourse(courseId);
+            listCourseEvent = await _courseEventService.GetEventByCourse(courseId);
             var getFeedbackbyCourse = await _feedbackService.GetFeedbacksByCourseId(courseId);
             var getUsers = await _userRepository.GetUsersAsync();
             var orders = await _orderService.GetOrdersByUser();
             var currentUserId = _userRepository.getCurrrentUser();
             bool hasBoughtCourse = await _orderDetailService.CheckIfUserHasBoughtCourse(currentUserId, courseId);
 
+            listTrainingPart = listTrainingPart.OrderBy(x => x.StartTime).ToList();
+            listCourseEvent = listCourseEvent.OrderBy(x =>x.DateStart).ToList();
             foreach (var itemFeedback in getFeedbackbyCourse)
             {
                 if (currentUserId == itemFeedback.FeedbackUserId)
@@ -160,8 +164,8 @@ namespace EasyLearning.WebApp.Controllers
             {
                 Course = course,
                 ShoppingCartItems = shoppingCartItem,
-                TrainingParts = trainingParts,
-                CourseEvents = courseEvents,
+                TrainingParts = listTrainingPart,
+                CourseEvents = listCourseEvent,
                 Feedbacks = getFeedbackbyCourse,
                 Users = getUsers,
                 OrderDetails = listOrderDetail,

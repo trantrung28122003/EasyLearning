@@ -33,6 +33,9 @@ namespace EasyLearing.Infrastructure.Data.Entities
         [Column("Training_Part_VideoUrl")]
         public string? VideoUrl { get; set; }
 
+        [Column("Training_Part_IsFree")]
+        public bool IsFree { get; set; }
+
         [Column("Training_Part_Event_Id")]
         public string? EventId { get; set; }
 
