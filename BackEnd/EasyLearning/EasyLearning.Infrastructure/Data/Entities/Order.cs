@@ -18,7 +18,7 @@ namespace EasyLearing.Infrastructure.Data.Entities
         public string? OrderNotes { get; set; }
 
         [Column("Order_Quantity")]
-        public string? Quantity { get; set; }
+        public string? OrderQuantity { get; set; }
 
         [Column("Order_User")]
         public string? UserId { get; set; }
@@ -26,5 +26,6 @@ namespace EasyLearing.Infrastructure.Data.Entities
         public virtual ApplicationUser? User { get; set; }
 
         public ICollection<OrderDetail>? OrderDetails { get; set; }
+        public ICollection<OrderDiscount>? OrderDiscounts { get; set; }
     }
 }

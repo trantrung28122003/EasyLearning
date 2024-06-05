@@ -101,7 +101,89 @@ namespace EasyLearning.WebApp.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> UpdateProfile()
+        {
+            var userId = _userRepository.getCurrrentUser();
+            var user = await _userManager.FindByIdAsync(userId);
+            var userProfileViewModel = new UserProfileViewModel
+            {
+                Avatar = user.UserImageUrl,
+                Username = user.UserName,
+                FullName = user.FullName, 
+                //Address = user.Address,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                
+            };
+            return View(userProfileViewModel);
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateProfile(UserProfileViewModel userProfileViewModel, string changePasswordButton)
+        {
+          
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            if (changePasswordButton != null)
+            {
+                if (userProfileViewModel.CurrentPassword != null && userProfileViewModel.CurrentPassword != null)
+                {
+                    if (userProfileViewModel.NewPassword != userProfileViewModel.ConfirmPassword)
+                    {
+                        ModelState.AddModelError(string.Empty, "Xác nhận mật khẩu mới không khớp.");
+                        return View(userProfileViewModel);
+                    }
+                    var isCurrentPasswordValid = await _userManager.CheckPasswordAsync(user, userProfileViewModel.CurrentPassword);
+                    if (!isCurrentPasswordValid)
+                    {
+                        ModelState.AddModelError(string.Empty, "Mật khẩu hiện tại không chính xác.");
+                        return View(userProfileViewModel);
+                    }
+                    var changePasswordResult = await _userManager.ChangePasswordAsync(user, userProfileViewModel.CurrentPassword, userProfileViewModel.NewPassword);
+                    if (!changePasswordResult.Succeeded)
+                    {
+                        foreach (var error in changePasswordResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                        return View(userProfileViewModel);
+                    }
+                    ModelState.Remove("CurrentPassword");
+                    ModelState.Remove("NewPassword");
+                    ModelState.Remove("ConfirmPassword");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Vui lòng nhập đủ thông tin mật khẩu.");
+                    return View(userProfileViewModel);
+                }
+            }
+            else
+            {
+               
+                user.FullName = userProfileViewModel.FullName;
+                //user.Address = userProfileViewModel.Address;
+                user.Email = userProfileViewModel.Email;
+                user.PhoneNumber = userProfileViewModel.PhoneNumber;
+                //user.BirthDate = model.BirthDate;
+
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(userProfileViewModel);
+                }
+            }
+            return View(userProfileViewModel);
+        }
         /*[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -53,6 +53,8 @@ namespace EasyLearning.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(OrderViewModel orderViewModel)
         {
+            
+            
             TempData["OrderViewModelJson"] = JsonConvert.SerializeObject(orderViewModel);
             return RedirectToAction("Index", "Payment");
         }

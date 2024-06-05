@@ -44,10 +44,14 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             }
             else
             {
+                string notes = "";
                 OrderViewModel orderViewModel = JsonConvert.DeserializeObject<OrderViewModel>(orderJson);
                 decimal decimalAmount = orderViewModel.OrderTotalPrice; 
                 string amountString = decimalAmount.ToString().Replace(".", "");
-                string notes = orderViewModel.OrderNotes.ToString();
+                if (orderViewModel.OrderNotes != null)
+                {
+                    notes = orderViewModel.OrderNotes.ToString();
+                }
                 var url = await _paymentService.doPayment(amountString, notes);
                 return Redirect(url);
             }
@@ -109,6 +113,9 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                     foreach( var itemCourse in listCourse)
                     {
                         listTrainingPart.AddRange(await _trainingPartService.GetTrainingPartByCourse(itemCourse.Id));
+                        var course = await _courseService.GetCourseById(itemCourse.Id);
+                        course.RegisteredUsers++;
+                        await _courseService.UpdateCourse(course);
                     }
 
                     foreach (var itemTrainingPart in listTrainingPart)

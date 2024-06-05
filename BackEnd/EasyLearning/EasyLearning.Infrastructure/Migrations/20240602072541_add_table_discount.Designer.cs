@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyLearning.Infrastructure.Migrations
 {
     [DbContext(typeof(EasyLearningDbContext))]
-    [Migration("20240602070545_add_table_discount")]
+    [Migration("20240602072541_add_table_discount")]
     partial class add_table_discount
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -170,13 +170,13 @@ namespace EasyLearning.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Order_PaymentMethod");
 
+                    b.Property<string>("OrderQuantity")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Order_Quantity");
+
                     b.Property<decimal>("OrderTotalPrice")
                         .HasColumnType("decimal(10,3)")
                         .HasColumnName("Order_TotalPrice");
-
-                    b.Property<string>("Quantity")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Order_Quantity");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)")
@@ -736,6 +736,76 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.ToTable("CourseDetails");
                 });
 
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.CourseDiscount", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CourseId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("CourseDiscount_CourseId");
+
+                    b.Property<DateTime?>("DateChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DiscountId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("CourseDiscount_DiscountId");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("DiscountId");
+
+                    b.ToTable("CourseDiscounts");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Discount", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Discount_Code");
+
+                    b.Property<DateTime?>("DateChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Discount_Description");
+
+                    b.Property<decimal>("DiscountPercentage")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("Discount_Percentage");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Discounts");
+                });
+
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ExerciseQuestion", b =>
                 {
                     b.Property<string>("Id")
@@ -767,6 +837,41 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.HasIndex("TrainingPartId");
 
                     b.ToTable("ExerciseQuestions");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.OrderDiscount", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DiscountId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("CourseDiscount_DiscountId");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("CourseDiscount_OrderId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiscountId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDiscounts");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Reply", b =>
@@ -1135,6 +1240,21 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.CourseDiscount", b =>
+                {
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.Course", "Course")
+                        .WithMany("CourseDiscounts")
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.Discount", "Discount")
+                        .WithMany("CourseDiscounts")
+                        .HasForeignKey("DiscountId");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Discount");
+                });
+
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ExerciseQuestion", b =>
                 {
                     b.HasOne("EasyLearing.Infrastructure.Data.Entities.TrainingPart", "TrainingPart")
@@ -1142,6 +1262,21 @@ namespace EasyLearning.Infrastructure.Migrations
                         .HasForeignKey("TrainingPartId");
 
                     b.Navigation("TrainingPart");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.OrderDiscount", b =>
+                {
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.Discount", "Discount")
+                        .WithMany("OrderDiscounts")
+                        .HasForeignKey("DiscountId");
+
+                    b.HasOne("EasyLearing.Infrastructure.Data.Entities.Order", "Order")
+                        .WithMany("OrderDiscounts")
+                        .HasForeignKey("OrderId");
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Reply", b =>
@@ -1247,6 +1382,8 @@ namespace EasyLearning.Infrastructure.Migrations
             modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.Order", b =>
                 {
                     b.Navigation("OrderDetails");
+
+                    b.Navigation("OrderDiscounts");
                 });
 
             modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.ShoppingCart", b =>
@@ -1285,6 +1422,8 @@ namespace EasyLearning.Infrastructure.Migrations
                 {
                     b.Navigation("AddOns");
 
+                    b.Navigation("CourseDiscounts");
+
                     b.Navigation("CoursesDetails");
 
                     b.Navigation("FeedBacks");
@@ -1298,6 +1437,13 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("TrainingParts");
 
                     b.Navigation("UserNotes");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Discount", b =>
+                {
+                    b.Navigation("CourseDiscounts");
+
+                    b.Navigation("OrderDiscounts");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ExerciseQuestion", b =>

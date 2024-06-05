@@ -26,6 +26,9 @@ namespace EasyLearning.Infrastructure.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Reply> Replies { get; set; }
         public DbSet<UserNote> UserNotes { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
+        public DbSet<OrderDiscount> OrderDiscounts { get; set; }
+        public DbSet<CourseDiscount> CourseDiscounts { get; set; }
         public EasyLearningDbContext()
         {
         }

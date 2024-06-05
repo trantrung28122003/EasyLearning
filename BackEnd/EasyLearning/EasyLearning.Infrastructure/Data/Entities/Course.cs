@@ -47,7 +47,9 @@ namespace EasyLearning.Infrastructure.Data.Entities
 
         [Column("Courses_MaxAttendees")]
         public int MaxAttdendees { get; set; }
-        
+
+        [Column("Courses_RegisteredUsers")]
+        public int RegisteredUsers { get; set; }
 
         public ICollection<CourseDetail>? CoursesDetails {  get; set; } 
         public ICollection<TrainerDetail>? TrainerDetails { get; set; }
@@ -57,5 +59,6 @@ namespace EasyLearning.Infrastructure.Data.Entities
         public ICollection<Feedback>? FeedBacks { get; set; }
         public ICollection<AddOn>? AddOns { get; set; }  
         public ICollection<UserNote>? UserNotes { get; set; }
+        public ICollection<CourseDiscount>? CourseDiscounts { get; set; }
     }
 }

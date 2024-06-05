@@ -1,4 +1,5 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
+using EasyLearning.Infrastructure.Data.Abstraction;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EasyLearning.Infrastructure.Data.Entities
 {
-    public class OrderDiscount
+    public class OrderDiscount:GenericEntity
     {
         [Column("CourseDiscount_OrderId")]
         public string? OrderId { get; set; }

@@ -75,7 +75,7 @@ namespace EasyLearning.WebApp.Controllers
             var courses = await _courseService.GetAllCourses();
             var categories = await _categoryService.GetAllCategories();
             var coursedetails = await _courseDetailService.GetAllCourseDetail();
-
+            var feedbacks = await _feedbackService.GetAllFeedbacks();
             if (!string.IsNullOrEmpty(_userRepository.getCurrrentUser()))
             {
 
@@ -99,7 +99,8 @@ namespace EasyLearning.WebApp.Controllers
                 CourseDetails = coursedetails,
                 ShoppingCartItems = listShoppingCartItem,
                 OrderDetails = listOrderDetail,
-                IsSearchResult = !string.IsNullOrEmpty(searchString)
+                IsSearchResult = !string.IsNullOrEmpty(searchString),
+                Feedbacks = feedbacks,
             };
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -120,11 +121,13 @@ namespace EasyLearning.WebApp.Controllers
             var courses = await _courseService.GetAllCourses();
             var coursedetail = await _courseDetailService.GetAllCourseDetail();
             var category = await _categoryService.GetCategoryById(categoryId);
+            var feedbacks = await _feedbackService.GetAllFeedbacks();
             var coursesByCategory = new CustomerCourseViewModel()
             {
                 Courses = courses,
                 CourseDetails = coursedetail,
-                Category = category
+                Category = category,
+                Feedbacks = feedbacks,
             };
             return View(coursesByCategory);
         }
@@ -172,6 +175,7 @@ namespace EasyLearning.WebApp.Controllers
                 HasBoughtCourse = hasBoughtCourse,
                 currentUserId = currentUserId,
             };
+            ViewBag.CourseId = courseId;
             return View(customerCourseViewModel);
         }
 
@@ -296,6 +300,23 @@ namespace EasyLearning.WebApp.Controllers
             return View(customerCourseViewModel);
         }
 
+        public async Task<IActionResult> OnlineEventScheduleFree(string courseId)
+        {
+            var course = await _courseService.GetCourseById(courseId);
+            var listCourseEvent = await _courseEventService.GetEventByCourse(courseId);
+            var listTrainingPart = await _trainingPartService.GetTrainingPartByCourse(courseId);
+            listTrainingPart = listTrainingPart.OrderBy(x => x.StartTime).ToList();
+            listCourseEvent = listCourseEvent.OrderBy(x => x.DateStart).ToList();
+            var customerCourseViewModel = new CustomerCourseViewModel
+            {
+                Course = course,
+                CourseEvents = listCourseEvent,
+                TrainingParts = listTrainingPart,
+ 
+            };
+            ViewBag.CourseId = courseId;
+            return View(customerCourseViewModel);
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetQuizData(string trainingPartId)
