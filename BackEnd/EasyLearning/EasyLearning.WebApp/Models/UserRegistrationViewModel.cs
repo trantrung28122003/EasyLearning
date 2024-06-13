@@ -20,8 +20,14 @@ namespace EasyLearning.WebApp.Models
 
         public string? PhoneNumber { get; set; }
 
-        public string? isConfirmPolicy { get; set; }
-        public IFormFile? Image {  get; set; }
+        public string? Address { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime BirthDate { get; set; }
+
+        public bool isConfirmPolicy { get; set; }
+
+        public IFormFile? Avatar {  get; set; }
     }
 }
     

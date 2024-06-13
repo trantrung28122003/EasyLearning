@@ -1,5 +1,8 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
+using EasyLearning.Infrastructure.Data.Entities;
+using EasyLearning.Infrastructure.Data.Repostiory;
+using EasyLearning.WebApp.Areas.admin.Models;
 using EasyLearning.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +17,16 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         private readonly ICourseService _courseService;
         private readonly ICourseEventService _courseEventService;
         private readonly ITrainingPartService _TrainingPartService;
-        public EventController(ICourseService courseService, ICourseEventService courseEventService, ITrainingPartService TrainingPartService)
+        private readonly UserRepository _userRepository;
+        private readonly IFileService _fileService;
+        public EventController(ICourseService courseService, ICourseEventService courseEventService, 
+            ITrainingPartService TrainingPartService, UserRepository userRepository, IFileService fileService)
         {
             _courseService = courseService;
             _courseEventService = courseEventService;
             _TrainingPartService = TrainingPartService;
+            _userRepository = userRepository;
+            _fileService = fileService;
         }
 
         public async Task<IActionResult> Index(string courseId)
@@ -28,8 +36,21 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                 return NotFound();
             }
             var eventByCourse = await _courseEventService.GetEventByCourse(courseId);
-            ViewBag.CourseId = courseId;
-            return View(eventByCourse);
+            var course = await _courseService.GetCourseById(courseId);
+
+            var couresEventsByNotIsDelete = new List<CourseEvent>();
+            var courseEvents = await _courseEventService.GetAllCourseEvents();
+            foreach (var itemCourseEvent in courseEvents)
+            {
+                if (itemCourseEvent.IsDeleted == false)
+                {
+                    couresEventsByNotIsDelete.Add(itemCourseEvent);
+                }
+            }
+   
+            ViewBag.CourseId = course.Id;
+            ViewBag.CourseName = course.CoursesName;
+            return View(couresEventsByNotIsDelete);
         }
 
         public async Task<IActionResult> Create(string courseId)
@@ -38,37 +59,57 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             {
                 return NotFound();
             }
-            ViewBag.CourseId = courseId;
-            
-            return View();
+            var eventViewModel = new EventViewModel
+            {
+            };
+            var course = await _courseService.GetCourseById(courseId);
+            ViewBag.CourseId = course.Id;
+            ViewBag.CourseName = course.CoursesName;
+            ViewBag.IsOnlineCourse = course.CourseType == CourseType.Online;
+            return View(eventViewModel);
         }
 
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(EventViewModel eventViewModel)
         {
             if (ModelState.IsValid)
             {
+                var location = eventViewModel.EventType == CourseEventType.Offline ? eventViewModel.Location: eventViewModel.OnlineRoomUrl;
+
+
                 var courseEvent = new CourseEvent()
                 {
                     EventName = eventViewModel.EventName,
                     EventType = (CourseEventType)eventViewModel.EventType,
-                    Location = eventViewModel.Location,
+                    Location = location,
                     DateStart = eventViewModel.DateStart,
                     DateEnd = eventViewModel.DateEnd,
-                    DateChange = DateTime.Now,
-                    ChangedBy = "user",
-                };
-                await _courseEventService.CreateEvent(courseEvent);
-                var trainingPart = new TrainingPart()
-                {
-                    TrainingPartName = eventViewModel.TrainingPart.TrainingPartName,
-                    StartTime = eventViewModel.TrainingPart.StartTime,
-                    EndTime = eventViewModel.TrainingPart.EndTime,
                     DateCreate = DateTime.Now,
                     DateChange = DateTime.Now,
+                    ChangedBy = _userRepository.getCurrrentUser(),
+                };
+                await _courseEventService.CreateEvent(courseEvent);
+                var videoUrlTrainingPart = eventViewModel.TrainingPartViewModel.VideoUrl;
+                if (eventViewModel.TrainingPartViewModel.Video != null)
+                {
+                    videoUrlTrainingPart = await _fileService.SaveFile(eventViewModel.TrainingPartViewModel.Video);
+                }
+                TrainingPart trainingPart = new TrainingPart()
+                {
+                    TrainingPartName = eventViewModel.TrainingPartViewModel.TrainingPartName,
+                    StartTime = eventViewModel.TrainingPartViewModel.StartTime,
+                    EndTime = eventViewModel.TrainingPartViewModel.EndTime,
+                    Description = eventViewModel.TrainingPartViewModel.Description,
                     EventId = courseEvent.Id,
                     CoursesId = eventViewModel.CourseId,
+                    DateChange = DateTime.Now,
+                    DateCreate = DateTime.Now,
+                    ChangedBy = _userRepository.getCurrrentUser(),
+                    VideoUrl = videoUrlTrainingPart,
+                    TrainingPartType = (TrainingPartType)eventViewModel.TrainingPartViewModel.TrainingPartType,
+                    IsFree = eventViewModel.TrainingPartViewModel.IsFree,
                 };
                 await _TrainingPartService.CreateTrainingPart(trainingPart);
                 return RedirectToAction("Index", "Event", new { courseId = eventViewModel.CourseId});
@@ -79,37 +120,31 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         public async Task<IActionResult> Update(string id, string courseId)
         {
             var courseEvent = await _courseEventService.GetCourseEventById(id);
-
             if (courseEvent == null)
             {
                 return NotFound();
             }
-            var TrainingPartIds = await _TrainingPartService.GetTrainingPartByEvent(id);
-
-            var TrainingParts = await _TrainingPartService.GetTrainingPartByCourse(courseId);
-
-            ViewBag.CourseId = courseId;
-
-            ViewBag.TrainingParts = new SelectList(TrainingParts, "Id", "TrainingPartName", TrainingPartIds);
-
+            var listCourses = await _courseService.GetAllCourses();
+            var trainingParts = await _TrainingPartService.GetTrainingPartWithEventIdAndCourseId(id, courseId);
             var eventViewModel = new EventViewModel
             {
                 EventName = courseEvent.EventName,
-                EventType = (int)courseEvent.EventType,
+                EventType = courseEvent.EventType,
                 Location = courseEvent.Location,
                 DateStart = courseEvent.DateStart,
                 DateEnd = courseEvent.DateEnd,
-                DateChange = DateTime.Now,
-                ChangedBy = "user",
                 CourseId = courseId,
+                TrainingParts = trainingParts,
             };
-
+            ViewBag.CourseId = courseId;
+            ViewBag.OriginalCourseId = courseId;
+            ViewBag.ListCourses = new SelectList(listCourses, "Id", "CoursesName", eventViewModel.CourseId);
             return View(eventViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(string id, EventViewModel eventViewModel)
+        public async Task<IActionResult> Update(string id, EventViewModel eventViewModel, string originalCourseId)
         {
             if (ModelState.IsValid)
             {
@@ -118,67 +153,101 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
                 {
                     return NotFound();
                 }
+                var trainingParts = await _TrainingPartService.GetTrainingPartWithEventIdAndCourseId(id, originalCourseId);
+                foreach (var itemTrainingPart in trainingParts)
+                {
+                    if (itemTrainingPart.CoursesId != eventViewModel.CourseId)
+                    {
+                        itemTrainingPart.CoursesId = eventViewModel.CourseId;
+                        await _TrainingPartService.UpdateTrainingPart(itemTrainingPart);
+                    }
+                }
+                var location = eventViewModel.EventType == CourseEventType.Offline ? eventViewModel.Location : eventViewModel.OnlineRoomUrl;
+
                 courseEvent.EventName = eventViewModel.EventName;
                 courseEvent.EventType = (CourseEventType)eventViewModel.EventType;
-                courseEvent.Location = eventViewModel.Location;
+                courseEvent.Location = location;
                 courseEvent.DateStart = eventViewModel.DateStart;
                 courseEvent.DateEnd = eventViewModel.DateEnd;
                 courseEvent.DateChange = DateTime.Now;
-                courseEvent.ChangedBy = "user";
-
+                courseEvent.ChangedBy = _userRepository.getCurrrentUser();
                 await _courseEventService.UpdateEvent(courseEvent);
                 return RedirectToAction("Index", "Event", new { courseId = eventViewModel.CourseId });
             }
             return View(eventViewModel);
         }
 
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(string id, string courseId)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var courseEvent = await _courseEventService.GetCourseEventById(id);
-
             if (courseEvent == null)
             {
                 return NotFound();
             }
-            return View(courseEvent);
+            var listCourses = await _courseService.GetAllCourses();
+            var trainingParts = await _TrainingPartService.GetTrainingPartWithEventIdAndCourseId(id, courseId);
+            var eventViewModel = new EventViewModel
+            {
+                EventName = courseEvent.EventName,
+                EventType = courseEvent.EventType,
+                Location = courseEvent.Location,
+                DateStart = courseEvent.DateStart,
+                DateEnd = courseEvent.DateEnd,
+                CourseId = courseId,
+                TrainingParts = trainingParts,
+            };
+            var course = await _courseService.GetCourseById(courseId);
+            ViewBag.CourseName = course.CoursesName;
+   
+            return View(eventViewModel);
+           
+           
         }
        
    
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Remove(string id, string courseId)
         {
             var courseEvent = await _courseEventService.GetCourseEventById(id);
             if (courseEvent == null)
             {
                 return NotFound();
             }
-            return View(courseEvent);
+            var listCourses = await _courseService.GetAllCourses();
+            var trainingParts = await _TrainingPartService.GetTrainingPartWithEventIdAndCourseId(id, courseId);
+            var eventViewModel = new EventViewModel
+            {
+                EventId = courseEvent.Id,
+                EventName = courseEvent.EventName,
+                EventType = courseEvent.EventType,
+                Location = courseEvent.Location,
+                DateStart = courseEvent.DateStart,
+                DateEnd = courseEvent.DateEnd,
+                CourseId = courseId,
+                TrainingParts = trainingParts,
+                DateCreate = courseEvent.DateCreate,
+                DateChange = courseEvent.DateChange,
+            };
+            var course = await _courseService.GetCourseById(courseId);
+            ViewBag.CourseName = course.CoursesName;
+
+            return View(eventViewModel);
         }
 
-
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var courseEvent = await _courseEventService.GetCourseEventById(id);
-
             if (courseEvent == null)
             {
                 return NotFound();
             }
-            await _TrainingPartService.UpdateCourseEventIdToNull(id);
-            await _courseEventService.DeleteEvent(courseEvent);
+            courseEvent.IsDeleted = true;
+            courseEvent.DateChange = DateTime.Now;
+            courseEvent.ChangedBy = _userRepository.getCurrrentUser();
+            await _courseEventService.UpdateEvent(courseEvent);
+           
             return RedirectToAction("Index", "Course");
-
         }
     }
 }

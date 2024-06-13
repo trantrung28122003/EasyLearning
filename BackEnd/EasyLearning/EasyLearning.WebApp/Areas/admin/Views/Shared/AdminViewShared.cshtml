@@ -11,6 +11,9 @@
     <link href="~/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="~/css/style.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/6I5Q5fE2w5KD5lN5e/b5O4PeUe+P1O4I/P1D1y6"
+            crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -24,7 +27,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin</div>
+                <div class="sidebar-brand-text mx-3">Bảng điều khiển</div>
             </a>
 
             <!-- Divider -->
@@ -34,14 +37,14 @@
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
+                    <span>Quản trị viên</span>
                 </a>
             </li>
 
             <hr class="sidebar-divider">
 
             <div class="sidebar-heading">
-                Quản trị
+                Quản lý khóa học
             </div>
 
             <li class="nav-item">
@@ -81,7 +84,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Addons
+                Quản lý người dùng 
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -95,7 +98,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Tùy chọn</h6>
                         <a class="collapse-item" asp-action="Index" asp-controller="user" asp-area="admin">Danh sách</a>
-                        <a class="collapse-item" href="login.html">Phân quyền</a>
+                        
                     </div>
                 </div>
             </li>
@@ -108,13 +111,24 @@
                 </a>
             </li>
 
+            
+
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="sidebar-heading">
+                Chức năng
+            </div>
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Hóa đơn</span>
+                <a class="nav-link" asp-action="Recycle" asp-controller="course" asp-area="admin">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>thùng rác</span>
                 </a>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link" asp-action="Index" asp-controller="Home" asp-area="">
+                    <i class="fas fa-undo"></i>
+                    <span>Quay lại trang chính </span>
+                </a>
+            </li>
             <hr class="sidebar-divider d-none d-md-block">
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>

@@ -1,64 +1,146 @@
-﻿@model EasyLearning.WebApp.Models.EventViewModel
+﻿@using EasyLearing.Infrastructure.Data.Entities;
+@model EasyLearning.WebApp.Models.EventViewModel
 
 @{
     ViewData["Title"] = "Update";
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 
-<h1>Chỉnh sửa</h1>
-
-<h4>Lớp</h4>
+<h1 class="text-center">Cập nhập thông tin buổi học</h1>
+<h1 class="text-center" style="margin-bottom: 40px"><strong>@Model.EventName</strong> </h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Update">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CourseId" />
-            <div class="form-group">
-                <label asp-for="TrainingPartId" class="control-label">Tên nội dung</label>
-                <select asp-for="TrainingPartId" class="form-control" asp-items="@ViewBag.TrainingParts"></select>
-                <span asp-validation-for="TrainingPartId" class="text-danger"></span>
-            </div>
+<div class="container">
+    <form asp-action="Update" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+        <input type="hidden" id="OriginalCourseId" name="OriginalCourseId" value="@ViewBag.OriginalCourseId" />
+        <div class="form-group">
+            <label asp-for="CourseId" class="control-label">Chọn khóa học</label>
+            <select asp-for="CourseId" class="form-control" asp-items="@ViewBag.ListCourses"></select>
+            <span asp-validation-for="CourseId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EventName" class="control-label">Nội dung buổi học</label>
+            <input asp-for="EventName" class="form-control" id="eventNameInput" oninput="updateLessonHeading()" />
+            <span asp-validation-for="EventName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EventType">Hình thức:</label>
+            <select asp-for="EventType" class="form-control" id="EventType" onchange="toggleInputFields()">
+                <option value="@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Online)">Trực tuyến</option>
+                <option value="@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Offline)">Trực tiếp</option>
+            </select>
+            <span asp-validation-for="EventType" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="EventName" class="control-label">Tên lớp</label>
-                <input asp-for="EventName" class="form-control" />
-                <span asp-validation-for="EventName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EventType">Hình thức:</label>
-                <select asp-for="EventType" class="form-control">
-                    <option value="@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Online)">Online</option>
-                    <option value="@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Offline)">Offline</option>
-                </select>
-                <span asp-validation-for="EventType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Location" class="control-label">Địa chỉ</label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateStart" class="control-label">Ngày bắt đầu</label>
-                <input asp-for="DateStart" class="form-control" />
-                <span asp-validation-for="DateStart" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateEnd" class="control-label">Ngày kết thúc</label>
-                <input asp-for="DateEnd" class="form-control" />
-                <span asp-validation-for="DateEnd" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Lưu" class="btn btn-outline-primary" />
-            </div>
-        </form>
-    </div>
+        <div class="form-group" id="onlineRoom" style="display: none;">
+            <label asp-for="OnlineRoomUrl" class="control-label">Link phòng học online</label>
+            <input type="text" asp-for="OnlineRoomUrl" class="form-control" />
+            <span asp-validation-for="OnlineRoomUrl" class="text-danger"></span>
+        </div>
+
+        <div class="form-group" id="offlineLocation" style="display: none;">
+            <label asp-for="Location" class="control-label">Địa chỉ</label>
+            <input asp-for="Location" class="form-control" />
+            <span asp-validation-for="Location" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateStart" class="control-label">Ngày bắt đầu</label>
+            <input asp-for="DateStart" class="form-control" />
+            <span asp-validation-for="DateStart" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateEnd" class="control-label">Ngày kết thúc</label>
+            <input asp-for="DateEnd" class="form-control" />
+            <span asp-validation-for="DateEnd" class="text-danger"></span>
+        </div>
+
+        <h1 class ="text-center">Danh sách nội dung của buổi học </h1>
+        <hr />
+        <table class="table table-striped table-bordered">
+            <thead style="background-color: #06bbcc; color: white">
+                <tr>
+                    <th>Tên nội dung</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
+                    <th>Hình thức</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.TrainingParts != null)
+                {
+                    foreach (var item in Model.TrainingParts)
+                    {
+                        <tr>
+                            <td>@item.TrainingPartName</td>
+                            <td>@item.StartTime</td>
+                            <td>@item.EndTime</td>
+                            @if (@item.TrainingPartType == TrainingPartType.Lesson)
+                            {
+                                <td>Lý thuyết</td>
+                            }
+                            else if (@item.TrainingPartType == TrainingPartType.Exercise)
+                            {
+                                <td>Bài tập</td>
+                            }
+                            else
+                            {
+                                <td>Không xác định</td>
+                            }
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">Không có nội dung cho buổi học này</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="hidden" asp-for="TrainingParts"  name="" />
+        <div class="form-group text-center" style="">
+            <input type="submit" value="Lưu thay đổi" class="btn btn-outline-info btn-lg btn-block" />
+        </div>
+    </form>
 </div>
-
 <div>
-    <a asp-action="Index" asp-controller="course" class="btn btn-outline-danger">Quay lại</a>
+    <a asp-controller="Event" asp-action="Index" asp-route-courseId="@ViewBag.CourseId" asp-controller="course" class="btn btn-outline-danger">Quay lại</a>
 </div>
 
+<script>
+    function toggleInputFields() {
+        var eventTypeSelect = document.getElementById("EventType");
+        var onlineRoomDiv = document.getElementById("onlineRoom");
+        var offlineLocationDiv = document.getElementById("offlineLocation");
+
+        var selectedValue = eventTypeSelect.value;
+
+        if (selectedValue === "@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Online)") {
+            onlineRoomDiv.style.display = "block";
+            offlineLocationDiv.style.display = "none";
+            offlineLocationDiv.value = "";
+        } else if (selectedValue === "@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Offline)") {
+            offlineLocationDiv.style.display = "block";
+            onlineRoomDiv.style.display = "none";
+            onlineRoomDiv.value = "";
+        } else {
+            onlineRoomDiv.style.display = "none";
+            offlineLocationDiv.style.display = "none";
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        toggleInputFields();
+
+        var eventNameInput = document.getElementById("eventNameInput");
+        if (eventNameInput) {
+            eventNameInput.addEventListener("input", updateLessonHeading);
+        } else {
+            console.error("Element with id 'eventNameInput' not found.");
+        }
+    });
+</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

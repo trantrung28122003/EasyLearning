@@ -16,7 +16,7 @@ namespace EasyLearning.Application.Services
         Task<TrainingPart> GetTrainingPartById(string id);
         Task<List<TrainingPart>> GetTrainingPartByCourse(string id);
         Task<List<TrainingPart>> GetTrainingPartByEvent(string id);
-        Task<List<TrainingPart>> GetTrainingPartWithoutEventIdAndCourse(string id);
+        Task<List<TrainingPart>> GetTrainingPartWithEventIdAndCourseId(string eventId, string courseId );
          Task CreateTrainingPart(TrainingPart TrainingPart);
         Task UpdateTrainingPart(TrainingPart TrainingPart);
         Task UpdateTrainingPartWithEvent(string TrainingPartId, string courseEventId);
@@ -35,7 +35,8 @@ namespace EasyLearning.Application.Services
         public async Task<List<TrainingPart>> GetAllTrainingParts() => await _trainingPartRepository.GetAll();
         public async Task<List<TrainingPart>> GetTrainingPartByCourse(string id) => await _trainingPartRepository.GetByCondition(s => s.CoursesId == id);
         public async Task<List<TrainingPart>> GetTrainingPartByEvent(string id) => await _trainingPartRepository.GetByCondition(s => s.EventId == id);
-        public async Task<List<TrainingPart>> GetTrainingPartWithoutEventIdAndCourse(string id) => await _trainingPartRepository.GetTrainingPartWithoutEventId(id);
+
+        public async Task<List<TrainingPart>> GetTrainingPartWithEventIdAndCourseId(string eventId, string courseId) => await _trainingPartRepository.GetTrainingPartWithEventIdAndCourseId(eventId, courseId);
         public async Task<TrainingPart> GetTrainingPartById(string id) => await _trainingPartRepository.GetById(id);
         public async Task CreateTrainingPart(TrainingPart TrainingPart) => await _trainingPartRepository.Create(TrainingPart);
         public async Task UpdateTrainingPart(TrainingPart TrainingPart) => await _trainingPartRepository.Update(TrainingPart);

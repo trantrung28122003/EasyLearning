@@ -1,0 +1,47 @@
+﻿@model DateTime?
+
+@{
+    ViewData["Title"] = "Tài khoản bị khóa";
+    Layout = "~/Views/Shared/AuthenticationViewShared.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+ 
+    
+</head>
+<body>
+    <!-- Modal -->
+    <div class="modal fade" id="accountLockedModal" tabindex="-1" aria-labelledby="accountLockedModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="accountLockedModalLabel">Tài khoản bị khóa</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Tài khoản của bạn đã bị khóa.</p>
+                    @if (Model.HasValue)
+                    {
+                        <p>Thời gian khóa kết thúc: @Model.Value.ToString("dd/MM/yyyy HH:mm")</p>
+                    }
+                    else
+                    {
+                        <p>Thời gian khóa chưa xác định.</p>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='@Url.Action("Login", "Account")'">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#accountLockedModal').modal('show');
+        });
+    </script>
+</body>
+</html>
+

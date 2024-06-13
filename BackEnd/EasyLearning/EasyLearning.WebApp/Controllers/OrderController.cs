@@ -1,5 +1,6 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Application.Services;
+using EasyLearning.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Repostiory;
 
 using EasyLearning.WebApp.Models;
@@ -36,25 +37,53 @@ namespace EasyLearning.WebApp.Controllers
         {
             var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
             var getShoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
+            var listCourse = await _courseService.GetAllCourses();
             decimal totalPrice = 0;
-            foreach (var item in getShoppingCartItem)
+            int totalCourses = 0;
+            List<Course> listCourseByShoppingCart = new List<Course>();
+            foreach (var itemShoppingCart in getShoppingCartItem)
             {
-                totalPrice += item.CartItemPrice.Value;
+                totalPrice += itemShoppingCart.CartItemPrice.Value;
+                totalCourses++;
+                foreach (var itemCourse in listCourse)
+                {
+                    if(itemCourse.Id == itemShoppingCart.CoursesId)
+                    {
+                        listCourseByShoppingCart.Add(itemCourse);
+                    }    
+                }
             }
             var orderViewModel = new OrderViewModel
             {
                 OrderTotalPrice = totalPrice,
                 UserId = _userRepository.getCurrrentUser(),
                 ShoppingCartItems = getShoppingCartItem,
+             
             };
             return View(orderViewModel);
         }
-
         [HttpPost]
         public async Task<IActionResult> Create(OrderViewModel orderViewModel)
         {
-            
-            
+            var shoppingCart = await _shoppingCartService.GetShoppingCartByUserIdAsync();
+            var getShoppingCartItem = await _shoppingCartItemService.GetShoppingCartItemByShopingCart(shoppingCart.Id);
+            var listCourse = await _courseService.GetAllCourses();
+            int totalCourses = 0;
+            List<Course> listCourseByShoppingCart = new List<Course>();
+            foreach (var itemShoppingCart in getShoppingCartItem)
+            {
+          
+                totalCourses++;
+                foreach (var itemCourse in listCourse)
+                {
+                    if (itemCourse.Id == itemShoppingCart.CoursesId)
+                    {
+                        listCourseByShoppingCart.Add(itemCourse);
+                    }
+                }
+            }
+            orderViewModel.TotalCourses = totalCourses;
+            orderViewModel.listCourse = listCourseByShoppingCart;
             TempData["OrderViewModelJson"] = JsonConvert.SerializeObject(orderViewModel);
             return RedirectToAction("Index", "Payment");
         }

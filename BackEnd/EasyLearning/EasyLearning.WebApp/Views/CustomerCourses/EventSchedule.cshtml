@@ -1,8 +1,9 @@
 ﻿@model EasyLearning.WebApp.Models.CustomerCourseViewModel
+@using EasyLearing.Infrastructure.Data.Entities;
 
 @{
     ViewData["Title"] = "EventSchedule";
-    
+
 }
 
 <link href="~/css/customerCoursesSchedule.css" rel="stylesheet" />
@@ -12,34 +13,34 @@
     <div class="container">
         <div class="row">
             @foreach (var itemOrderDetail in Model.Orders)
+            {
+                if (itemOrderDetail.UserId == Model.currentUserId)
                 {
-                    if (itemOrderDetail.UserId == Model.currentUserId)
-                    {
-                        <div class="col-lg-12 text-header">
-                            <div class="section-title text-center">
-                                <div class="title-text">
-                                    <h2 class="h2-text-center">Thời khóa biểu cho các khóa học của bạn</h2>
-                                </div>
+                    <div class="col-lg-12 text-header">
+                        <div class="section-title text-center">
+                            <div class="title-text">
+                                <h2 class="h2-text-center">Thời khóa biểu cho các khóa học của bạn</h2>
                             </div>
                         </div>
-                        break;
-                    }
-                    else
-                    {
-                        <div class="col-lg-12 text-header" style="margin-top: 120px; margin-bottom: 120px;">
-                            <div class="section-title text-center">
-                                <div class="title-text">
-                                    <h2 class="h2-text-center">Bạn chưa đăng kí bất kì một khóa học trực tiếp nào cả</h2>
-                                </div>
-                            </div>
-                        </div>
-                        break;
-                    }
+                    </div>
+                    break;
                 }
+                else
+                {
+                    <div class="col-lg-12 text-header" style="margin-top: 120px; margin-bottom: 120px;">
+                        <div class="section-title text-center">
+                            <div class="title-text">
+                                <h2 class="h2-text-center">Bạn chưa đăng kí bất kì một khóa học trực tiếp nào cả</h2>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                }
+            }
             <!-- /.col end-->
-        </div> 
+        </div>
         <!-- row end-->
-        
+
         <div class="row">
             <div class="col-lg-12">
                 @{
@@ -53,15 +54,15 @@
                         </li>
                         isFirstCourse = false;
                     }
-           
+
                 </ul>
 
                 @{
                     bool isFirstCourse1 = true;
                 }
                 <div class="tab-content" id="myTabContent">
-                     @foreach (var itemCourse in Model.Courses)
-                     {
+                    @foreach (var itemCourse in Model.Courses)
+                    {
 
                         <div class="tab-pane fade @(isFirstCourse1 ? "show active" : "")" id="@itemCourse.Id" role="tabpanel" aria-labelledby="@("tab-" + itemCourse.Id)">
                             <div class="table-responsive">
@@ -78,9 +79,9 @@
                                     <tbody>
                                         @{
                                             var listCourseEventsId = Model.TrainingParts
-                                            .Where(tp => tp.CoursesId == itemCourse.Id) // Lọc các bản ghi TrainingPart có CoursesId phù hợp
-                                            .Select(tp => tp.EventId) // Chọn thuộc tính CourseEvent từ các bản ghi TrainingPart
-                                            .Distinct() // Loại bỏ các sự kiện trùng lặp
+                                            .Where(tp => tp.CoursesId == itemCourse.Id) 
+                                            .Select(tp => tp.EventId) 
+                                            .Distinct() 
                                             .ToList();
                                         }
 
@@ -119,15 +120,15 @@
                                                                     </div>
                                                                     <div class="time">
                                                                         @{
-                                                                            // Lấy giờ bắt đầu và kết thúc từ các thuộc tính DateStart và DateEnd
+                                                                            
                                                                             DateTime startTime = itemCourseEvent.DateStart;
                                                                             DateTime endTime = itemCourseEvent.DateEnd;
 
-                                                                            // Định dạng thời gian theo AM/PM và chuỗi dạng hh:mm tt
+                                                                           
                                                                             string startTimeFormatted = startTime.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                                                                             string endTimeFormatted = endTime.ToString("hh:mm tt", CultureInfo.InvariantCulture);
 
-                                                                            // Tính khoảng thời gian giữa hai thời điểm
+                                                                          
                                                                             TimeSpan duration = endTime - startTime;
                                                                             string durationFormatted = duration.ToString(@"h\h\ m\m", CultureInfo.InvariantCulture);
                                                                         }
@@ -143,7 +144,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="primary-btn">
-                                                                <a class="btn btn-primary" href="#">Read More</a>
+                                                                <a class="btn btn-primary" href="#" onclick="showEventDetail('@itemCourseEvent.Id')">Read More</a>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -156,32 +157,139 @@
                             </div>
                         </div>
                         isFirstCourse1 = false;
-                     } 
-   
+                    }
                 </div>
             </div>
         </div>
+        @foreach (var itemCourse in Model.Courses)
+        {
+            var listCourseEventsId = Model.TrainingParts
+                .Where(tp => tp.CoursesId == itemCourse.Id) 
+                .Select(tp => tp.EventId) 
+                .Distinct() 
+                .ToList();
+            @foreach (var itemCourseEventId in listCourseEventsId)
+            {
+                @foreach(var itemCourseEvent in Model.CourseEvents)
+                {
+                    if (itemCourseEvent.Id == itemCourseEventId)
+                    {
+                        <div class="col-lg-8 col-xl-6 event-details" id="event-detail-@itemCourseEvent.Id" style="display: none;">
+                            <div class="card border-top border-bottom border-3" style="border-color: #06BBCC !important;">
+                                <div class="card-body p-5">
+                                    <button class="btn-close" onclick="hideEventDetail('@itemCourseEvent.Id')"
+                                    style="position: absolute; top: 12px; right: 12px; font-size: 20px;"></button>
+                                    <p class="lead fw-bold mb-5" style="color: #06BBCC; text-align:center; font-size:28px">Chi tiết buổi học</p>
+                                    <div class="row">
+                                        <div class="col mb-3">
+                                            <p class="small text-muted mb-1" style="color: #06BBCC">Thời gian</p>
+                                            <p> ngày @itemCourseEvent.DateStart.Day tháng @itemCourseEvent.DateStart.Month</p>
+                                        </div>
+                                        <div class="col mb-3">
+                                            <p class="small text-muted mb-1"  style="color: #06BBCC">Giảng viên</p>
+                                            <p>@itemCourse.Instructor</p>
+                                        </div>
+                                    </div>
+                                    <p class="lead fw-bold pb-2 mt-3" style="color: #06BBCC;">Nội dung phần học</p>
+                                    <div class="mx-n5 px-5 py-4" style="background-color: #f2f2f2;overflow-y: auto; max-height: 150px;">
+                                        @foreach (var itemTrainingPart in Model.TrainingParts)
+                                        {
+                                            if (itemCourseEvent.Id == itemTrainingPart.EventId)
+                                            {
+                                                <div class="row">
+                                                    <div class="col-md-8 col-lg-9">
+                                                        <p>@itemTrainingPart.TrainingPartName</p>
+                                                    </div>
+                                                    <div class="col-md-4 col-lg-3">
+                                                        <p>@(itemTrainingPart.TrainingPartType == TrainingPartType.Lesson ? "Lý thuyết" : "Bài tập") </p>
+                                                    </div>
+                                                </div>
+                                                 <div class="row">
+                                                    <div class="col-md-8 col-lg-9">
+                                                        <p>@itemTrainingPart.TrainingPartName</p>
+                                                    </div>
+                                                    <div class="col-md-4 col-lg-3">
+                                                        <p>@(itemTrainingPart.TrainingPartType == TrainingPartType.Lesson ? "Lý thuyết" : "Bài tập") </p>
+                                                    </div>
+                                                </div>
+
+                                            }
+                                        }
+                                    </div>
+                                    <p class="lead fw-bold pb-2 mt-3" style="color: #06BBCC;">Chu trình buổi học</p>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+
+                                            <div class="horizontal-timeline">
+
+                                                <ul class="list-inline items d-flex justify-content-between">
+                                                    <li class="list-inline-item items-list">
+                                                        <p class="py-1 px-2 text-white" style="background-color: #06BBCC; border-radius: 12px">Bắt đầu và giới thiệu</p>
+                                     
+                                                    </li>
+                                                    <li class="list-inline-item items-list">
+                                                        <p class="py-1 px-2 text-white" style="background-color: #06BBCC; border-radius: 12px">Lý thuyết</p>
+                                                    
+                                                    </li>
+                                                    @{
+                                                        bool hasExercise = Model.TrainingParts.Any(x => x.TrainingPartType == TrainingPartType.Exercise && x.EventId == itemCourseEvent.Id);
+                                                    }
+                                                    <li class="list-inline-item items-list">
+                                                        <p class="py-1 px-2  text-white" style="background-color: #06BBCC; border-radius: 12px">@(hasExercise ? "Bài tập và thỏa luận" : "Lý thuyết")
+                                                        </p>
+                                                    </li>
+                                                    <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
+                                                        <p class="py-1 px-2  text-white" style="background-color: #06BBCC; border-radius: 12px; margin-right: -8px;">Kết thúc</p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="pt-2 mb-0">Bạn muốn có tài liệu? <a href="#!" style="color: #06BBCC;">Hãy ấn ở đây để tải</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        }
+    </div>
+</div>
+
 
 <script>
-    // Bắt sự kiện click trên các tab
+    function showEventDetail(eventId) {
+    var allEventDetails = document.querySelectorAll(".event-details");
+    allEventDetails.forEach(function(eventDetail) {
+        eventDetail.style.display = "none";
+    });
+    var eventDetail = document.getElementById("event-detail-" + eventId);
+    eventDetail.style.display = "block";
+}
+function hideEventDetail() {
+    var allEventDetails = document.querySelectorAll(".event-details");
+    allEventDetails.forEach(function(eventDetail) {
+        eventDetail.style.display = "none";
+    });
+}
+</script>
+
+
+<script>
     document.querySelectorAll('.nav-link').forEach(tab => {
         tab.addEventListener('click', function (e) {
-            //e.preventDefault(); // Ngăn chặn hành động mặc định của thẻ a
-            const targetId = this.getAttribute('href').replace('#', ''); // Lấy id của tab được chọn
-            showTab(targetId); // Hiển thị tab tương ứng
+            const targetId = this.getAttribute('href').replace('#', ''); 
+            showTab(targetId); 
         });
     });
 
-    // Hàm hiển thị tab tương ứng
+   
     function showTab(tabId) {
-        // Ẩn tất cả các tab
         document.querySelectorAll('.tab-pane').forEach(tab => {
             tab.classList.remove('show', 'active');
         });
-        // Hiển thị tab được chọn
         document.getElementById(tabId).classList.add('show', 'active');
 
-        // Đặt thuộc tính aria-selected
         document.querySelectorAll('.nav-link').forEach(tab => {
             tab.setAttribute('aria-selected', 'false');
         });

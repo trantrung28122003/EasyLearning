@@ -323,7 +323,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Property<string>("CoursesId")
                         .HasColumnType("nvarchar(450)")
-                        .HasColumnName("Courses_Id");
+                        .HasColumnName("TrainerDetail_Courses_Id");
 
                     b.Property<DateTime?>("DateChange")
                         .HasColumnType("datetime2");
@@ -336,7 +336,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)")
-                        .HasColumnName("User_Id");
+                        .HasColumnName("TrainerDetail_User_Id");
 
                     b.HasKey("Id");
 
@@ -397,7 +397,7 @@ namespace EasyLearning.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Training_Part_Name");
 
-                    b.Property<int>("TraininpartType")
+                    b.Property<int>("TrainingPartType")
                         .HasColumnType("int")
                         .HasColumnName("Training_Part_Type");
 
@@ -528,6 +528,12 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()

@@ -29,7 +29,7 @@ namespace EasyLearning.WebApp.Views.Shared.Component
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return false;
-            return await _userManager.IsInRoleAsync(user, "ADMINISTRATOR");
+            return await _userManager.IsInRoleAsync(user, "ADMIN");
         }
     }
 }

@@ -272,7 +272,7 @@ namespace EasyLearning.WebApp.Controllers
             {
                 foreach (var itemTrainingPartProgress in listUserTrainingProgress)
                 {
-                    if (itemTrainingPart.Id == itemTrainingPartProgress.TrainingPartId && itemTrainingPartProgress.IsCompleted && itemTrainingPart.TraininpartType == TraininpartType.Exercise)
+                    if (itemTrainingPart.Id == itemTrainingPartProgress.TrainingPartId && itemTrainingPartProgress.IsCompleted && itemTrainingPart.TrainingPartType == TrainingPartType.Exercise)
                     {
                         var listQuestionByTrainingPartId = await _exerciseQuestionService.GetExerciseQuestionByTraningPartId(itemTrainingPart.Id);
                         var questionCountByTrainingPartId = listQuestionByTrainingPartId.Count;

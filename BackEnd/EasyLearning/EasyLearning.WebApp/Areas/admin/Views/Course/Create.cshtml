@@ -4,7 +4,7 @@
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 
-<h1 class="text-center ">Thêm khóa học</h1>
+<h1 class="text-center ">Thêm khóa học mới</h1>
 <hr />
 <div class="container">
     <form asp-action="Create" method="post" enctype="multipart/form-data">
@@ -42,20 +42,16 @@
             <input asp-for="CoureseContent" class="form-control" />
             <span asp-validation-for="CoureseContent" class="text-danger"></span>
         </div>
-        @* <div class="form-group">
-            <label asp-for="Image" class="control-label">Hình ảnh</label>
-            <input asp-for="Image" class="form-control" type="file" />
-            <span asp-validation-for="Image" class="text-danger"></span>
-        </div> *@
+       
         <div class="form-group">
             <label asp-for="StartDate" class="control-label">Ngày bắt đầu </label>
             <input asp-for="StartDate" class="form-control" />
             <span asp-validation-for="StartDate" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="StartEnd" class="control-label">Ngày kết thúc</label>
-            <input asp-for="StartEnd" class="form-control" />
-            <span asp-validation-for="StartEnd" class="text-danger"></span>
+            <label asp-for="EndDate" class="control-label">Ngày kết thúc</label>
+            <input asp-for="EndDate" class="form-control" />
+            <span asp-validation-for="EndDate" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="RegistrationDeadline" class="control-label">Hạn đăng ký</label>
@@ -79,6 +75,14 @@
             <input asp-for="MaxAttdendees" class="form-control" />
             <span asp-validation-for="MaxAttdendees" class="text-danger"></span>
         </div>
+        <div class="form-group">
+            <label asp-for="Image" class="control-label">Hình ảnh</label>
+            <div class="custom-file">
+                <input asp-for="Image" class="custom-file-input" type="file" id="customFile" accept="image/*" onchange="updateFileNameDisplay()">
+                <label class="custom-file-label" for="customFile">Chọn tệp</label>
+            </div>
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
 
         <div class="form-group">
             <label>Thể Loại:</label>
@@ -93,8 +97,8 @@
             }
         </div>
 
-        <div class="form-group">
-            <input type="submit" value="Thêm khóa học" class="btn btn-outline-primary" />
+        <div class="form-group text-center" style="">
+            <input type="submit" value="Thêm khóa học" class="btn btn-outline-info btn-lg btn-block" />
         </div>
     </form>
 </div>
@@ -118,5 +122,12 @@
             });
          
         });
+
+        function updateFileNameDisplay() {
+            var input = document.getElementById('customFile');
+            var fileName = input.files[0].name;
+            var label = input.nextElementSibling;
+            label.innerText = fileName;
+        }
     </script>
 }

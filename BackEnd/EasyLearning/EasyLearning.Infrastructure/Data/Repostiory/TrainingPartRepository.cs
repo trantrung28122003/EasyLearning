@@ -1,6 +1,7 @@
 ﻿using EasyLearing.Infrastructure.Data.Entities;
 using EasyLearning.Infrastructure.Data.Abstraction;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace EasyLearning.Infrastructure.Data.Repostiory
 {
@@ -9,10 +10,13 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
         public TrainingPartRepository(EasyLearningDbContext dbContext, UserRepository userRepository) : base(dbContext, userRepository)
         {
         }
-        public async Task<List<TrainingPart>> GetTrainingPartWithoutEventId(string id)
+
+        
+
+        public async Task<List<TrainingPart>> GetTrainingPartWithEventIdAndCourseId(string eventId, string courseId)
         {
             return await _dbContext.TrainingParts
-                                    .Where(s => s.EventId == null && s.CoursesId == id)
+                                    .Where(s => s.EventId == eventId && s.CoursesId == courseId)
                                     .ToListAsync();
         }
 

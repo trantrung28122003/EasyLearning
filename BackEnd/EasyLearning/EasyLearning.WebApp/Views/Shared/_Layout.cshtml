@@ -64,6 +64,14 @@
                             <a asp-controller="CustomerCourses" asp-action="EventSchedule" class="dropdown-item">Thời khóa biểu</a>
                             <a asp-controller="CustomerCourses" asp-action="ListCourseOnlineByUser" class="dropdown-item">Danh sách khóa học của bạn</a>
                              @await Component.InvokeAsync("CurrentUser")
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a asp-controller="account" asp-action="UpdateAccount" class="dropdown-item">cài đặt tài khoản</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="account" asp-action="login" class="dropdown-item">cài đặt tài khoản</a>
+                            }
                            @*  <a asp-controller="admin" asp-action="course" class="dropdown-item">Dash Board</a> *@
                         </div>
                     </div>

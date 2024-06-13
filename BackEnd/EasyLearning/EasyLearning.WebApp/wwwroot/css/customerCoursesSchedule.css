@@ -277,3 +277,47 @@ h2.h2-text-center {
                 height: 100px;
                 border-radius: 8px;
             }
+
+
+
+.event-details {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* Đảm bảo chi tiết sự kiện nằm trên cùng */
+    background-color: #ffffff; /* Màu nền */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+}
+
+@media (min-width: 1025px) {
+    .h-custom {
+        height: 100vh !important;
+    }
+}
+
+.horizontal-timeline .items {
+    border-top: 2px solid #ddd;
+}
+
+    .horizontal-timeline .items .items-list {
+        position: relative;
+        margin-right: 0;
+    }
+
+        .horizontal-timeline .items .items-list:before {
+            content: "";
+            position: absolute;
+            height: 8px;
+            width: 8px;
+            border-radius: 50%;
+            background-color: #ddd;
+            top: 0;
+            margin-top: -5px;
+        }
+
+    .horizontal-timeline .items .items-list {
+        padding-top: 15px;
+    }

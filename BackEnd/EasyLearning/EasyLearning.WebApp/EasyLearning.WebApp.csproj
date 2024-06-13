@@ -11,7 +11,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\testController1\email.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\js\video.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\EmailTemplates\EmailPayment.html" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +48,13 @@
     <None Include="wwwroot\assets\demo\chart-pie-demo.js" />
     <None Include="wwwroot\assets\demo\datatables-demo.js" />
     <None Include="wwwroot\js\video.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Account\ResetPassword.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

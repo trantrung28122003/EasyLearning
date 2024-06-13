@@ -1,0 +1,94 @@
+﻿@using EasyLearing.Infrastructure.Data.Entities;
+@using EasyLearning.Infrastructure.Data.Entities;
+@model EasyLearning.WebApp.Models.EventViewModel
+
+@{
+    ViewData["Title"] = "Remove";
+    Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
+}
+
+<h1 class="text-center">Xóa buổi học</h1>
+<h2 class="text-center" style="margin-bottom: 40px"><strong>@Model.EventName</strong></h2>
+<hr />
+
+<div class="container">
+    <div class="form-group">
+        <h2 class="control-label text-center">Thông tin buổi học</h2>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Tên buổi học:</dt>
+            <dd class="col-sm-9">@Model.EventName</dd>
+
+            <dt class="col-sm-3">Hình thức:</dt>
+            <dd class="col-sm-9">@((Model.EventType == CourseEventType.Online) ? "Trực tuyến" : "Trực tiếp")</dd>
+
+            <dt class="col-sm-3">Địa chỉ hoặc Link phòng học:</dt>
+            <dd class="col-sm-9">
+                @if (Model.EventType == CourseEventType.Online)
+                {
+                    @Model.OnlineRoomUrl
+                }
+                else
+                {
+                    @Model.Location
+                }
+            </dd>
+
+            <dt class="col-sm-3">Ngày bắt đầu:</dt>
+            <dd class="col-sm-9">@Model.DateStart</dd>
+
+            <dt class="col-sm-3">Ngày kết thúc:</dt>
+            <dd class="col-sm-9">@Model.DateEnd</dd>
+
+            <dt class="col-sm-3">Ngày tạo:</dt>
+            <dd class="col-sm-9">@Model.DateCreate</dd>
+
+            <dt class="col-sm-3">Ngày thay đổi:</dt>
+            <dd class="col-sm-9">@Model.DateChange</dd>
+        </dl>
+    </div>
+
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Xác nhận xóa</h5>
+                    <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close" id="closeDeleteButton"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn xóa buổi học này?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelDeleteButton" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-outline-danger btn-lg btn-block" style="font-size:12px" onclick="confirmDelete()">Xóa</button>
+
+    <form id="deleteForm" asp-action="Remove" method="post" style="display: none;">
+        <input type="hidden" name="id" value="@Model.EventId" />
+        <input type="submit" id="submitButton" style="display: none;" />
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete() {
+            $('#deleteConfirmationModal').modal('show');
+
+            $('#confirmDeleteButton').on('click', function () {
+                $('#deleteForm').submit();
+            });
+
+            $('#cancelDeleteButton, #closeDeleteButton').on('click', function () {
+                $('#deleteConfirmationModal').modal('hide');
+            });
+
+            $('#deleteConfirmationModal').on('hidden.bs.modal', function () {
+                $('#confirmDeleteButton').off('click');
+            });
+        }
+    </script>
+}

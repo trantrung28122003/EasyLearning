@@ -27,6 +27,7 @@ namespace EasyLearning.Application
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IReplyService, ReplyService>();
             services.AddScoped<IUserNoteService, UserNoteService>();
+            services.AddScoped<IEmailService, EmailService>();
         }
     }
 }

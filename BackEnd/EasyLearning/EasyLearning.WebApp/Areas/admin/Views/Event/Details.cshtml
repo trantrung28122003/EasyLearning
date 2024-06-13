@@ -1,78 +1,83 @@
-﻿@model EasyLearing.Infrastructure.Data.Entities.CourseEvent
+﻿@using EasyLearing.Infrastructure.Data.Entities;
+@using EasyLearning.Infrastructure.Data.Entities;
+@model EasyLearning.WebApp.Models.EventViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết buổi học";
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 
-<h1>Chi tiết</h1>
+<h1 class="text-center">Chi tiết buổi học</h1>
+<h1 class="text-center" style="margin-bottom: 40px"><strong>@Model.EventName</strong> </h1>
+<hr />
+<div class="container">
+    <div>
+        <div class="form-group">
+            <label class="control-label">Khóa học</label>
+            <span class="form-control">@ViewBag.CourseName</span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Nội dung buổi học</label>
+            <span class="form-control">@Model.EventName</span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Hình thức</label>
+            <span class="form-control">@((Model.EventType == CourseEventType.Online) ? "Trực tuyến" : "Trực tiếp")</span>
+        </div>
 
-<div>
-    <h4>Lớp</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EventName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EventName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EventType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EventType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Location)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Location)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateStart)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateStart)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateEnd)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateEnd)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateCreate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateCreate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateChange)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateChange)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ChangedBy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ChangedBy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsDeleted)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Index" asp-controller="course" class="btn btn-outline-danger">Quay lại</a>
+        <div class="form-group" id="onlineRoom" style="display: @(Model.EventType == CourseEventType.Online ? "block" : "none")">
+            <label class="control-label">Link phòng học online</label>
+            <span class="form-control">@Model.OnlineRoomUrl</span>
+        </div>
+
+        <div class="form-group" id="offlineLocation" style="display: @(Model.EventType == CourseEventType.Offline ? "block" : "none")">
+            <label class="control-label">Địa chỉ</label>
+            <span class="form-control">@Model.Location</span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Ngày bắt đầu</label>
+            <span class="form-control">@Model.DateStart</span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Ngày kết thúc</label>
+            <span class="form-control">@Model.DateEnd</span>
+        </div>
+
+        <h1 class="text-center">Danh sách nội dung của buổi học</h1>
+        <hr />
+        <table class="table table-striped table-bordered">
+            <thead style="background-color: #06bbcc; color: white">
+                <tr>
+                    <th>Tên nội dung</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
+                    <th>Hình thức</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.TrainingParts != null && Model.TrainingParts.Any())
+                {
+                    foreach (var item in Model.TrainingParts)
+                    {
+                        <tr>
+                            <td>@item.TrainingPartName</td>
+                            <td>@item.StartTime</td>
+                            <td>@item.EndTime</td>
+                            <td>@(item.TrainingPartType == TrainingPartType.Lesson ? "Lý thuyết" : (item.TrainingPartType == TrainingPartType.Exercise ? "Bài tập" : "Không xác định"))</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">Không có nội dung cho buổi học này</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="form-group text-center" style="">
+        <a asp-controller="Event" asp-action="Index" asp-route-courseId="@Model.CourseId" class="btn btn-outline-info btn-lg btn-block">Quay lại</a>
+    </div>
 </div>

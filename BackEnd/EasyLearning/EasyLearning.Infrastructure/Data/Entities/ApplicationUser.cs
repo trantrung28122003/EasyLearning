@@ -8,6 +8,8 @@ namespace EasyLearning.Infrastructure.Data.Entities
     {
         public string? FullName { get; set; }
         public string? UserImageUrl { get; set; }
+        public string? Address { get; set; }
+        public DateTime? BirthDate {  get; set; } 
         public ShoppingCart? ShoppingCart { get; set; }
         public ICollection<TrainerDetail>? TrainerDetails { get; set; }
         public ICollection<Order>? Orders { get; set; }

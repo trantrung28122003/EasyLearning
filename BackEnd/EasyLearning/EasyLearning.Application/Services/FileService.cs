@@ -11,8 +11,8 @@ namespace EasyLearning.Application.Services
     {
         public async Task<string> SaveFile(IFormFile file)
         {
-            string connectionString = "DefaultEndpointsProtocol=https;AccountName=easylearning;AccountKey=Ii3GB2Be1OcdQAWwCtjq/+epRP2lpMQTEtX/j88DFVOWsDFlwKsi1tvmnLUANrHke4uvuUBX3+e0+AStesClFA==;EndpointSuffix=core.windows.net";
-            string connainerName = "training-img";
+            string connectionString = "DefaultEndpointsProtocol=https;AccountName=easylearning;AccountKey=UiYCXU7niYmdAfhQbqOy3wvBQ2JpJSsf3nEJ0RgJUCHUsXc+SXTBhKfZmH6vNPP0U3rG+g/BoyMo+ASt1JBGJg==;EndpointSuffix=core.windows.net";
+            string connainerName = "images-videos";
             BlobContainerClient blobContainerClient = new BlobContainerClient(connectionString, connainerName);
             MemoryStream memoryStream = new MemoryStream();
             await file.CopyToAsync(memoryStream);

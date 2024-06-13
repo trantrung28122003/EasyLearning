@@ -5,28 +5,35 @@
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 
-<h1 class="text-center">Thêm lớp</h1>
+<h1 class="text-center">Thêm nội dung buổi học cho khóa học</h1>
+<h1 class="text-center" style="margin-bottom: 40px"><strong>@ViewBag.CourseName</strong> </h1>
 <hr />
     <div class="container">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <p>Mã khóa học: @ViewBag.CourseId</p>
             <input type="hidden" id="CourseId" name="CourseId" value="@ViewBag.CourseId" />
            
             <div class="form-group">
-                <label asp-for="EventName" class="control-label">Tên lớp</label>
-                <input asp-for="EventName" class="form-control" />
+                <label asp-for="EventName" class="control-label">Nội dung buổi học</label>
+                <input asp-for="EventName" class="form-control" id="eventNameInput" oninput="updateLessonHeading()" />
                 <span asp-validation-for="EventName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EventType">Hình thức:</label>
-                <select asp-for="EventType" class="form-control">
-                <option value="@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Online)">Online</option>
-                <option value="@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Offline)">Offline</option>
+                <select asp-for="EventType" class="form-control" id="EventType" onchange="toggleInputFields()">
+                    <option value="@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Online)">Trực tuyến</option>
+                    <option value="@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Offline)">Trực tiếp</option>
                 </select>
                 <span asp-validation-for="EventType" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group" id="onlineRoom" style="display: none;">
+                <label asp-for="OnlineRoomUrl" class="control-label">Link phòng học online</label>
+                <input type="text" asp-for="OnlineRoomUrl" class="form-control" />
+                <span asp-validation-for="OnlineRoomUrl" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" id="offlineLocation" style="display: none;">
                 <label asp-for="Location" class="control-label">Địa chỉ</label>
                 <input asp-for="Location" class="form-control" />
                 <span asp-validation-for="Location" class="text-danger"></span>
@@ -41,38 +48,135 @@
                 <input asp-for="DateEnd" class="form-control" />
                 <span asp-validation-for="DateEnd" class="text-danger"></span>
             </div>
-            <h1 class="text-center ">Thêm nội dung phần học</h1>
+
+            <h1 class="text-center" style="margin-top: 20px">Thêm nội dung phần học cho buổi học</h1>
+            <h2 class="text-center" id="lessonHeading"></h2>
             <hr />
+
             <div class="container">
                 <div class="form-group">
-                    <label asp-for="TrainingPart.TrainingPartName" class="control-label">Tên nội dung</label>
-                    <input asp-for="TrainingPart.TrainingPartName" class="form-control" />
-                    <span asp-validation-for="TrainingPart.TrainingPartName" class="text-danger"></span>
+                    <label asp-for="TrainingPartViewModel.TrainingPartName" class="control-label">Tên phần học</label>
+                    <input asp-for="TrainingPartViewModel.TrainingPartName" class="form-control" />
+                    <span asp-validation-for="TrainingPartViewModel.TrainingPartName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="TrainingPart.StartTime" class="control-label">Thời gian bắt đầu</label>
-                    <input asp-for="TrainingPart.StartTime" class="form-control" />
-                    <span asp-validation-for="TrainingPart.StartTime" class="text-danger"></span>
+                    <label asp-for="TrainingPartViewModel.StartTime" class="control-label">Thời gian bắt đầu</label>
+                    <input asp-for="TrainingPartViewModel.StartTime" class="form-control" />
+                    <span asp-validation-for="TrainingPartViewModel.StartTime" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="TrainingPart.EndTime" class="control-label">thời gian kết thúc</label>
-                    <input asp-for="TrainingPart.EndTime" class="form-control" />
-                    <span asp-validation-for="TrainingPart.EndTime" class="text-danger"></span>
+                    <label asp-for="TrainingPartViewModel.EndTime" class="control-label">Thời gian kết thúc</label>
+                    <input asp-for="TrainingPartViewModel.EndTime" class="form-control" />
+                    <span asp-validation-for="TrainingPartViewModel.EndTime" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="TrainingPart.Description" class="control-label">Chi tiết</label>
-                    <input asp-for="TrainingPart.Description" class="form-control" />
-                    <span asp-validation-for="TrainingPart.Description" class="text-danger"></span>
+                    <label asp-for="TrainingPartViewModel.Description" class="control-label">Mô tả</label>
+                    <input asp-for="TrainingPartViewModel.Description" class="form-control" />
+                    <span asp-validation-for="TrainingPartViewModel.Description" class="text-danger"></span>
                 </div>
             <div class="form-group">
-                <input type="submit" value="Tạo" class="btn btn-outline-primary" />
+                <label asp-for="TrainingPartViewModel.TrainingPartType">Hình thức:</label>
+                <select asp-for="TrainingPartViewModel.TrainingPartType" class="form-control">
+                    <option value="@((int)EasyLearing.Infrastructure.Data.Entities.TrainingPartType.Lesson)">Lý thuyết</option>
+                    <option value="@((int)EasyLearing.Infrastructure.Data.Entities.TrainingPartType.Exercise)">Bài tập</option>
+                </select>
+                <span asp-validation-for="TrainingPartViewModel.TrainingPartType" class="text-danger"></span>
             </div>
-        </form>
-    </div>
+            @if (ViewBag.IsOnlineCourse)
+            {
+                <div class="form-group">
+                    <label class="control-label">Chọn nguồn video:</label><br>
+                    <input type="radio" name="videoSource" id="onlineSource" checked style="margin-left: 24px"> <label for="onlineSource">Từ đường dẫn trực tuyến</label><br>
+                    <input type="radio" name="videoSource" id="uploadSource" style="margin-left: 24px"> <label for="uploadSource">Từ máy tính</label>
+                </div>
+
+                <div id="onlineVideo" class="form-group">
+                    <label asp-for="TrainingPartViewModel.VideoUrl" class="control-label">Đường dẫn video</label>
+                    <input asp-for="TrainingPartViewModel.VideoUrl" class="form-control" />
+                    <span asp-validation-for="TrainingPartViewModel.VideoUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group" id="uploadVideo" style="display: none;">
+                    <label asp-for="TrainingPartViewModel.Video" class="control-label">Tải lên video từ máy tính:</label>
+                    <input asp-for="TrainingPartViewModel.Video" class="form-control" type="file" />
+                    <span asp-validation-for="TrainingPartViewModel.VideoUrl" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" asp-for="TrainingPartViewModel.IsFree" id="IsFree" />
+                    <label asp-for="TrainingPartViewModel.IsFree" class="control-label">Miễn phí phần bài học này</label>
+                    <span asp-validation-for="TrainingPartViewModel.IsFree" class="text-danger"></span>
+                </div>
+            }
+            </div>
+        <div class="form-group text-center" style="">
+            <input type="submit" value="Thêm một buổi học" class="btn btn-outline-info btn-lg btn-block" />
+        </div>
+    </form>
+</div>
 <div>
     <a asp-action="Index" asp-controller="course" class="btn btn-outline-danger">Quay lại</a>
 </div>
 
+<script>
+    function toggleInputFields() {
+        var eventTypeSelect = document.getElementById("EventType");
+        var onlineRoomDiv = document.getElementById("onlineRoom");
+        var offlineLocationDiv = document.getElementById("offlineLocation");
+
+        var selectedValue = eventTypeSelect.value;
+
+        if (selectedValue === "@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Online)") {
+            onlineRoomDiv.style.display = "block";
+            offlineLocationDiv.style.display = "none";
+            offlineLocationDiv.value = "";
+        } else if (selectedValue === "@((int)EasyLearing.Infrastructure.Data.Entities.CourseEventType.Offline)") {
+            offlineLocationDiv.style.display = "block";
+            onlineRoomDiv.style.display = "none";
+            onlineRoomDiv.value = "";
+        } else {
+            onlineRoomDiv.style.display = "none";
+            offlineLocationDiv.style.display = "none";
+        }
+    }
+   
+    function updateLessonHeading() {
+        var eventNameInput = document.getElementById("eventNameInput");
+        var lessonHeading = document.getElementById("lessonHeading");
+        lessonHeading.innerText = eventNameInput.value;
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        toggleInputFields();
+
+        var eventNameInput = document.getElementById("eventNameInput");
+        if (eventNameInput) {
+            eventNameInput.addEventListener("input", updateLessonHeading);
+        } else {
+            console.error("Element with id 'eventNameInput' not found.");
+        }
+
+        var onlineSource = document.getElementById("onlineSource");
+        var uploadSource = document.getElementById("uploadSource");
+        var onlineVideo = document.getElementById("onlineVideo");
+        var uploadVideo = document.getElementById("uploadVideo");
+        var videoFile = document.getElementById("videoFile");
+
+        onlineSource.addEventListener("change", function () {
+            if (onlineSource.checked) {
+                onlineVideo.style.display = "block";
+                uploadVideo.style.display = "none";
+            }
+        });
+
+        uploadSource.addEventListener("change", function () {
+            if (uploadSource.checked) {
+                onlineVideo.style.display = "none";
+                uploadVideo.style.display = "block";
+            }
+        });
+    });
+    </script>
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

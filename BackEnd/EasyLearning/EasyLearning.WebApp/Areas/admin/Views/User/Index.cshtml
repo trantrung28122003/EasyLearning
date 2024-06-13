@@ -1,43 +1,235 @@
-@model IEnumerable<EasyLearning.Infrastructure.Data.Entities.ApplicationUser>
+@model IEnumerable<EasyLearning.WebApp.Areas.admin.Models.UserViewModel>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
+    var currentUserId = ViewBag.CurrentUserId;
 }
 
-<h1>Trang Chính</h1>
+<h1 class="text-center" style="margin-bottom:40px">Danh sách người dùng trang <strong>eLEARNING</strong></h1>
 
-<table class="table">
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Tên</th>
-                <th scope="col">Id</th>
-            </tr>
-        </thead>
-        <tbody>
+<table class="table table-striped table-bordered" >
+    <thead style="background-color: #06bbcc; color: white">
+        <tr>
+           
+            
+            <th>
+                Địa chỉ email
+            </th>
+            <th>
+                Số điện thoại
+            </th>
+            <th>
+                Vai trò
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th>
+               Chức năng
+            </th>
+       
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
             @foreach (var item in Model)
             {
                 <tr>
+                   
                     <td>
-                        @Html.DisplayFor(modelItem => item.UserName)
+                        @Html.DisplayFor(modelItem => item.Email)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Id)
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
                     </td>
                     <td>
-@*                         @Html.ActionLink("Khóa Tài Khoản", "Update","Course", new { id = item.Id }, new { @class = "btn btn-info", @role = "button" }) *@
+                        @foreach (var role in item.Roles)
+                        {
+                            <span class="badge badge-primary">@role</span>
+                        }
                     </td>
+                    <td>
+                        @if (item.LockoutEnd < DateTime.UtcNow || item.LockoutEnd == null)
+                        {
+                            <span class="badge badge-success">Chưa khóa tài khoản</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-danger">Tài khoản đã bị khóa</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.LockoutEnd < DateTime.UtcNow || item.LockoutEnd ==null)
+                        {
+                            <button class="btn btn-info" style="font-size:12px" onclick="confirmBlock('@item.Email', ['@string.Join("','", item.Roles)'])">Khóa tài khoản</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-info" style="font-size:12px" onclick="confirmUnlock('@item.Email')">Mở khóa tài khoản</button>
+                        }
+                        <button class="btn btn-warning" style="font-size:12px;" onclick="confirmChangeRole('@item.UserId' , ['@string.Join("','", item.Roles)'])">Phân quyền</button>
+                    </td>
+                   
                 </tr>
             }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>
+<!-- Modal -->
+<div class="modal fade" id="confirmBlockModal" tabindex="-1" aria-labelledby="confirmBlockModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmBlockModalLabel">Xác nhận khóa tài khoản</h5>
+                <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close" id="closeLockButton"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="blockForm" method="post">
+                    <div class="form-group">
+                        <label for="lockDuration">Số năm khóa tài khoản:</label>
+                        <input type="number" class="form-control" id="lockDuration" name="lockDuration" min="1" value="1">
+                    </div>
+                    <p id="blockMessage">Bạn có chắc chắn muốn khóa tài khoản này không?</p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelLockButton">Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmBlockButton">Khóa tài khoản</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    @if (Model is null)
-    {
-        <div>Đang tải</div>
+
+<div class="modal fade" id="confirmUnlockModal" tabindex="-1" aria-labelledby="confirmUnlockModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmUnlockModalLabel">Xác nhận mở khóa tài khoản</h5>
+                <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close" id="closeUnlockButton"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn mở khóa tài khoản này không?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelUnlockButton">Hủy</button>
+                <button type="button" class="btn btn-success" id="confirmUnlockButton">Mở khóa tài khoản</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="confirmChangeRoleModal" tabindex="-1" aria-labelledby="confirmChangeRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmChangeRoleModalLabel">Phân quyền người dùng</h5>
+                <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close" id="closeChangeRoleButton"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="changeRoleForm" method="post">
+                    <div class="form-group">
+                        <label for="userRoles">Chọn quyền:</label>
+                        <select multiple class="form-control" id="userRoles" name="userRoles">
+                            <option value="ADMIN">Admin</option>
+                            <option value="TRAINER">Trainer</option>
+                            <option value="USER">User</option>
+                          
+                        </select>
+                    </div>
+                    <p id="changeRoleMessage">Bạn có chắc chắn muốn thay đổi quyền của người dùng này không?</p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelChangeRoleButton">Hủy</button>
+                <button type="button" class="btn btn-warning" id="confirmChangeRoleButton">Thay đổi quyền</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Warning Modal -->
+<div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="warningModalLabel">Cảnh báo</h5>
+                <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close" id="closeWarningButton"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p id="warningMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeWarningModalButton">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showWarning(message) {
+        $('#warningMessage').text(message);
+        $('#warningModal').modal('show');
+        $('#closeWarningButton, #closeWarningModalButton').on('click', function () {
+            $('#warningModal').modal('hide');
+        });
     }
-    else
-    {
+        
+    function confirmBlock(email, roles) {
+        if (roles.includes('Admin')) {
+            showWarning('Không thể khóa tài khoản với vai trò Admin.');
+            return;
+        }
+        $('#confirmBlockModal').modal('show');
+        $('#confirmBlockButton').on('click', function () {
+            var lockYears = $('#lockDuration').val();
+            window.location.href = '/admin/User/LockUser?email=' + email + '&lockYears=' + lockYears;
+        });
+        $('#cancelLockButton, #closeLockButton').on('click', function () {
+            $('#confirmBlockModal').modal('hide');
+        });
+    };
+
+    function confirmUnlock(email) {
+        $('#confirmUnlockModal').modal('show');
+        $('#confirmUnlockButton').on('click', function () {
+            window.location.href = '/admin/User/UnLockUser?email=' + email;
+        });
+
+        $('#cancelUnlockButton, #closeUnlockButton').on('click', function () {
+            $('#confirmUnlockModal').modal('hide');
+        });
+    };
+
+    function confirmChangeRole(userId, roles) {
+        var currentUserId = '@currentUserId';
+        if (roles.includes('Admin') && userId != currentUserId) {
+            showWarning('Không thể thay đổi quyền của tài khoản với vai trò Admin.');
+            return;
+        }
+        $('#confirmChangeRoleModal').modal('show');
+        $('#confirmChangeRoleButton').on('click', function () {
+            var roles = $('#userRoles').val();
+            $.ajax({
+                url: '/admin/User/ChangeRoleUser',
+                type: 'POST',
+                data: {
+                    id: userId,
+                    roles: roles
+                },
+                success: function () {
+                    $('#confirmChangeRoleModal').modal('hide');
+                    location.reload();
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra khi thay đổi vai trò.');
+                }
+            });
+        });
+        $('#cancelChangeRoleButton, #closeChangeRoleButton').on('click', function () {
+            $('#confirmChangeRoleModal').modal('hide');
+        });
     }
-    @* </tbody> *@
-</table>﻿
+</script>

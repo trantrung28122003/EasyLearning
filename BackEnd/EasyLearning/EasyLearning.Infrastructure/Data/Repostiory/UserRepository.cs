@@ -32,5 +32,7 @@ namespace EasyLearning.Infrastructure.Data.Repostiory
                 return await context.Users.ToListAsync();
             }
         }
+
+        
     }
 }

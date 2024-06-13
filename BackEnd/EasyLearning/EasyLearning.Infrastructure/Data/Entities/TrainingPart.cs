@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyLearing.Infrastructure.Data.Entities
 {
-    public enum TraininpartType
+    public enum TrainingPartType
     {
         Lesson = 5,
         Exercise = 10,
@@ -25,7 +25,7 @@ namespace EasyLearing.Infrastructure.Data.Entities
         public string? Description { get; set; }
 
         [Column("Training_Part_Type")]
-        public TraininpartType TraininpartType { get; set; }
+        public TrainingPartType TrainingPartType { get; set; }
 
         [Column("Training_Part_ImageUrl")]
         public string? ImageUrl { get; set; }

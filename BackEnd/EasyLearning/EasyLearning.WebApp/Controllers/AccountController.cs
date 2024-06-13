@@ -14,28 +14,30 @@ namespace EasyLearning.WebApp.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly IShoppingCartService _shoppingCartService;
         private readonly IShoppingCartItemService _shoppingCartItemService;
         private readonly IFileService _fileService;
+        private readonly IEmailService _emailService;
 
         private readonly UserRepository _userRepository;
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<ApplicationRole> roleManager, 
             UserRepository userRepository, IShoppingCartService shoppingCartService,
-            IFileService fileService, IShoppingCartItemService shoppingCartItemService)
+            IFileService fileService, IShoppingCartItemService shoppingCartItemService, IEmailService emailService)
         {
 
-            this.userManager = userManager;
+            this._userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             this._userRepository = userRepository;
             _shoppingCartService = shoppingCartService;
             _shoppingCartItemService = shoppingCartItemService;
             _fileService = fileService;
+            _emailService = emailService;
         }
 
         [HttpGet, AllowAnonymous]
@@ -48,10 +50,19 @@ namespace EasyLearning.WebApp.Controllers
         [HttpPost, AllowAnonymous]
         public async Task<IActionResult> Register(UserRegistrationViewModel request)
         {
+            if (!request.isConfirmPolicy)
+            {
+                return View(request);
+            }
+            var userImageUrl = "https://easylearning.blob.core.windows.net/images-videos/userDefault.jpg81716900-b5dd-468a-97eb-ca2678f03288";
+            if (request.Avatar != null)
+            {
+                 userImageUrl = await _fileService.SaveFile(request.Avatar);
+            }
             if (ModelState.IsValid)
             {
-          
-                var userCheck = await userManager.FindByEmailAsync(request.Email);
+                
+                var userCheck = await _userManager.FindByEmailAsync(request.Email);
                 if (userCheck == null)
                 {
                     var user = new ApplicationUser
@@ -61,14 +72,16 @@ namespace EasyLearning.WebApp.Controllers
                         NormalizedUserName = request.Email,
                         Email = request.Email,
                         PhoneNumber = request.PhoneNumber,
+                        Address = request.Address,
+                        BirthDate = request.BirthDate,
                         EmailConfirmed = true,
                         PhoneNumberConfirmed = true,
-                        UserImageUrl = "https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg",
+                        UserImageUrl = userImageUrl,
                     };
-                    var result = await userManager.CreateAsync(user, request.Password);
+                    var result = await _userManager.CreateAsync(user, request.Password);
                     if (result.Succeeded)
                     {
-                        // tạo shopping cart
+                        await _userManager.AddToRoleAsync(user, "USER");
                         var shoppingCart = new ShoppingCart()
                         {
                             UserId = user.Id,
@@ -93,7 +106,7 @@ namespace EasyLearning.WebApp.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("message", "Email already exists.");
+                    ModelState.AddModelError("message", "Email đã tồn tại.");
                     return View(request);
                 }
             }
@@ -112,14 +125,14 @@ namespace EasyLearning.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
+                var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user != null && !user.EmailConfirmed)
                 {
                     ModelState.AddModelError("message", "Email not confirmed yet");
                     return View(model);
 
                 }
-                if (await userManager.CheckPasswordAsync(user, model.Password) == false)
+                if (await _userManager.CheckPasswordAsync(user, model.Password) == false)
                 {
                     ModelState.AddModelError("message", "Invalid credentials");
                     return View(model);
@@ -133,7 +146,8 @@ namespace EasyLearning.WebApp.Controllers
                 }
                 else if (result.IsLockedOut)
                 {
-                    return View("AccountLocked");
+                    var lockoutEnd = await _userManager.GetLockoutEndDateAsync(user);
+                    return View("AccountLocked", lockoutEnd);
                 }
                 else
                 {
@@ -177,10 +191,10 @@ namespace EasyLearning.WebApp.Controllers
                     UserName = info.Principal.FindFirst(ClaimTypes.Email).Value
                 };
 
-                IdentityResult identResult = await userManager.CreateAsync(user);
+                IdentityResult identResult = await _userManager.CreateAsync(user);
                 if (identResult.Succeeded)
                 {
-                    identResult = await userManager.AddLoginAsync(user, info);
+                    identResult = await _userManager.AddLoginAsync(user, info);
                     if (identResult.Succeeded)
                     {
                         await signInManager.SignInAsync(user, false);
@@ -193,6 +207,159 @@ namespace EasyLearning.WebApp.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+        public async Task<IActionResult> UpdateAccount()
+        {
+            var userId = _userRepository.getCurrrentUser();
+            var user = await _userManager.FindByIdAsync(userId);
+            var userProfileViewModel = new UserProfileViewModel
+            {
+                Avatar = user.UserImageUrl,
+                Username = user.UserName,
+                FullName = user.FullName,
+                //Address = user.Address,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+
+            };
+            return View(userProfileViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateAccount(UserProfileViewModel userProfileViewModel, string changePasswordButton)
+        {
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            if (changePasswordButton != null)
+            {
+                if (userProfileViewModel.CurrentPassword != null && userProfileViewModel.CurrentPassword != null)
+                {
+                    if (userProfileViewModel.NewPassword != userProfileViewModel.ConfirmPassword)
+                    {
+                        ModelState.AddModelError(string.Empty, "Xác nhận mật khẩu mới không khớp.");
+                        return View(userProfileViewModel);
+                    }
+                    var isCurrentPasswordValid = await _userManager.CheckPasswordAsync(user, userProfileViewModel.CurrentPassword);
+                    if (!isCurrentPasswordValid)
+                    {
+                        ModelState.AddModelError(string.Empty, "Mật khẩu hiện tại không chính xác.");
+                        return View(userProfileViewModel);
+                    }
+                    var changePasswordResult = await _userManager.ChangePasswordAsync(user, userProfileViewModel.CurrentPassword, userProfileViewModel.NewPassword);
+                    if (!changePasswordResult.Succeeded)
+                    {
+                        foreach (var error in changePasswordResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                        return View(userProfileViewModel);
+                    }
+                    ModelState.Remove("CurrentPassword");
+                    ModelState.Remove("NewPassword");
+                    ModelState.Remove("ConfirmPassword");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Vui lòng nhập đủ thông tin mật khẩu.");
+                    return View(userProfileViewModel);
+                }
+            }
+            else
+            {
+
+                user.FullName = userProfileViewModel.FullName;
+                //user.Address = userProfileViewModel.Address;
+                user.Email = userProfileViewModel.Email;
+                user.PhoneNumber = userProfileViewModel.PhoneNumber;
+                //user.BirthDate = model.BirthDate;
+
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(userProfileViewModel);
+                }
+            }
+            return View(userProfileViewModel);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> SendVerificationCode(string email, string verificationCode)
+        {
+            try
+            {
+                string subject = verificationCode + " lã mã xác nhận yêu cầu đặt lại mật khẩu tài khoản của bạn";
+                await _emailService.SendVerificationCodeAsync(email, subject, verificationCode);
+
+                return Ok(); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
+        }
+
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ForgetPassword(ResetPasswordViewModel resetPasswordViewModel)
+        {
+            
+            if (resetPasswordViewModel.HiddenSendVerificationCode != resetPasswordViewModel.VerificationCode)
+            {
+                ModelState.AddModelError("verificationCode", "Mã xác thực không chính xác. Vui lòng kiểm tra lại.");
+                return View("ForgetPassword", new UserLoginViewModel { Email = resetPasswordViewModel.Email}); 
+            }
+            else
+            {
+
+                return RedirectToAction("ResetPassword", new { email = resetPasswordViewModel.Email });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email)
+        {
+            var resetPasswordViewModel = new ResetPasswordViewModel
+            {
+                Email = email
+            };
+            return View(resetPasswordViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(resetPasswordViewModel);
+            }
+            var userByEmail = await _userManager.FindByEmailAsync(resetPasswordViewModel.Email);
+            if (userByEmail != null)
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(userByEmail);
+                var resetPasswordResult = await _userManager.ResetPasswordAsync(userByEmail, token, resetPasswordViewModel.NewPassword);
+                if (resetPasswordResult.Succeeded)
+                {
+                    return RedirectToAction("Login");
+                }
+
+            }
+            return View(resetPasswordViewModel);
         }
     }
 }

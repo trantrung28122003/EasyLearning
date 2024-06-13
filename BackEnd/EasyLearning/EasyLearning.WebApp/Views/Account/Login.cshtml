@@ -34,12 +34,19 @@
                     </div>
                 </div>
                 <button style=" background-color: #06BBCC; border-color: #06BBCC;" type="submit" class="btn btn-primary d-grid w-100">Đăng Nhập</button>
+                <p class="text-center" style="margin-top: 10px;">
+                    <a asp-action="forgetpassword" asp-controller="account" style="text-decoration: underline; color: #06BBCC">
+                        Bạn quên mật khẩu?
+                    </a>
+                </p>
+                
                 <p class="text-center">
                     <span>Chưa có tài khoản ?</span>
                     <a asp-action="register" asp-controller="account">
                         <span style=" color: #06BBCC;"> Đăng ký </span>
                     </a>
                 </p>
+                
             </form>
         </div>
     </form>

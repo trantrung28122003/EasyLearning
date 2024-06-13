@@ -1,0 +1,100 @@
+﻿@using EasyLearing.Infrastructure.Data.Entities;
+@model EasyLearning.WebApp.Areas.admin.Models.TrainingPartViewModel
+
+@{
+    ViewData["Title"] = "Remove";
+    Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
+}
+
+<h1 class="text-center">Xóa phần học</h1>
+<h2 class="text-center" style="margin-bottom: 40px"><strong>@Model.TrainingPartName</strong></h2>
+<hr />
+
+<div class="container">
+    <div class="form-group">
+        <h2 class="control-label text-center">Thông tin phần học</h2>
+        <hr />
+        <dl class="row">
+
+            <dt class="col-sm-3">Khóa học:</dt>
+            <dd class="col-sm-9">@ViewBag.CourseName</dd>
+
+            <dt class="col-sm-3">Buổi học:</dt>
+            <dd class="col-sm-9">@ViewBag.CourseEventName</dd>
+
+            <dt class="col-sm-3">Tên phần học:</dt>
+            <dd class="col-sm-9">@Model.TrainingPartName</dd>
+
+            <dt class="col-sm-3">Thời gian bắt đầu:</dt>
+            <dd class="col-sm-9">@Model.StartTime</dd>
+
+            <dt class="col-sm-3">Thời gian kết thúc:</dt>
+            <dd class="col-sm-9">@Model.EndTime</dd>
+
+            <dt class="col-sm-3">Mô tả:</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+
+            <dt class="col-sm-3">Hình thức:</dt>
+            <dd class="col-sm-9">@((Model.TrainingPartType == TrainingPartType.Lesson) ? "Lý thuyết" : "Bài tập")</dd>
+
+            <dt class="col-sm-3">Đường dẫn video:</dt>
+            <dd class="col-sm-9">@Model.VideoUrl</dd>
+
+            <dt class="col-sm-3">Miễn phí phần bài học này:</dt>
+            <dd class="col-sm-9">@((Model.IsFree) ? "Có" : "Không")</dd>
+        </dl>
+    </div>
+
+    <!-- Modal confirmation dialog -->
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Xác nhận xóa</h5>
+                    <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close" id="closeDeleteButton"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn xóa phần học này?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelDeleteButton" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <button class="btn btn-outline-danger btn-lg btn-block" style="font-size:12px" onclick="confirmDelete()">Xóa</button>
+
+
+    <form id="deleteForm" asp-action="Remove" method="post" style="display: none;">
+        <input type="hidden" name="id" value="@Model.TrainingPartId" />
+        <input type="submit" id="submitButton" style="display: none;" />
+    </form>
+</div>
+<script>
+    function confirmDelete() {
+        $('#deleteConfirmationModal').modal('show');
+
+        $('#confirmDeleteButton').on('click', function () {
+            $('#deleteForm').submit();
+        });
+
+        $('#cancelDeleteButton, #closeDeleteButton').on('click', function () {
+            $('#confirmUnlockModal').modal('hide');
+        });
+
+        $('#deleteConfirmationModal').on('hidden.bs.modal', function () {
+            $('#confirmDeleteButton').off('click');
+        });
+
+
+    }
+</script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+        
+}

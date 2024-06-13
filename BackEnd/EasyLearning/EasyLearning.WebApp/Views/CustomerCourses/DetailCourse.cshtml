@@ -80,7 +80,7 @@
                                         {
                                             if (itemCourseEvent.Id == itemtraingPart.EventId)
                                             {
-                                                @if (itemtraingPart.TraininpartType == TraininpartType.Lesson)
+                                                @if (itemtraingPart.TrainingPartType == TrainingPartType.Lesson)
                                                 {
 
                                                     <dd style="@(itemtraingPart.IsFree ? "color: #06BBCC; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" : "display: flex; justify-content: space-between; align-items: center;")" onclick="@(itemtraingPart.IsFree ? $"window.location.href='/CustomerCourses/OnlineEventScheduleFree?courseId={ViewBag.CourseId}'" : "")">

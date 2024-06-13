@@ -1,0 +1,106 @@
+﻿@using EasyLearning.Infrastructure.Data.Entities;
+@model EasyLearning.WebApp.Areas.admin.Models.CourseViewModel
+
+@{
+    ViewData["Title"] = "Remove";
+    Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
+}
+
+<h1 class="text-center">Xóa khóa học</h1>
+<h2 class="text-center" style="margin-bottom: 40px"><strong>@Model.CoursesName</strong></h2>
+<hr />
+
+<div class="container">
+    <div class="form-group">
+        <h2 class="control-label text-center">Thông tin khóa học</h2>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Tên khóa học:</dt>
+            <dd class="col-sm-9">@Model.CoursesName</dd>
+
+            <dt class="col-sm-3">Hình thức:</dt>
+            <dd class="col-sm-9">@((Model.CourseType == CourseType.Online) ? "Online" : "Offline")</dd>
+
+            <dt class="col-sm-3">Chi tiết khóa học:</dt>
+            <dd class="col-sm-9">@Model.CoursesDescription</dd>
+
+            <dt class="col-sm-3">Học phí:</dt>
+            <dd class="col-sm-9">@Model.CoursesPrice</dd>
+
+            <dt class="col-sm-3">Yêu cầu:</dt>
+            <dd class="col-sm-9">@Model.Requirements</dd>
+
+            <dt class="col-sm-3">Nội dung khóa học:</dt>
+            <dd class="col-sm-9">@Model.CoureseContent</dd>
+
+            <dt class="col-sm-3">Đường dẫn hình ảnh:</dt>
+            <dd class="col-sm-9">@Model.CurrentImage</dd>
+
+            <dt class="col-sm-3">Ngày bắt đầu:</dt>
+            <dd class="col-sm-9">@Model.StartDate</dd>
+
+            <dt class="col-sm-3">Ngày kết thúc:</dt>
+            <dd class="col-sm-9">@Model.EndDate</dd>
+
+            <dt class="col-sm-3">Hạn đăng ký:</dt>
+            <dd class="col-sm-9">@Model.RegistrationDeadline</dd>
+
+            <dt class="col-sm-3">Giảng viên:</dt>
+            <dd class="col-sm-9">@Model.Instructor</dd>
+
+            <dt class="col-sm-3">Số học viên tối đa:</dt>
+            <dd class="col-sm-9">@Model.MaxAttdendees</dd>
+
+            <dt class="col-sm-3">Ngày tạo:</dt>
+            <dd class="col-sm-9">@Model.StartDate</dd>
+
+            <dt class="col-sm-3">Ngày thay đổi:</dt>
+            <dd class="col-sm-9">@Model.DateChange</dd>
+        </dl>
+    </div>
+
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Xác nhận xóa</h5>
+                    <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close" id=" closeDeleteButton"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn xóa khóa học này?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelDeleteButton" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-outline-danger btn-lg btn-block" style="font-size:12px" onclick="confirmDelete()">Xóa</button>
+    
+    <form id="deleteForm" asp-action="Remove" method="post" style="display: none;">
+        <input type="hidden" name="id" value="@Model.CourseId" />
+        <input type="submit" id="submitButton" style="display: none;" />
+    </form>
+
+</div>
+
+<script>
+    function confirmDelete() {
+        $('#deleteConfirmationModal').modal('show');
+
+        $('#confirmDeleteButton').on('click', function () {
+            $('#deleteForm').submit(); 
+        });
+
+        $('#cancelDeleteButton, #closeDeleteButton').on('click', function () {
+            $('#confirmUnlockModal').modal('hide');
+        });
+
+        $('#deleteConfirmationModal').on('hidden.bs.modal', function () {
+            $('#confirmDeleteButton').off('click');
+        });
+
+
+    }
+</script>

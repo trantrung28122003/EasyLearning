@@ -1,50 +1,39 @@
-﻿@model IEnumerable<EasyLearing.Infrastructure.Data.Entities.CourseEvent>
+﻿@using EasyLearing.Infrastructure.Data.Entities;
+@model IEnumerable<EasyLearing.Infrastructure.Data.Entities.CourseEvent>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/admin/Views/Shared/AdminViewShared.cshtml";
 }
 
-<h1>Trang Chính</h1>
-
+<h1 class="text-center">Nội dung các buổi học của khóa học</h1>
+<h1 class="text-center" style="margin-bottom: 40px"><strong>@ViewBag.CourseName</strong> </h1>
+<hr />
 <p>
-    <a asp-action="Create" asp-controller="Event" asp-route-CourseId="@ViewBag.CourseId" class="btn btn-outline-primary">Tạo</a>
+    <a asp-action="Create" asp-controller="Event" asp-route-CourseId="@ViewBag.CourseId" class="btn btn-outline-info"> <i class="fa fa-plus" style="margin-right:10px"></i>Tạo buổi học mới</a>
     <a asp-action="Index" asp-controller="Course" class="btn btn-outline-danger">Quay lại</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-striped table-bordered">
+    <thead style="background-color: #06bbcc; color: white">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EventName)
+                Nội dung buổi học
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EventType)
+                Thời gian bắt đầu
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Location)
+               Thời gian kết thúc
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateStart)
+                Địa chỉ
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateEnd)
+                Hình thức
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                Chức năng
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateCreate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateChange)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ChangedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -54,36 +43,30 @@
                 @Html.DisplayFor(modelItem => item.EventName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EventType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.DateStart)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateEnd)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                @Html.DisplayFor(modelItem => item.Location)
             </td>
+            @if (item.EventType == CourseEventType.Online)
+            {
+                <td>Trực tuyến</td>
+            }
+            else if (item.EventType == CourseEventType.Offline)
+            {
+                <td>Trực tiếp</td>
+            }
+            else
+            {
+                <td>Không xác định</td>
+            }     
             <td>
-                @Html.DisplayFor(modelItem => item.DateCreate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateChange)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChangedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                 @Html.ActionLink("Edit", "Update", new { id=item.Id, courseId = @ViewBag.CourseId}, null) |
-                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new {  id=item.Id }) 
+                @Html.ActionLink("Sửa", "Update","Event", new { id = item.Id, courseId = @ViewBag.CourseId}, new { @class = "btn btn-info", @role = "button" })
+                    @Html.ActionLink("Chi tiết", "Details", "Event", new { id = item.Id, courseId = @ViewBag.CourseId}, new { @class = "btn btn-warning", @role = "button" })
+                    @Html.ActionLink("Xóa", "Remove", "Event", new { id = item.Id, courseId = @ViewBag.CourseId }, new { @class = "btn btn-danger", @role = "button" })
             </td>
         </tr>
 }
