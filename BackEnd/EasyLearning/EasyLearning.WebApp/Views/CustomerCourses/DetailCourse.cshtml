@@ -1,4 +1,5 @@
 ﻿@using EasyLearing.Infrastructure.Data.Entities;
+@using EasyLearning.Infrastructure.Data.Entities;
 @model EasyLearning.WebApp.Models.CustomerCourseViewModel
 
 @{
@@ -199,10 +200,20 @@
                 <hr />
                 @if (Model.OrderDetails.Any(itemOrderDetail => itemOrderDetail.CoursesId == Model.Course.Id))
                 {
-                        
-                    <div class="row">
-                        <a asp-controller="CustomerCourses" asp-action="EventSchedule" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 30px 30px 30px; font-size: 20px;">Đi đến lịch học</a>
-                    </div>
+                    if (Model.Course.CourseType == CourseType.Online)
+                    {
+                        <div class="row">
+                            <a asp-controller="CustomerCourses" asp-action="ListCourseOnlineByUser" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Đi đến lịch học</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <a asp-controller="CustomerCourses" asp-action="EventSchedule" asp-route-courseId="@Model.Course.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Đi đến lịch học</a>
+                        </div>
+                    }
+                    
+                 
                 }
                 else
                 {

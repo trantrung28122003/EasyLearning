@@ -39,7 +39,7 @@ $(document).ready(function () {
             var percentageDiv = $(parentDiv).find('.percentageWatched');
             $(percentageDiv).text('Percentage watched: ' + percentageWatched.toFixed(2) + '%');
 
-            if (percentageWatched >= 95) {
+            if (percentageWatched >= 90) {
                 if (iconContainer.length > 0) {
                     var lockIcon = $(iconContainer).find('.fa-lock');
                     var checkIcon = $(iconContainer).find('.fa-square-check');

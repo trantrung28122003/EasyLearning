@@ -21,14 +21,21 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         private readonly ITrainerDetailService _trainerDetailService;
         private readonly ITrainingPartService _trainingPartService;
         private readonly ICourseEventService _courseEventService;
+        private readonly ICommentService _commentService;
+        private readonly IReplyService _replyService;
         private readonly IFileService _fileService;
         private readonly IMapper _mapper;
+        private readonly IUserTrainingProgressService _userTrainingProgressService;
         private readonly UserRepository _userRepository;
+        private readonly IExerciseQuestionService _exerciseQuestionService;
+        private readonly IAnswerService _answerService;
      
         public CourseController(ICourseService courseService, ICategoryService categoryService,
         ICourseDetailService courseDetailService, IMapper mapper, IFileService fileService,
         UserRepository userRepository, ITrainerDetailService trannerDetailService,
-        ITrainingPartService trainingPartService, ICourseEventService courseEventService)
+        ITrainingPartService trainingPartService, ICourseEventService courseEventService,
+        ICommentService commentService, IReplyService replyService, IUserTrainingProgressService userTrainingProgressService, 
+        IExerciseQuestionService exerciseQuestionService, IAnswerService answerService)
         {
             _courseService = courseService;
             _categoryService = categoryService;
@@ -39,6 +46,11 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             _userRepository = userRepository;
             _trainingPartService = trainingPartService;
             _courseEventService = courseEventService;
+            _commentService = commentService;
+            _replyService = replyService;
+            _userTrainingProgressService = userTrainingProgressService;
+            _exerciseQuestionService = exerciseQuestionService;
+            _answerService = answerService;
         }
         public async Task<IActionResult> Index()
         {
@@ -109,7 +121,7 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var imageLink = "https://easylearning.blob.core.windows.net/images-videos/courseDefault.jpg6d2d5281-995b-4b73-ac6a-6897350fae0b";
+                var imageLink = "https://easylearning.blob.core.windows.net/images-videos/default_course.png";
                 if (courseViewModel.Image != null)
                 {
                     imageLink = await _fileService.SaveFile(courseViewModel.Image);
@@ -349,6 +361,116 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             return RedirectToAction(nameof(Index)); 
         }
 
+        [ActionName("deleteRecycle")]
+        public async Task<IActionResult> deleteRecycle(string id, string itemType)
+        {
+            if (itemType == "Course")
+            {
+                var course = await _courseService.GetCourseById(id);
+                if (course == null)
+                {
+                    return NotFound();
+                }
+
+                
+            }
+            else if (itemType == "TrainingPart")
+            {
+                var trainingPart = await _trainingPartService.GetTrainingPartById(id);
+                if (trainingPart == null)
+                {
+                    return NotFound();
+                }
+                try
+                {
+                    var replies = new List<Reply>();
+                    var answers = new List<Answer>();
+                    var getCourseEventByTraingPartId = await _courseEventService.GetCourseEventById(trainingPart.EventId);
+                    var getCommentsByTraingPartId = await _commentService.GetCommentByTraningPartId(trainingPart.Id);
+                    foreach(var itemComment in getCommentsByTraingPartId)
+                    {
+                        var getRepliesByComment = await _replyService.GetReplyByCommentId(itemComment.Id);
+                        replies.AddRange(getRepliesByComment);
+                    }
+                    var userTrainingProgersssByTrainingPartId = await _userTrainingProgressService.GetUserTrainingProgressByTrainingPartId(trainingPart.Id);
+                    var exerciseQuestionsByTrainingParrtId = await _exerciseQuestionService.GetExerciseQuestionByTraningPartId(trainingPart.Id);
+                    
+                    foreach (var itemExercise in exerciseQuestionsByTrainingParrtId)
+                    {
+                        var getAnswerByExercise = await _answerService.GetAnswerByQuestion(itemExercise.Id);
+                        answers.AddRange(getAnswerByExercise);
+                    }
+
+                    if(getCourseEventByTraingPartId != null)
+                    {
+                        await _courseEventService.DeleteEvent(getCourseEventByTraingPartId);
+                    }
+
+                    if (getCommentsByTraingPartId != null)
+                    {
+                        if (replies != null)
+                        {
+                            foreach (var itemReply in replies)
+                            {
+                                await _replyService.DeleteReply(itemReply);
+                            }
+                        }
+                        foreach (var itemComment in getCommentsByTraingPartId)
+                        {
+                            await _commentService.DeleteComment(itemComment);
+                        }
+                    } 
+
+                    if(userTrainingProgersssByTrainingPartId != null)
+                    {
+                        foreach (var itemTrainingProgress in userTrainingProgersssByTrainingPartId)
+                        {
+                            await _userTrainingProgressService.DeleteUserTrainingProgress(itemTrainingProgress);
+                        }
+                    }
+
+                    if (exerciseQuestionsByTrainingParrtId != null)
+                    {
+                        if (answers != null)
+                        {
+                            foreach (var itemAnswer in answers)
+                            {
+                                await _answerService.DeleteAnswer(itemAnswer);
+                            }
+                        }
+                        foreach(var itemExerciseQuestions in exerciseQuestionsByTrainingParrtId)
+                        {
+                            await _exerciseQuestionService.DeleteExerciseQuestion(itemExerciseQuestions);
+                        }    
+                    }    
+                    await _trainingPartService.DeleteTrainingPart(trainingPart);
+                    return RedirectToAction("Recycle", "Course");
+                }
+                catch (Exception)
+                {
+                    return RedirectToAction("Recycle", "Course");
+                }
+
+
+            }
+            else if (itemType == "CourseEvent")
+            {
+                var courseEvent = await _courseEventService.GetCourseEventById(id);
+                if (courseEvent == null)
+                {
+                    return NotFound();
+                }
+
+               
+            }
+            else
+            {
+                return BadRequest("Invalid item type.");
+            }
+
+            return RedirectToAction(nameof(Recycle));
+        }
+
        
         public async Task<IActionResult> Restore(string id, string itemType)
         {
@@ -397,7 +519,6 @@ namespace EasyLearning.WebApp.Areas.admin.Controllers
             }
 
             return RedirectToAction(nameof(Recycle));
-
         }
     }
 }

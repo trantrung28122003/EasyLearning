@@ -203,6 +203,7 @@ namespace EasyLearning.WebApp.Controllers
         public async Task<IActionResult> EventSchedule()
         {
             List<Course> courses = new List<Course>();
+            List<Course> coursesByOffline = new List<Course>();
             List<CourseEvent> listCourseEvent = new List<CourseEvent>();
             List<TrainingPart> listTrainingPart = new List<TrainingPart>();
             List<OrderDetail> listOrderDetail = new List<OrderDetail>();
@@ -221,11 +222,20 @@ namespace EasyLearning.WebApp.Controllers
                 listTrainingPart.AddRange(trainingParts.ToList());
                 courses.AddRange(await _courseService.GetCourseByOrderDetail(itemOrderDetail.Id));
             }
+
+            foreach(var itemCourse in courses)
+            {
+                if(itemCourse.CourseType == CourseType.Offline)
+                {
+                    coursesByOffline.Add(itemCourse);
+                }
+                
+            }    
             listTrainingPart = listTrainingPart.OrderBy(x => x.StartTime).ToList();
             var customerCourseViewModel = new CustomerCourseViewModel
             {
                 currentUserId = currentUserId,
-                Courses = courses,
+                Courses = coursesByOffline,
                 CourseEvents = listCourseEvent,
                 TrainingParts = listTrainingPart,
                 Orders = orders,
@@ -283,6 +293,7 @@ namespace EasyLearning.WebApp.Controllers
             }
             ViewData["ListCorrectPercentage"] = ListCorrectPercentage;
 
+            
             var customerCourseViewModel = new CustomerCourseViewModel
             {
                 Course = course,
@@ -397,6 +408,7 @@ namespace EasyLearning.WebApp.Controllers
         public async Task<IActionResult> ListCourseOnlineByUser()
         {
             List<Course> courses = new List<Course>();
+            List<Course> coursesByOnline = new List<Course>();
             List<CourseEvent> listCourseEvent = new List<CourseEvent>();
             List<TrainingPart> listTrainingPart = new List<TrainingPart>();
             List<OrderDetail> listOrderDetail = new List<OrderDetail>();
@@ -417,10 +429,19 @@ namespace EasyLearning.WebApp.Controllers
                 courses.AddRange(await _courseService.GetCourseByOrderDetail(itemOrderDetail.Id));
             }
             listTrainingPart = listTrainingPart.OrderBy(x => x.StartTime).ToList();
+
+            foreach (var itemCourse in courses)
+            {
+                if (itemCourse.CourseType == CourseType.Online)
+                {
+                    coursesByOnline.Add(itemCourse);
+                }
+
+            }
             var customerCourseViewModel = new CustomerCourseViewModel
             {
                 currentUserId = currentUserId,
-                Courses = courses,
+                Courses = coursesByOnline,
                 CourseEvents = listCourseEvent,
                 TrainingParts = listTrainingPart,
                 Orders = orders,

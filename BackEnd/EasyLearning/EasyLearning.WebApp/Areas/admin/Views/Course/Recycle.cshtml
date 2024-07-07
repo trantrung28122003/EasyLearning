@@ -39,9 +39,8 @@
                         </td>
                       
                         <td>
-                            @Html.ActionLink("Xóa khỏi cơ sơ dữ liệu", "Update","Course", new { id = item.Id }, new { @class = "btn btn-danger", @role = "button" })
-                        @Html.ActionLink("Khôi phục", "Restore", "Course", new { id = item.Id , itemType = item.ItemType }, new { @class = "btn btn-warning", @role = "button" })
-          
+                        @Html.ActionLink("Xóa khỏi cơ sơ dữ liệu", "deleteRecycle","Course", new { id = item.Id, itemType = item.ItemType }, new { @class = "btn btn-danger", @role = "button" })
+                            @Html.ActionLink("Khôi phục", "Restore", "Course", new { id = item.Id , itemType = item.ItemType }, new { @class = "btn btn-warning", @role = "button" })
                         </td>
                     </tr>
                 }

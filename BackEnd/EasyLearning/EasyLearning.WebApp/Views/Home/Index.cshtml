@@ -267,14 +267,22 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="course-item bg-light">
                         <div class="position-relative overflow-hidden">
-                            <img class="img-fluid" src="~/img/course-1.jpg" >
+                            <img class="img-fluid" src="@itemCourse.ImageUrl" >
                             <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
                                     @if (User.Identity.IsAuthenticated)
                                     {
                                         <a asp-controller="CustomerCourses" asp-action="DetailCourse" asp-route-courseId="@itemCourse.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Xem Thêm</a>
                                         @if (Model.OrderDetails.Any(itemOrderDetail => itemOrderDetail.CoursesId == itemCourse.Id))
                                         {
-                                            <a asp-controller="CustomerCourses" asp-action="EventSchedule" asp-route-courseId="@itemCourse.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Đi đến lịch học</a>
+                                            if(itemCourse.CourseType == CourseType.Online)
+                                            {
+                                            <a asp-controller="CustomerCourses" asp-action="ListCourseOnlineByUser" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Đi đến lịch học</a>
+                                           
+                                            }
+                                            else
+                                            {
+                                                <a asp-controller="CustomerCourses" asp-action="EventSchedule" asp-route-courseId="@itemCourse.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Đi đến lịch học</a>
+                                            }
                                         }
                                         else
                                         {
@@ -381,12 +389,12 @@
         --df-messenger-user-message: #06BBCC;
     }
 
-        /* Hide the default chat button */
+   
         df-messenger .df-messenger-wrapper .df-messenger-button-wrapper {
             display: none;
         }
 
-    /* Custom chat button */
+
     .custom-chat-icon {
         position: fixed;
         bottom: 24px;
@@ -402,7 +410,7 @@
         cursor: pointer;
     }
 
-    /* Show the chat widget when the custom icon is clicked */
+
     .show-chat {
         display: block !important;
     }
