@@ -11,7 +11,6 @@ namespace EasyLearning.Infrastructure.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CourseDetail> CourseDetails { get; set; }
-   
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<TrainingPart> TrainingParts { get; set; }
@@ -53,7 +52,7 @@ namespace EasyLearning.Infrastructure.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Data Source=TRANTRUNG\\SQLEXPRESS; Initial Catalog=EasyLearning; Trusted_Connection=True; TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer("Data Source=TRANTRUNG\\SQLEXPRESS; Initial Catalog=EasyLearningTest1; Trusted_Connection=True; TrustServerCertificate=True");
             //optionsBuilder.UseSqlServer("Data Source=TRANTRUNG\\SQLEXPRESS; Initial Catalog=EasyLearningTest; Trusted_Connection=True; TrustServerCertificate=True");
             //optionsBuilder.UseSqlServer("Data Source=LAPTOP-061GCJC2\\NHP28102810; Initial Catalog=EasyLearning; Trusted_Connection=True; TrustServerCertificate=True");
             //optionsBuilder.UseSqlServer("Data Source=localhost; Initial Catalog=EasyLearning; User Id = sa; pwd = Password@1234; Trusted_Connection=True; TrustServerCertificate=True");

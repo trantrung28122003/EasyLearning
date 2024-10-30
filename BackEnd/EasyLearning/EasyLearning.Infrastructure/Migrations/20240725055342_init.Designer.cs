@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyLearning.Infrastructure.Migrations
 {
     [DbContext(typeof(EasyLearningDbContext))]
-    [Migration("20240416044657_AddAllTables")]
-    partial class AddAllTables
+    [Migration("20240725055342_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -170,8 +170,12 @@ namespace EasyLearning.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Order_PaymentMethod");
 
+                    b.Property<string>("OrderQuantity")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Order_Quantity");
+
                     b.Property<decimal>("OrderTotalPrice")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("decimal(10,3)")
                         .HasColumnName("Order_TotalPrice");
 
                     b.Property<string>("UserId")
@@ -207,18 +211,15 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("OrderID")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("Order_Id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CoursesId");
 
-                    b.HasIndex("OrderID");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -246,7 +247,7 @@ namespace EasyLearning.Infrastructure.Migrations
                         .HasColumnName("Shopping_Cart_PaymentMethod");
 
                     b.Property<decimal?>("TotalPrice")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("decimal(10,3)")
                         .HasColumnName("Shopping_Cart_TotalPrice");
 
                     b.Property<string>("UserId")
@@ -273,7 +274,7 @@ namespace EasyLearning.Infrastructure.Migrations
                         .HasColumnName("Shopping_Cart_Item_Name");
 
                     b.Property<decimal?>("CartItemPrice")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("decimal(10,3)")
                         .HasColumnName("Shopping_Cart_Item_Price");
 
                     b.Property<string>("ChangedBy")
@@ -345,10 +346,10 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TrannerDetails");
+                    b.ToTable("TrainerDetails");
                 });
 
-            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TranningPart", b =>
+            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TrainingPart", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -359,7 +360,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Property<string>("CoursesId")
                         .HasColumnType("nvarchar(450)")
-                        .HasColumnName("Tranning_Part_Courese_Id");
+                        .HasColumnName("Training_Part_Courese_Id");
 
                     b.Property<DateTime?>("DateChange")
                         .HasColumnType("datetime2");
@@ -369,26 +370,42 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Tranning_Part_Description");
+                        .HasColumnName("Training_Part_Description");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2")
-                        .HasColumnName("Tranning_Part_EndTime");
+                        .HasColumnName("Training_Part_EndTime");
 
                     b.Property<string>("EventId")
                         .HasColumnType("nvarchar(450)")
-                        .HasColumnName("Tranning_Part_Event_Id");
+                        .HasColumnName("Training_Part_Event_Id");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Training_Part_ImageUrl");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsFree")
+                        .HasColumnType("bit")
+                        .HasColumnName("Training_Part_IsFree");
+
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2")
-                        .HasColumnName("Tranning_Part_StartTime");
+                        .HasColumnName("Training_Part_StartTime");
 
-                    b.Property<string>("TranningPartName")
+                    b.Property<string>("TrainingPartName")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Tranning_Part_Name");
+                        .HasColumnName("Training_Part_Name");
+
+                    b.Property<int>("TrainingPartType")
+                        .HasColumnType("int")
+                        .HasColumnName("Training_Part_Type");
+
+                    b.Property<string>("VideoUrl")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Training_Part_VideoUrl");
 
                     b.HasKey("Id");
 
@@ -396,7 +413,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("TranningParts");
+                    b.ToTable("TrainingParts");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.AddOn", b =>
@@ -442,6 +459,43 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.ToTable("AddOns");
                 });
 
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Answer", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsCorrect")
+                        .HasColumnType("bit")
+                        .HasColumnName("Answer_IsCorrect");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("QuestionId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("Answer_QuestionId");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Answer_Text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answers");
+                });
+
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ApplicationRole", b =>
                 {
                     b.Property<string>("Id")
@@ -477,6 +531,12 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -487,6 +547,9 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -514,11 +577,11 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TrannerDetailId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<string>("UserImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -534,9 +597,43 @@ namespace EasyLearning.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("TrannerDetailId");
-
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Comment", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContentComment")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Comment_Content");
+
+                    b.Property<DateTime?>("DateChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TrainingPartId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Comment_UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrainingPartId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Course", b =>
@@ -552,6 +649,10 @@ namespace EasyLearning.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Courses_Content");
 
+                    b.Property<int>("CourseType")
+                        .HasColumnType("int")
+                        .HasColumnName("Course_Type");
+
                     b.Property<string>("CoursesDescription")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Courses_Description");
@@ -561,7 +662,7 @@ namespace EasyLearning.Infrastructure.Migrations
                         .HasColumnName("Courses_Name");
 
                     b.Property<decimal>("CoursesPrice")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("decimal(10,3)")
                         .HasColumnName("Courses_Price");
 
                     b.Property<DateTime?>("DateChange")
@@ -570,9 +671,17 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Property<DateTime?>("DateCreate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Courses_EndDate");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Courese_ImageUrl");
+                        .HasColumnName("Courses_ImageUrl");
+
+                    b.Property<string>("Instructor")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Courses_Instructor");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -581,9 +690,13 @@ namespace EasyLearning.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Courses_MaxAttendees");
 
+                    b.Property<int>("RegisteredUsers")
+                        .HasColumnType("int")
+                        .HasColumnName("Courses_RegisteredUsers");
+
                     b.Property<DateTime>("RegistrationDeadline")
                         .HasColumnType("datetime2")
-                        .HasColumnName("Courese_RegistrationDeadline");
+                        .HasColumnName("Courses_RegistrationDeadline");
 
                     b.Property<string>("Requirements")
                         .HasColumnType("nvarchar(max)")
@@ -592,10 +705,6 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Courses_StartDate");
-
-                    b.Property<DateTime>("StartEnd")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("Courses_StartEnd");
 
                     b.HasKey("Id");
 
@@ -635,6 +744,275 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("CourseDetails");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.CourseDiscount", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CourseId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("CourseDiscount_CourseId");
+
+                    b.Property<DateTime?>("DateChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DiscountId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("CourseDiscount_DiscountId");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("DiscountId");
+
+                    b.ToTable("CourseDiscounts");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Discount", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Discount_Code");
+
+                    b.Property<DateTime?>("DateChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Discount_Description");
+
+                    b.Property<decimal>("DiscountPercentage")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("Discount_Percentage");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Discounts");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ExerciseQuestion", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Question")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExerciseQuestion_Question");
+
+                    b.Property<string>("TrainingPartId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("ExerciseQuestion_TrainingPartId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrainingPartId");
+
+                    b.ToTable("ExerciseQuestions");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.OrderDiscount", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DiscountId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("CourseDiscount_DiscountId");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("CourseDiscount_OrderId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiscountId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDiscounts");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Reply", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CommentId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("Reply_CommentId");
+
+                    b.Property<string>("ContentReply")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Reply_Content");
+
+                    b.Property<DateTime?>("DateChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Reply_UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("Replies");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserNote", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CourseId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("CoursesId");
+
+                    b.Property<DateTime?>("DateChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NoteContent")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("NoteContent ");
+
+                    b.Property<string>("Time")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Time");
+
+                    b.Property<string>("TrainingPartId")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("TrainingPartId");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserNotes");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserTrainingProgress", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CorrectAnswersCount")
+                        .HasColumnType("int")
+                        .HasColumnName("Correct_Answers");
+
+                    b.Property<DateTime?>("DateChange")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsCompleted");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<double?>("PercentageWatched")
+                        .HasColumnType("float")
+                        .HasColumnName("Percentage_Watched");
+
+                    b.Property<string>("TrainingPartId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("Training_Part_Id");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("User_Id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrainingPartId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTrainingProgresss");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -769,7 +1147,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.HasOne("EasyLearing.Infrastructure.Data.Entities.Order", "Order")
                         .WithMany("OrderDetails")
-                        .HasForeignKey("OrderID");
+                        .HasForeignKey("OrderId");
 
                     b.Navigation("Courses");
 
@@ -803,11 +1181,11 @@ namespace EasyLearning.Infrastructure.Migrations
             modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TrainerDetail", b =>
                 {
                     b.HasOne("EasyLearning.Infrastructure.Data.Entities.Course", "Courses")
-                        .WithMany("TrannerDetails")
+                        .WithMany("TrainerDetails")
                         .HasForeignKey("CoursesId");
 
                     b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("TrainerDetails")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Courses");
@@ -815,14 +1193,14 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TranningPart", b =>
+            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TrainingPart", b =>
                 {
                     b.HasOne("EasyLearning.Infrastructure.Data.Entities.Course", "Courses")
-                        .WithMany("TranningParts")
+                        .WithMany("TrainingParts")
                         .HasForeignKey("CoursesId");
 
                     b.HasOne("EasyLearing.Infrastructure.Data.Entities.CourseEvent", "CourseEvent")
-                        .WithMany("TranningParts")
+                        .WithMany("TrainingParts")
                         .HasForeignKey("EventId");
 
                     b.Navigation("CourseEvent");
@@ -839,13 +1217,22 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Answer", b =>
                 {
-                    b.HasOne("EasyLearing.Infrastructure.Data.Entities.TrainerDetail", "TrannerDetail")
-                        .WithMany()
-                        .HasForeignKey("TrannerDetailId");
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.ExerciseQuestion", "ExerciseQuestions")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId");
 
-                    b.Navigation("TrannerDetail");
+                    b.Navigation("ExerciseQuestions");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Comment", b =>
+                {
+                    b.HasOne("EasyLearing.Infrastructure.Data.Entities.TrainingPart", "TrainingPart")
+                        .WithMany("Comments")
+                        .HasForeignKey("TrainingPartId");
+
+                    b.Navigation("TrainingPart");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.CourseDetail", b =>
@@ -861,6 +1248,84 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.CourseDiscount", b =>
+                {
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.Course", "Course")
+                        .WithMany("CourseDiscounts")
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.Discount", "Discount")
+                        .WithMany("CourseDiscounts")
+                        .HasForeignKey("DiscountId");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Discount");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ExerciseQuestion", b =>
+                {
+                    b.HasOne("EasyLearing.Infrastructure.Data.Entities.TrainingPart", "TrainingPart")
+                        .WithMany("ExerciseQuestions")
+                        .HasForeignKey("TrainingPartId");
+
+                    b.Navigation("TrainingPart");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.OrderDiscount", b =>
+                {
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.Discount", "Discount")
+                        .WithMany("OrderDiscounts")
+                        .HasForeignKey("DiscountId");
+
+                    b.HasOne("EasyLearing.Infrastructure.Data.Entities.Order", "Order")
+                        .WithMany("OrderDiscounts")
+                        .HasForeignKey("OrderId");
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Reply", b =>
+                {
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.Comment", "Comment")
+                        .WithMany("Replies")
+                        .HasForeignKey("CommentId");
+
+                    b.Navigation("Comment");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserNote", b =>
+                {
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.Course", "Course")
+                        .WithMany("UserNotes")
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", "User")
+                        .WithMany("UserNotes")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.UserTrainingProgress", b =>
+                {
+                    b.HasOne("EasyLearing.Infrastructure.Data.Entities.TrainingPart", "TrainingPart")
+                        .WithMany("UserTrainingProgresss")
+                        .HasForeignKey("TrainingPartId");
+
+                    b.HasOne("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", "User")
+                        .WithMany("UserTrainingProgresss")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("TrainingPart");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -921,12 +1386,14 @@ namespace EasyLearning.Infrastructure.Migrations
 
             modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.CourseEvent", b =>
                 {
-                    b.Navigation("TranningParts");
+                    b.Navigation("TrainingParts");
                 });
 
             modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.Order", b =>
                 {
                     b.Navigation("OrderDetails");
+
+                    b.Navigation("OrderDiscounts");
                 });
 
             modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.ShoppingCart", b =>
@@ -934,16 +1401,38 @@ namespace EasyLearning.Infrastructure.Migrations
                     b.Navigation("ShoppingCartItem");
                 });
 
+            modelBuilder.Entity("EasyLearing.Infrastructure.Data.Entities.TrainingPart", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("ExerciseQuestions");
+
+                    b.Navigation("UserTrainingProgresss");
+                });
+
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Orders");
 
                     b.Navigation("ShoppingCart");
+
+                    b.Navigation("TrainerDetails");
+
+                    b.Navigation("UserNotes");
+
+                    b.Navigation("UserTrainingProgresss");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Comment", b =>
+                {
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Course", b =>
                 {
                     b.Navigation("AddOns");
+
+                    b.Navigation("CourseDiscounts");
 
                     b.Navigation("CoursesDetails");
 
@@ -953,9 +1442,23 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Navigation("ShoppingCartItems");
 
-                    b.Navigation("TrannerDetails");
+                    b.Navigation("TrainerDetails");
 
-                    b.Navigation("TranningParts");
+                    b.Navigation("TrainingParts");
+
+                    b.Navigation("UserNotes");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.Discount", b =>
+                {
+                    b.Navigation("CourseDiscounts");
+
+                    b.Navigation("OrderDiscounts");
+                });
+
+            modelBuilder.Entity("EasyLearning.Infrastructure.Data.Entities.ExerciseQuestion", b =>
+                {
+                    b.Navigation("Answers");
                 });
 #pragma warning restore 612, 618
         }

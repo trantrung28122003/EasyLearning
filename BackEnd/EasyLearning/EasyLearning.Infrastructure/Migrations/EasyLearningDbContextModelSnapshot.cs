@@ -323,7 +323,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Property<string>("CoursesId")
                         .HasColumnType("nvarchar(450)")
-                        .HasColumnName("TrainerDetail_Courses_Id");
+                        .HasColumnName("Courses_Id");
 
                     b.Property<DateTime?>("DateChange")
                         .HasColumnType("datetime2");
@@ -336,7 +336,7 @@ namespace EasyLearning.Infrastructure.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)")
-                        .HasColumnName("TrainerDetail_User_Id");
+                        .HasColumnName("User_Id");
 
                     b.HasKey("Id");
 

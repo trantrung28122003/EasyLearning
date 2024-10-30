@@ -289,11 +289,23 @@
     document.addEventListener('DOMContentLoaded', function () {
         var toggles = document.querySelectorAll('.toggle-details');
 
+        // mở đầu tiên nè trung tương lai
+        if (toggles.length > 0) {
+        var firstToggle = toggles[0]; // Chọn sự kiện đầu tiên
+        var firstDetails = firstToggle.nextElementSibling;
+        var firstIcon = firstToggle.querySelector('.icon i');
+        
+            if (firstDetails && firstDetails.classList.contains('details')) {
+                firstDetails.style.display = 'block'; // Hiển thị chi tiết đầu tiên
+                firstIcon.classList.remove('fa-chevron-down');
+                firstIcon.classList.add('fa-chevron-up');
+            }
+        }
+
         toggles.forEach(function (toggle) {
             toggle.addEventListener('click', function () {
                 var details = this.nextElementSibling;
                 var icon = this.querySelector('.icon i');
-
                 if (details && details.classList.contains('details')) {
                     if (details.style.display === 'none' || details.style.display === '') {
                         details.style.display = 'block';
@@ -318,8 +330,6 @@
             part.addEventListener('click', function () {
                 // Lấy courseId và trainingPartId để truyền qua hành động trong Controller
                 var courseId = '@ViewBag.courseId';
-               
-
                 // Chuyển hướng đến action trong Controller
                 window.location.href = '/CustomerCourses/ActionName?courseId=' + courseId + '&trainingPartId=' + trainingPartId;
             });
