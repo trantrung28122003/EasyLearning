@@ -1,0 +1,346 @@
+﻿@using EasyLearing.Infrastructure.Data.Entities;
+@using EasyLearning.Infrastructure.Data.Entities;
+@model EasyLearning.WebApp.Models.CustomerCourseViewModel
+
+@{
+    ViewData["Title"] = "DetailCourse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/css/CustomerDetailCourse.css" rel="stylesheet" />
+
+<div class="container">
+    <!-- product -->
+    <div class="product-content product-wrap clearfix product-deatil">
+        <div class="row">
+            <div class="col-md-5 col-sm-12 col-12">
+                <div class="product-image">
+                    <div id="myCarousel-2" class="carousel slide">
+                        <div class="carousel-inner">
+                            <!-- Slide 1 -->
+                            <div class="carousel-item active">
+                                <img src=" @Model.Course.ImageUrl" class="img-fluid" alt="" />
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel-2" data-bs-slide="prev">
+                      
+                            <span class="visually-hidden">Trước</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel-2" data-bs-slide="next">
+                       
+                            <span class="visually-hidden">Sau</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            @{
+                var countFeedback = Model.Feedbacks.Count;
+                int totalStars = 0;
+                foreach (var feedback in Model.Feedbacks)
+                {
+                    totalStars += feedback.FeedbackRating;
+                }
+                double averageRating = totalStars / (double)countFeedback;
+            }
+            
+            <div class="col-md-6 col-sm-12 col-12">
+                <h2 class="name">
+                    @Model.Course.CoursesName
+                    <small>Khóa học bởi <a href="javascript:void(0);">@Model.Course.Instructor</a></small>
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <i class="fas fa-star fa-2x @(i <= averageRating ? "text-primary" : "text-muted")"></i>
+                    }
+                    <span> <h5>(@countFeedback) Lượt đánh giá</h5></span>
+                    
+                </h2>
+                <hr />
+                <h3 class="price-container">
+                     @Model.Course.CoursesPrice VNĐ
+                </h3>
+                <hr />
+                <div class="description description-tabs">
+                    <ul class="nav nav-pills">
+       
+                        <li class="nav-item"><a href="#specifications" data-bs-toggle="tab" class="nav-link active no-margin">Nội dung khóa học</a></li>
+                        <li class="nav-item"><a href="#more-information" data-bs-toggle="tab" class="nav-link ">Chi tiết khóa học</a></li>
+                        <li class="nav-item"><a href="#reviews" data-bs-toggle="tab" class="nav-link">Đánh giá</a></li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div class="tab-pane fade show active" id="specifications">
+                            <br />
+                            <dl>
+                                @foreach (var itemCourseEvent in Model.CourseEvents)
+                                {
+                                    <dt class="toggle-details">
+                                        @itemCourseEvent.EventName  <span class="icon"><i class="fas fa-chevron-down"></i></span>
+                                    </dt>
+                                    <div class="details" style="display: none;">
+                                        @foreach (var itemtraingPart in Model.TrainingParts)
+                                        {
+                                            if (itemCourseEvent.Id == itemtraingPart.EventId)
+                                            {
+                                                @if (itemtraingPart.TrainingPartType == TrainingPartType.Lesson)
+                                                {
+
+                                                    <dd style="@(itemtraingPart.IsFree ? "color: #06BBCC; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" : "display: flex; justify-content: space-between; align-items: center;")" onclick="@(itemtraingPart.IsFree ? $"window.location.href='/CustomerCourses/OnlineEventScheduleFree?courseId={ViewBag.CourseId}'" : "")">
+                                                        <span>
+                                                            <i class="fas fa-tv"></i>
+                                                            <span style="@(itemtraingPart.IsFree ? "text-decoration: underline;" : "")">@itemtraingPart.TrainingPartName</span>
+                                                        </span>
+                                                        @if (itemtraingPart.IsFree)
+                                                        {
+                                                            <span style="margin-left: auto; margin-right:18px; cursor: pointer">Preview</span>
+                                                        }
+                                                    </dd>
+                                                  
+                                                }
+                                                else
+                                                {
+                                                    <dd >
+                                                        <span><i class="far fa-file-alt"></i></span> @itemtraingPart.TrainingPartName
+                                                    </dd>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                    <br />
+                                }
+                            </dl>
+                        </div>
+
+                        <div class="tab-pane fade " id="more-information">
+                            <br />
+                            <p>
+                                @Model.Course.CoursesDescription
+                            </p>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="reviews">
+                            <br />
+                         
+                            <form method="post" class="well padding-bottom-10" style="display: @(Model.HasBoughtCourse ? "block" : "none")">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <textarea id="textContent" name="content" rows="2" value="0" class="form-control" placeholder="Write a review"></textarea>
+                                    </div>
+                                    <div class="d-flex justify-content-end ml-auto">
+                                        <input type="hidden" id="rating" name="rating" value="0">
+                                        <span class="star" style="font-size: 25px ; cursor: pointer;" data-value="1">&#9733;</span>
+                                        <span class="star" style="font-size: 25px; cursor: pointer;" data-value="2">&#9733;</span>
+                                        <span class="star" style="font-size: 25px; cursor: pointer;" data-value="3">&#9733;</span>
+                                        <span class="star" style="font-size: 25px; cursor: pointer;" data-value="4">&#9733;</span>
+                                        <span class="star" style="font-size: 25px; cursor: pointer;" data-value="5">&#9733;</span>
+                                    </div>
+                                    <button id="submitReviewBtn" asp-controller="CustomerCourses" asp-action="AddToFeedback" asp-route-courseId="@Model.Course.Id" asp-route-rating="" asp-route-content=""  type="submit" class="btn btn-sm btn-primary pull-right">
+                                        Submit Review 
+                                    </button>
+                                    <a href="javascript:void(0);" class="btn btn-link profile-link-btn" rel="tooltip" data-bs-placement="bottom" title="Add Location"><i class="fa fa-location-arrow"></i></a>
+                                    <a href="javascript:void(0);" class="btn btn-link profile-link-btn" rel="tooltip" data-bs-placement="bottom" title="Add Voice"><i class="fa fa-microphone"></i></a>
+                                    <a href="javascript:void(0);" class="btn btn-link profile-link-btn" rel="tooltip" data-bs-placement="bottom" title="Add Photo"><i class="fa fa-camera"></i></a>
+                                    <a href="javascript:void(0);" class="btn btn-link profile-link-btn" rel="tooltip" data-bs-placement="bottom" title="Add File"><i class="fa fa-file"></i></a>
+                                    
+                                </div>
+                           
+                            </form>
+                           
+                            <div class="chat-body no-padding profile-message">
+                                <ul>
+
+                                    @foreach (var itemFeedback in Model.Feedbacks)
+                                    {
+                                        @foreach (var itemUser in Model.Users)
+                                        {
+                                            if (itemUser.Id == itemFeedback.FeedbackUserId)
+                                            {
+                                                <li class="message row">
+                                                    <div class="col-md-2">
+                                                       @*  <img src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg" class="online" /> *@
+                                                         <img src="@itemUser.UserImageUrl" class="online" />
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <span class="message-text">
+                                                            <a href="javascript:void(0);" class="username">
+                                                                @itemUser.FullName
+                                                                @if (itemFeedback.FeedbackUserId == Model.currentUserId)
+                                                                {
+                                                                    <span class="badge bg-primary" style="margin-bottom: 4px">Bạn</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="badge bg-primary" style="margin-bottom: 4px">Khách hàng</span>
+                                                                }
+                                                                <span class="pull-right" style="margin-left: 25px">
+                                                                    @for (int i = 1; i <= 5; i++)
+                                                                    {
+                                                                        <i class="fas fa-star fa-2x @(i <= itemFeedback.FeedbackRating ? "text-primary" : "text-muted")"></i>
+                                                                    }
+                                                                </span>
+                                                            </a>
+                                                            <br />
+                                                            @itemFeedback.FeedbackContent
+                                                            <small class="text-muted pull-right ultra-light">   -    @itemFeedback.DateCreate</small>
+                                                        </span>
+                                                        <ul class="list-inline font-xs">
+                                                            <li class="pull-right">
+
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            }
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                @if (Model.OrderDetails.Any(itemOrderDetail => itemOrderDetail.CoursesId == Model.Course.Id))
+                {
+                    if (Model.Course.CourseType == CourseType.Online)
+                    {
+                        <div class="row">
+                            <a asp-controller="CustomerCourses" asp-action="ListCourseOnlineByUser" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Đi đến lịch học</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <a asp-controller="CustomerCourses" asp-action="EventSchedule" asp-route-courseId="@Model.Course.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Đi đến lịch học</a>
+                        </div>
+                    }
+                    
+                 
+                }
+                else
+                {
+                    if (!Model.ShoppingCartItems.Any(shoppingCartItem => shoppingCartItem.CoursesId == Model.Course.Id) || Model.ShoppingCartItems.Count == 0)
+                    {
+                        <div class="row">
+                            <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-courseId="@Model.Course.Id" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 30px 30px 30px; font-size: 20px;">Thêm vào giỏ hàng</a>
+                        </div>
+                    }
+                    else if(Model.ShoppingCartItems.Any(shoppingCartItem => shoppingCartItem.CoursesId == Model.Course.Id))
+                    {
+                        <div class="row">
+                            <a asp-controller="ShoppingCart" asp-action="GetShoppingCart" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 30px 30px 30px; font-size: 20px;">Đi đến giỏ hàng</a>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <!-- end product -->
+</div>
+
+<script src="~/js/DetailCourse.js"></script>
+
+<style>
+    .toggle-details {
+        border: 1px solid #ccc; /* Light gray border */
+        background-color: #f9f9f9; /* Light gray background */
+        padding: 10px; /* Padding for spacing */
+        cursor: pointer; /* Pointer cursor on hover */
+        margin-bottom: -1px; /* Adjust margin to overlap borders */
+        position: relative;
+    }
+
+    .icon {
+        position: absolute;
+        top: 50%;
+        right: 10px; /* Adjust as needed */
+        transform: translateY(-50%);
+    }
+
+    dd {
+        display: flex;
+        align-items: center;
+        padding-top: 12px;
+        padding-bottom:12px
+    }
+
+    dd > span > i {
+        width: 30px; /* Đặt chiều rộng bạn muốn */
+        display: inline-block;
+        text-align:center;
+        margin-right: 12px;
+        
+    }
+
+    
+    .details {
+        border: 1px solid #ccc; /* Matching border for the container */
+        border-top: none; /* Remove top border to avoid double border with dt */
+        margin-bottom: 10px; /* Spacing between sections */
+    }
+
+    .training-part {
+        border-top: 1px solid #ccc; /* Border for dd, aligning with dt */
+        /* Padding for spacing */
+        padding: 12px 12px 0px 0px;
+        margin: 0; /* Remove default margin */
+        background-color: #ffffff; /* White background for dd */
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var toggles = document.querySelectorAll('.toggle-details');
+
+        // mở đầu tiên nè trung tương lai
+        if (toggles.length > 0) {
+        var firstToggle = toggles[0]; // Chọn sự kiện đầu tiên
+        var firstDetails = firstToggle.nextElementSibling;
+        var firstIcon = firstToggle.querySelector('.icon i');
+        
+            if (firstDetails && firstDetails.classList.contains('details')) {
+                firstDetails.style.display = 'block'; // Hiển thị chi tiết đầu tiên
+                firstIcon.classList.remove('fa-chevron-down');
+                firstIcon.classList.add('fa-chevron-up');
+            }
+        }
+
+        toggles.forEach(function (toggle) {
+            toggle.addEventListener('click', function () {
+                var details = this.nextElementSibling;
+                var icon = this.querySelector('.icon i');
+                if (details && details.classList.contains('details')) {
+                    if (details.style.display === 'none' || details.style.display === '') {
+                        details.style.display = 'block';
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    } else {
+                        details.style.display = 'none';
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                }
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var freeTrainingParts = document.querySelectorAll('dd[data-isfree="true"]');
+
+        freeTrainingParts.forEach(function (part) {
+            part.addEventListener('click', function () {
+                // Lấy courseId và trainingPartId để truyền qua hành động trong Controller
+                var courseId = '@ViewBag.courseId';
+                // Chuyển hướng đến action trong Controller
+                window.location.href = '/CustomerCourses/ActionName?courseId=' + courseId + '&trainingPartId=' + trainingPartId;
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+

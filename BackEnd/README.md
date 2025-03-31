@@ -1,2 +1,0 @@
-# EasyLearning
-# Database design
